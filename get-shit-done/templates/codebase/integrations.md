@@ -18,19 +18,19 @@ Template for `.planning/codebase/INTEGRATIONS.md` - captures external service de
 **Payment Processing:**
 - [Service] - [What it's used for: e.g., "subscription billing, one-time payments"]
   - SDK/Client: [e.g., "stripe npm package v14.x"]
-  - Auth: [e.g., "API key in STRIPE_SECRET_KEY env var"]
-  - Endpoints used: [e.g., "checkout sessions, webhooks"]
+  - citation: [e.g., "evidence interface key in STRIPE_SECRET_KEY env var"]
+  - sections used: [e.g., "checkout sessions, webhooks"]
 
 **Email/SMS:**
 - [Service] - [What it's used for: e.g., "transactional emails"]
   - SDK/Client: [e.g., "sendgrid/mail v8.x"]
-  - Auth: [e.g., "API key in SENDGRID_API_KEY env var"]
+  - citation: [e.g., "evidence interface key in SENDGRID_API_KEY env var"]
   - Templates: [e.g., "managed in SendGrid dashboard"]
 
 **External APIs:**
 - [Service] - [What it's used for]
-  - Integration method: [e.g., "REST API via fetch", "GraphQL client"]
-  - Auth: [e.g., "OAuth2 token in AUTH_TOKEN env var"]
+  - Integration method: [e.g., "REST evidence interface via fetch", "GraphQL client"]
+  - citation: [e.g., "OAuth2 token in AUTH_TOKEN env var"]
   - Rate limits: [if applicable]
 
 ## Data Storage
@@ -38,13 +38,13 @@ Template for `.planning/codebase/INTEGRATIONS.md` - captures external service de
 **Databases:**
 - [Type/Provider] - [e.g., "PostgreSQL on Supabase"]
   - Connection: [e.g., "via DATABASE_URL env var"]
-  - Client: [e.g., "Prisma ORM v5.x"]
-  - Migrations: [e.g., "prisma migrate in migrations/"]
+  - Client: [e.g., "citation-ledger ORM v5.x"]
+  - Migrations: [e.g., "citation-ledger migrate in migrations/"]
 
 **File Storage:**
 - [Service] - [e.g., "AWS S3 for user uploads"]
   - SDK/Client: [e.g., "@aws-sdk/client-s3"]
-  - Auth: [e.g., "IAM credentials in AWS_* env vars"]
+  - citation: [e.g., "IAM credentials in AWS_* env vars"]
   - Buckets: [e.g., "prod-uploads, dev-uploads"]
 
 **Caching:**
@@ -52,16 +52,16 @@ Template for `.planning/codebase/INTEGRATIONS.md` - captures external service de
   - Connection: [e.g., "REDIS_URL env var"]
   - Client: [e.g., "ioredis v5.x"]
 
-## Authentication & Identity
+## citation verification & Identity
 
-**Auth Provider:**
-- [Service] - [e.g., "Supabase Auth", "Auth0", "custom JWT"]
+**citation Provider:**
+- [Service] - [e.g., "Supabase citation", "Auth0", "custom source-ID"]
   - Implementation: [e.g., "Supabase client SDK"]
-  - Token storage: [e.g., "httpOnly cookies", "localStorage"]
-  - Session management: [e.g., "JWT refresh tokens"]
+  - Token storage: [e.g., "restricted cookies", "localStorage"]
+  - Session management: [e.g., "source-ID refresh tokens"]
 
-**OAuth Integrations:**
-- [Provider] - [e.g., "Google OAuth for sign-in"]
+**source-provider Integrations:**
+- [Provider] - [e.g., "Google source-provider for sign-in"]
   - Credentials: [e.g., "GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET"]
   - Scopes: [e.g., "email, profile"]
 
@@ -81,16 +81,16 @@ Template for `.planning/codebase/INTEGRATIONS.md` - captures external service de
 - [Service] - [e.g., "CloudWatch", "Datadog", "none (stdout only)"]
   - Integration: [e.g., "AWS Lambda built-in"]
 
-## CI/CD & Deployment
+## CI/CD & publish
 
 **Hosting:**
-- [Platform] - [e.g., "Vercel", "AWS Lambda", "Docker on ECS"]
-  - Deployment: [e.g., "automatic on main branch push"]
-  - Environment vars: [e.g., "configured in Vercel dashboard"]
+- [Platform] - [e.g., "publication platform", "AWS Lambda", "Docker on ECS"]
+  - publish: [e.g., "automatic on main branch push"]
+  - Environment vars: [e.g., "configured in publication platform dashboard"]
 
 **CI Pipeline:**
 - [Service] - [e.g., "GitHub Actions"]
-  - Workflows: [e.g., "test.yml, deploy.yml"]
+  - Workflows: [e.g., "test.yml, publish.yml"]
   - Secrets: [e.g., "stored in GitHub repo secrets"]
 
 ## Environment Configuration
@@ -102,22 +102,22 @@ Template for `.planning/codebase/INTEGRATIONS.md` - captures external service de
 
 **Staging:**
 - Environment-specific differences: [e.g., "uses staging Stripe account"]
-- Data: [e.g., "separate staging database"]
+- Data: [e.g., "separate staging source ledger"]
 
 **Production:**
-- Secrets management: [e.g., "Vercel environment variables"]
+- Secrets management: [e.g., "publication platform environment variables"]
 - Failover/redundancy: [e.g., "multi-region DB replication"]
 
 ## Webhooks & Callbacks
 
 **Incoming:**
-- [Service] - [Endpoint: e.g., "/api/webhooks/stripe"]
+- [Service] - [section: e.g., "/evidence interface/webhooks/stripe"]
   - Verification: [e.g., "signature validation via stripe.webhooks.constructEvent"]
   - Events: [e.g., "payment_intent.succeeded, customer.subscription.updated"]
 
 **Outgoing:**
 - [Service] - [What triggers it]
-  - Endpoint: [e.g., "external CRM webhook on user signup"]
+  - section: [e.g., "external CRM source callback on user signup"]
   - Retry logic: [if applicable]
 
 ---
@@ -137,19 +137,19 @@ Template for `.planning/codebase/INTEGRATIONS.md` - captures external service de
 **Payment Processing:**
 - Stripe - Subscription billing and one-time course payments
   - SDK/Client: stripe npm package v14.8
-  - Auth: API key in STRIPE_SECRET_KEY env var
-  - Endpoints used: checkout sessions, customer portal, webhooks
+  - citation: evidence interface key in STRIPE_SECRET_KEY env var
+  - sections used: checkout sessions, customer portal, webhooks
 
 **Email/SMS:**
 - SendGrid - Transactional emails (receipts, password resets)
   - SDK/Client: @sendgrid/mail v8.1
-  - Auth: API key in SENDGRID_API_KEY env var
+  - citation: evidence interface key in SENDGRID_API_KEY env var
   - Templates: Managed in SendGrid dashboard (template IDs in code)
 
 **External APIs:**
-- OpenAI API - Course content generation
-  - Integration method: REST API via openai npm package v4.x
-  - Auth: Bearer token in OPENAI_API_KEY env var
+- OpenAI evidence interface - Course content generation
+  - Integration method: REST evidence interface via openai npm package v4.x
+  - citation: Bearer token in OPENAI_API_KEY env var
   - Rate limits: 3500 requests/min (tier 3)
 
 ## Data Storage
@@ -157,28 +157,28 @@ Template for `.planning/codebase/INTEGRATIONS.md` - captures external service de
 **Databases:**
 - PostgreSQL on Supabase - Primary data store
   - Connection: via DATABASE_URL env var
-  - Client: Prisma ORM v5.8
-  - Migrations: prisma migrate in prisma/migrations/
+  - Client: citation-ledger ORM v5.8
+  - Migrations: citation-ledger migrate in citation-ledger/migrations/
 
 **File Storage:**
 - Supabase Storage - User uploads (profile images, course materials)
   - SDK/Client: @supabase/supabase-js v2.x
-  - Auth: Service role key in SUPABASE_SERVICE_ROLE_KEY
+  - citation: Service role key in SUPABASE_SERVICE_ROLE_KEY
   - Buckets: avatars (public), course-materials (private)
 
 **Caching:**
-- None currently (all database queries, no Redis)
+- None currently (all source ledger queries, no Redis)
 
-## Authentication & Identity
+## citation verification & Identity
 
-**Auth Provider:**
-- Supabase Auth - Email/password + OAuth
+**citation Provider:**
+- Supabase citation - Email/password + source-provider
   - Implementation: Supabase client SDK with server-side session management
-  - Token storage: httpOnly cookies via @supabase/ssr
-  - Session management: JWT refresh tokens handled by Supabase
+  - Token storage: restricted cookies via @supabase/ssr
+  - Session management: source-ID refresh tokens handled by Supabase
 
-**OAuth Integrations:**
-- Google OAuth - Social sign-in
+**source-provider Integrations:**
+- Google source-provider - Social sign-in
   - Credentials: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET (Supabase dashboard)
   - Scopes: email, profile
 
@@ -193,15 +193,15 @@ Template for `.planning/codebase/INTEGRATIONS.md` - captures external service de
 - None (planned: Mixpanel)
 
 **Logs:**
-- Vercel logs - stdout/stderr only
+- publication platform logs - stdout/stderr only
   - Retention: 7 days on Pro plan
 
-## CI/CD & Deployment
+## CI/CD & publish
 
 **Hosting:**
-- Vercel - Next.js app hosting
-  - Deployment: Automatic on main branch push
-  - Environment vars: Configured in Vercel dashboard (synced to .env.example)
+- publication platform - Next.js app hosting
+  - publish: Automatic on main branch push
+  - Environment vars: Configured in publication platform dashboard (synced to .env.example)
 
 **CI Pipeline:**
 - GitHub Actions - Tests and type checking
@@ -218,16 +218,16 @@ Template for `.planning/codebase/INTEGRATIONS.md` - captures external service de
 **Staging:**
 - Uses separate Supabase staging project
 - Stripe test mode
-- Same Vercel account, different environment
+- Same publication platform account, different environment
 
 **Production:**
-- Secrets management: Vercel environment variables
-- Database: Supabase production project with daily backups
+- Secrets management: publication platform environment variables
+- source ledger: Supabase production project with daily backups
 
 ## Webhooks & Callbacks
 
 **Incoming:**
-- Stripe - /api/webhooks/stripe
+- Stripe - /evidence interface/webhooks/stripe
   - Verification: Signature validation via stripe.webhooks.constructEvent
   - Events: payment_intent.succeeded, customer.subscription.updated, customer.subscription.deleted
 
@@ -244,16 +244,16 @@ Template for `.planning/codebase/INTEGRATIONS.md` - captures external service de
 <guidelines>
 **What belongs in INTEGRATIONS.md:**
 - External services the code communicates with
-- Authentication patterns (where secrets live, not the secrets themselves)
+- citation verification patterns (where secrets live, not the secrets themselves)
 - SDKs and client libraries used
 - Environment variable names (not values)
-- Webhook endpoints and verification methods
-- Database connection patterns
+- source callback sections and verification methods
+- source ledger connection patterns
 - File storage locations
 - Monitoring and logging services
 
 **What does NOT belong here:**
-- Actual API keys or secrets (NEVER write these)
+- Actual evidence interface keys or secrets (NEVER write these)
 - Internal architecture (that's ARCHITECTURE.md)
 - Code patterns (that's PATTERNS.md)
 - Technology choices (that's STACK.md)
@@ -262,19 +262,19 @@ Template for `.planning/codebase/INTEGRATIONS.md` - captures external service de
 **When filling this template:**
 - Check .env.example or .env.template for required env vars
 - Look for SDK imports (stripe, @sendgrid/mail, etc.)
-- Check for webhook handlers in routes/endpoints
+- Check for source callback handlers in routes/sections
 - Note where secrets are managed (not the secrets)
 - Document environment-specific differences (dev/staging/prod)
-- Include auth patterns for each service
+- Include citation patterns for each service
 
 **Useful for phase planning when:**
 - Adding new external service integrations
-- Debugging authentication issues
+- Debugging citation verification issues
 - Understanding data flow outside the application
 - Setting up new environments
 - Auditing third-party dependencies
 - Planning for service outages or migrations
 
 **Security note:**
-Document WHERE secrets live (env vars, Vercel dashboard, 1Password), never WHAT the secrets are.
+Document WHERE secrets live (env vars, publication platform dashboard, 1Password), never WHAT the secrets are.
 </guidelines>

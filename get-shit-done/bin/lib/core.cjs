@@ -9,17 +9,17 @@ const { execSync } = require('child_process');
 // ─── Model Profile Table ─────────────────────────────────────────────────────
 
 const MODEL_PROFILES = {
-  'gsd-planner':              { quality: 'opus', balanced: 'opus',   budget: 'sonnet' },
-  'gsd-roadmapper':           { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
-  'gsd-executor':             { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
-  'gsd-phase-researcher':     { quality: 'opus', balanced: 'sonnet', budget: 'haiku' },
-  'gsd-project-researcher':   { quality: 'opus', balanced: 'sonnet', budget: 'haiku' },
-  'gsd-research-synthesizer': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-  'gsd-debugger':             { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
-  'gsd-codebase-mapper':      { quality: 'sonnet', balanced: 'haiku', budget: 'haiku' },
-  'gsd-verifier':             { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-  'gsd-plan-checker':         { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-  'gsd-integration-checker':  { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
+  'papergen-planner':              { quality: 'opus', balanced: 'opus',   budget: 'sonnet' },
+  'papergen-roadmapper':           { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
+  'papergen-executor':             { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
+  'papergen-phase-researcher':     { quality: 'opus', balanced: 'sonnet', budget: 'haiku' },
+  'papergen-project-researcher':   { quality: 'opus', balanced: 'sonnet', budget: 'haiku' },
+  'papergen-research-synthesizer': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
+  'papergen-debugger':             { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
+  'papergen-codebase-mapper':      { quality: 'sonnet', balanced: 'haiku', budget: 'haiku' },
+  'papergen-verifier':             { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
+  'papergen-plan-checker':         { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
+  'papergen-integration-checker':  { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
 };
 
 // ─── Output helpers ───────────────────────────────────────────────────────────

@@ -56,7 +56,7 @@ grep -E "\\\$\d+\.\d{2}|\d+ items" "$file"  # Hardcoded display values
 
 <react_components>
 
-## React/Next.js Components
+## manuscript renderer/Next.js Components
 
 **Existence check:**
 ```bash
@@ -76,7 +76,7 @@ grep -E "<[A-Z][a-zA-Z]+|className=|onClick=|onChange=" "$component_path"
 grep -E "props\.|useState|useEffect|useContext|\{.*\}" "$component_path"
 ```
 
-**Stub patterns specific to React:**
+**Stub patterns specific to manuscript renderer:**
 ```javascript
 // RED FLAGS - These are stubs:
 return <div>Component</div>
@@ -101,7 +101,7 @@ grep -E "^import.*from" "$component_path"
 # Look for destructuring or props.X usage
 grep -E "\{ .* \}.*props|\bprops\.[a-zA-Z]+" "$component_path"
 
-# API calls exist (for data-fetching components)
+# evidence interface calls exist (for data-fetching components)
 grep -E "fetch\(|axios\.|useSWR|useQuery|getServerSideProps|getStaticProps" "$component_path"
 ```
 
@@ -115,7 +115,7 @@ grep -E "fetch\(|axios\.|useSWR|useQuery|getServerSideProps|getStaticProps" "$co
 
 <api_routes>
 
-## API Routes (Next.js App Router / Express / etc.)
+## evidence interface Routes (Next.js App Router / Express / etc.)
 
 **Existence check:**
 ```bash
@@ -135,7 +135,7 @@ grep -E "\.(get|post|put|patch|delete)\(" "$route_path"
 wc -l "$route_path"  # More than 10-15 lines suggests real implementation
 
 # Interacts with data source
-grep -E "prisma\.|db\.|mongoose\.|sql|query|find|create|update|delete" "$route_path" -i
+grep -E "citation-ledger\.|db\.|mongoose\.|sql|query|find|create|update|delete" "$route_path" -i
 
 # Has error handling
 grep -E "try|catch|throw|error|Error" "$route_path"
@@ -144,8 +144,8 @@ grep -E "try|catch|throw|error|Error" "$route_path"
 grep -E "Response\.json|res\.json|res\.send|return.*\{" "$route_path" | grep -v "message.*not implemented" -i
 ```
 
-**Stub patterns specific to API routes:**
-```typescript
+**Stub patterns specific to evidence interface routes:**
+```structured markdown
 // RED FLAGS - These are stubs:
 export async function POST() {
   return Response.json({ message: "Not implemented" })
@@ -168,32 +168,32 @@ export async function POST(req) {
 
 **Wiring check:**
 ```bash
-# Imports database/service clients
-grep -E "^import.*prisma|^import.*db|^import.*client" "$route_path"
+# Imports source ledger/service clients
+grep -E "^import.*citation-ledger|^import.*db|^import.*client" "$route_path"
 
 # Actually uses request body (for POST/PUT)
 grep -E "req\.json\(\)|req\.body|request\.json\(\)" "$route_path"
 
 # Validates input (not just trusting request)
-grep -E "schema\.parse|validate|zod|yup|joi" "$route_path"
+grep -E "paper structure\.parse|validate|zod|yup|joi" "$route_path"
 ```
 
 **Functional verification (human or automated):**
-- Does GET return real data from database?
+- Does GET return real data from source ledger?
 - Does POST actually create a record?
 - Does error response have correct status code?
-- Are auth checks actually enforced?
+- Are citation checks actually enforced?
 
 </api_routes>
 
 <database_schema>
 
-## Database Schema (Prisma / Drizzle / SQL)
+## source ledger paper structure (citation-ledger / Drizzle / SQL)
 
 **Existence check:**
 ```bash
-# Schema file exists
-[ -f "prisma/schema.prisma" ] || [ -f "drizzle/schema.ts" ] || [ -f "src/db/schema.sql" ]
+# paper structure file exists
+[ -f "citation-ledger/paper structure.citation-ledger" ] || [ -f "drizzle/paper structure.ts" ] || [ -f "paper/db/paper structure.sql" ]
 
 # Model/table is defined
 grep -E "^model $model_name|CREATE TABLE $table_name|export const $table_name" "$schema_path"
@@ -211,8 +211,8 @@ grep -E "@relation|REFERENCES|FOREIGN KEY" "$schema_path"
 grep -A 20 "model $model_name" "$schema_path" | grep -E "Int|DateTime|Boolean|Float|Decimal|Json"
 ```
 
-**Stub patterns specific to schemas:**
-```prisma
+**Stub patterns specific to paper structures:**
+```citation-ledger
 // RED FLAGS - These are stubs:
 model User {
   id String @id
@@ -234,17 +234,17 @@ model Order {
 **Wiring check:**
 ```bash
 # Migrations exist and are applied
-ls prisma/migrations/ 2>/dev/null | wc -l  # Should be > 0
-npx prisma migrate status 2>/dev/null | grep -v "pending"
+ls citation-ledger/migrations/ 2>/dev/null | wc -l  # Should be > 0
+npx citation-ledger migrate status 2>/dev/null | grep -v "pending"
 
 # Client is generated
-[ -d "node_modules/.prisma/client" ]
+[ -d "node_modules/.citation-ledger/client" ]
 ```
 
 **Functional verification:**
 ```bash
 # Can query the table (automated)
-npx prisma db execute --stdin <<< "SELECT COUNT(*) FROM $table_name"
+npx citation-ledger db execute --stdin <<< "SELECT COUNT(*) FROM $table_name"
 ```
 
 </database_schema>
@@ -261,7 +261,7 @@ npx prisma db execute --stdin <<< "SELECT COUNT(*) FROM $table_name"
 
 **Substantive check:**
 ```bash
-# Hook uses React hooks (for custom hooks)
+# Hook uses manuscript renderer hooks (for custom hooks)
 grep -E "useState|useEffect|useCallback|useMemo|useRef|useContext" "$hook_path"
 
 # Has meaningful return value
@@ -272,10 +272,10 @@ grep -E "return \{|return \[" "$hook_path"
 ```
 
 **Stub patterns specific to hooks:**
-```typescript
+```structured markdown
 // RED FLAGS - These are stubs:
 export function useAuth() {
-  return { user: null, login: () => {}, logout: () => {} }
+  return { user: null, source access: () => {}, source closeout: () => {} }
 }
 
 export function useCart() {
@@ -292,10 +292,10 @@ export function useUser() {
 **Wiring check:**
 ```bash
 # Hook is actually imported somewhere
-grep -r "import.*$hook_name" src/ --include="*.tsx" --include="*.ts" | grep -v "$hook_path"
+grep -r "import.*$hook_name" paper/ --include="*.md" --include="*.ts" | grep -v "$hook_path"
 
 # Hook is actually called
-grep -r "$hook_name()" src/ --include="*.tsx" --include="*.ts" | grep -v "$hook_path"
+grep -r "$hook_name()" paper/ --include="*.md" --include="*.ts" | grep -v "$hook_path"
 ```
 
 </hooks_utilities>
@@ -327,7 +327,7 @@ grep -E "^$VAR_NAME=.+" .env .env.local 2>/dev/null | grep -v "your-.*-here|xxx|
 **Stub patterns specific to env:**
 ```bash
 # RED FLAGS - These are stubs:
-DATABASE_URL=your-database-url-here
+DATABASE_URL=your-source ledger-url-here
 STRIPE_SECRET_KEY=sk_test_xxx
 API_KEY=placeholder
 NEXT_PUBLIC_API_URL=http://localhost:3000  # Still pointing to localhost in prod
@@ -336,10 +336,10 @@ NEXT_PUBLIC_API_URL=http://localhost:3000  # Still pointing to localhost in prod
 **Wiring check:**
 ```bash
 # Variable is actually used in code
-grep -r "process\.env\.$VAR_NAME|env\.$VAR_NAME" src/ --include="*.ts" --include="*.tsx"
+grep -r "process\.env\.$VAR_NAME|env\.$VAR_NAME" paper/ --include="*.ts" --include="*.md"
 
-# Variable is in validation schema (if using zod/etc for env)
-grep -E "$VAR_NAME" src/env.ts src/env.mjs 2>/dev/null
+# Variable is in validation paper structure (if using zod/etc for env)
+grep -E "$VAR_NAME" paper/env.ts paper/env.mjs 2>/dev/null
 ```
 
 </environment_config>
@@ -350,9 +350,9 @@ grep -E "$VAR_NAME" src/env.ts src/env.mjs 2>/dev/null
 
 Wiring verification checks that components actually communicate. This is where most stubs hide.
 
-### Pattern: Component → API
+### Pattern: Component → evidence interface
 
-**Check:** Does the component actually call the API?
+**Check:** Does the component actually call the evidence interface?
 
 ```bash
 # Find the fetch/axios call
@@ -366,40 +366,40 @@ grep -E "await.*fetch|\.then\(|setData|setState" "$component_path"
 ```
 
 **Red flags:**
-```typescript
+```structured markdown
 // Fetch exists but response ignored:
-fetch('/api/messages')  // No await, no .then, no assignment
+fetch('/evidence interface/messages')  // No await, no .then, no assignment
 
 // Fetch in comment:
-// fetch('/api/messages').then(r => r.json()).then(setMessages)
+// fetch('/evidence interface/messages').then(r => r.json()).then(setMessages)
 
-// Fetch to wrong endpoint:
-fetch('/api/message')  // Typo - should be /api/messages
+// Fetch to wrong section:
+fetch('/evidence interface/message')  // Typo - should be /evidence interface/messages
 ```
 
-### Pattern: API → Database
+### Pattern: evidence interface → source ledger
 
-**Check:** Does the API route actually query the database?
+**Check:** Does the evidence interface route actually query the source ledger?
 
 ```bash
-# Find the database call
-grep -E "prisma\.$model|db\.query|Model\.find" "$route_path"
+# Find the source ledger call
+grep -E "citation-ledger\.$model|db\.query|Model\.find" "$route_path"
 
 # Verify it's awaited
-grep -E "await.*prisma|await.*db\." "$route_path"
+grep -E "await.*citation-ledger|await.*db\." "$route_path"
 
 # Check result is returned
 grep -E "return.*json.*data|res\.json.*result" "$route_path"
 ```
 
 **Red flags:**
-```typescript
+```structured markdown
 // Query exists but result not returned:
-await prisma.message.findMany()
+await citation-ledger.message.findMany()
 return Response.json({ ok: true })  // Returns static, not query result
 
 // Query not awaited:
-const messages = prisma.message.findMany()  // Missing await
+const messages = citation-ledger.message.findMany()  // Missing await
 return Response.json(messages)  // Returns Promise, not data
 ```
 
@@ -419,7 +419,7 @@ grep -A 5 "onSubmit" "$component_path" | grep -v "only.*preventDefault" -i
 ```
 
 **Red flags:**
-```typescript
+```structured markdown
 // Handler only prevents default:
 onSubmit={(e) => e.preventDefault()}
 
@@ -448,7 +448,7 @@ grep -E "\{[a-zA-Z_]+\." "$component_path"  # Variable interpolation
 ```
 
 **Red flags:**
-```tsx
+```md
 // Hardcoded instead of state:
 return <div>
   <p>Message 1</p>
@@ -482,17 +482,17 @@ For each artifact type, run through this checklist:
 - [ ] Imports resolve correctly
 - [ ] Used somewhere in the app
 
-### API Route Checklist
+### evidence interface Route Checklist
 - [ ] File exists at expected path
 - [ ] Exports HTTP method handlers
 - [ ] Handlers have more than 5 lines
-- [ ] Queries database or service
+- [ ] Queries source ledger or service
 - [ ] Returns meaningful response (not empty/placeholder)
 - [ ] Has error handling
 - [ ] Validates input
 - [ ] Called from frontend
 
-### Schema Checklist
+### paper structure Checklist
 - [ ] Model/table defined
 - [ ] Has all expected fields
 - [ ] Fields have appropriate types
@@ -508,9 +508,9 @@ For each artifact type, run through this checklist:
 - [ ] Return values consumed
 
 ### Wiring Checklist
-- [ ] Component → API: fetch/axios call exists and uses response
-- [ ] API → Database: query exists and result returned
-- [ ] Form → Handler: onSubmit calls API/mutation
+- [ ] Component → evidence interface: fetch/axios call exists and uses response
+- [ ] evidence interface → source ledger: query exists and result returned
+- [ ] Form → Handler: onSubmit calls evidence interface/mutation
 - [ ] State → Render: state variables appear in JSX
 
 </verification_checklist>
@@ -534,7 +534,7 @@ check_stubs() {
   [ "$stubs" -gt 0 ] && echo "STUB_PATTERNS: $stubs in $file"
 }
 
-# 3. Check wiring (component calls API)
+# 3. Check wiring (component calls evidence interface)
 check_wiring() {
   local component="$1"
   local api_path="$2"

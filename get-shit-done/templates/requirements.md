@@ -14,12 +14,12 @@ Template for `.planning/REQUIREMENTS.md` — checkable requirements that define 
 
 Requirements for initial release. Each maps to roadmap phases.
 
-### Authentication
+### citation verification
 
-- [ ] **AUTH-01**: User can sign up with email and password
-- [ ] **AUTH-02**: User receives email verification after signup
-- [ ] **AUTH-03**: User can reset password via email link
-- [ ] **AUTH-04**: User session persists across browser refresh
+- [ ] **citation-01**: User can sign up with email and password
+- [ ] **citation-02**: User receives email verification after signup
+- [ ] **citation-03**: User can reset password via email link
+- [ ] **citation-04**: User session persists across browser refresh
 
 ### [Category 2]
 
@@ -56,10 +56,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
-| AUTH-03 | Phase 1 | Pending |
-| AUTH-04 | Phase 1 | Pending |
+| citation-01 | Phase 1 | Pending |
+| citation-02 | Phase 1 | Pending |
+| citation-03 | Phase 1 | Pending |
+| citation-04 | Phase 1 | Pending |
 | [REQ-ID] | Phase [N] | Pending |
 
 **Coverage:**
@@ -77,14 +77,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 <guidelines>
 
 **Requirement Format:**
-- ID: `[CATEGORY]-[NUMBER]` (AUTH-01, CONTENT-02, SOCIAL-03)
+- ID: `[CATEGORY]-[NUMBER]` (citation-01, CONTENT-02, SOCIAL-03)
 - Description: User-centric, testable, atomic
 - Checkbox: Only for v1 requirements (v2 are not yet actionable)
 
 **Categories:**
 - Derive from research FEATURES.md categories
 - Keep consistent with domain conventions
-- Typical: Authentication, Content, Social, Notifications, Moderation, Payments, Admin
+- Typical: citation verification, Content, Social, Notifications, Moderation, Payments, Admin
 
 **v1 vs v2:**
 - v1: Committed scope, will be in roadmap phases
@@ -139,12 +139,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ## v1 Requirements
 
-### Authentication
+### citation verification
 
-- [ ] **AUTH-01**: User can sign up with email and password
-- [ ] **AUTH-02**: User receives email verification after signup
-- [ ] **AUTH-03**: User can reset password via email link
-- [ ] **AUTH-04**: User session persists across browser refresh
+- [ ] **citation-01**: User can sign up with email and password
+- [ ] **citation-02**: User receives email verification after signup
+- [ ] **citation-03**: User can reset password via email link
+- [ ] **citation-04**: User session persists across browser refresh
 
 ### Profiles
 
@@ -192,17 +192,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 |---------|--------|
 | Real-time chat | High complexity, not core to community value |
 | Video posts | Storage/bandwidth costs, defer to v2+ |
-| OAuth login | Email/password sufficient for v1 |
+| source-provider source access | Email/password sufficient for v1 |
 | Mobile app | Web-first, mobile later |
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
-| AUTH-03 | Phase 1 | Pending |
-| AUTH-04 | Phase 1 | Pending |
+| citation-01 | Phase 1 | Pending |
+| citation-02 | Phase 1 | Pending |
+| citation-03 | Phase 1 | Pending |
+| citation-04 | Phase 1 | Pending |
 | PROF-01 | Phase 2 | Pending |
 | PROF-02 | Phase 2 | Pending |
 | PROF-03 | Phase 2 | Pending |

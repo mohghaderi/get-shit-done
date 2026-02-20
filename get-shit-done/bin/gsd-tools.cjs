@@ -67,6 +67,9 @@
  *   scaffold phase-dir --phase <N>     Create phase directory
  *     --name <name>
  *
+ * Paper:
+ *   paper init <topic>                 Scaffold a research-paper workspace
+ *
  * Frontmatter CRUD:
  *   frontmatter get <file> [--field k] Extract frontmatter as JSON
  *   frontmatter set <file> --field k   Update single frontmatter field
@@ -112,6 +115,7 @@
  *   init execute-phase <phase>         All context for execute-phase workflow
  *   init plan-phase <phase>            All context for plan-phase workflow
  *   init new-project                   All context for new-project workflow
+ *   init new-paper                     All context for new-paper workflow
  *   init new-milestone                 All context for new-milestone workflow
  *   init quick <description>           All context for quick workflow
  *   init resume                        All context for resume-project workflow
@@ -147,7 +151,7 @@ async function main() {
   const cwd = process.cwd();
 
   if (!command) {
-    error('Usage: gsd-tools <command> [args] [--raw]\nCommands: state, resolve-model, find-phase, commit, verify-summary, verify, frontmatter, template, generate-slug, current-timestamp, list-todos, verify-path-exists, config-ensure-section, init');
+    error('Usage: gsd-tools <command> [args] [--raw]\nCommands: state, resolve-model, find-phase, commit, verify-summary, verify, frontmatter, template, generate-slug, current-timestamp, list-todos, verify-path-exists, config-ensure-section, init, paper');
   }
 
   switch (command) {
@@ -471,6 +475,16 @@ async function main() {
       break;
     }
 
+    case 'paper': {
+      const subcommand = args[1];
+      if (subcommand === 'init') {
+        commands.cmdPaperInit(cwd, args.slice(2).join(' '), raw);
+      } else {
+        error('Unknown paper subcommand. Available: init');
+      }
+      break;
+    }
+
     case 'init': {
       const workflow = args[1];
       switch (workflow) {
@@ -482,6 +496,9 @@ async function main() {
           break;
         case 'new-project':
           init.cmdInitNewProject(cwd, raw);
+          break;
+        case 'new-paper':
+          init.cmdInitNewPaper(cwd, raw);
           break;
         case 'new-milestone':
           init.cmdInitNewMilestone(cwd, raw);
@@ -511,7 +528,7 @@ async function main() {
           init.cmdInitProgress(cwd, raw);
           break;
         default:
-          error(`Unknown init workflow: ${workflow}\nAvailable: execute-phase, plan-phase, new-project, new-milestone, quick, resume, verify-work, phase-op, todos, milestone-op, map-codebase, progress`);
+          error(`Unknown init workflow: ${workflow}\nAvailable: execute-phase, plan-phase, new-project, new-paper, new-milestone, quick, resume, verify-work, phase-op, todos, milestone-op, map-codebase, progress`);
       }
       break;
     }

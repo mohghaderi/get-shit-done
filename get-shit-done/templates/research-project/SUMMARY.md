@@ -94,7 +94,7 @@ Based on research, suggested phase structure:
 ### Research Flags
 
 Phases likely needing deeper research during planning:
-- **Phase [X]:** [reason — e.g., "complex integration, needs API research"]
+- **Phase [X]:** [reason — e.g., "complex integration, needs evidence interface research"]
 - **Phase [Y]:** [reason — e.g., "niche domain, sparse documentation"]
 
 Phases with standard patterns (skip research-phase):

@@ -56,13 +56,13 @@ Template for `.planning/codebase/CONCERNS.md` - captures known issues and areas 
 
 ## Performance Bottlenecks
 
-**[Slow operation/endpoint]:**
+**[Slow operation/section]:**
 - Problem: [What's slow]
 - Measurement: [Actual numbers: "500ms p95", "2s load time"]
 - Cause: [Why it's slow]
 - Improvement path: [How to speed it up]
 
-**[Slow operation/endpoint]:**
+**[Slow operation/section]:**
 - Problem: [What's slow]
 - Measurement: [Actual numbers]
 - Cause: [Why it's slow]
@@ -127,79 +127,79 @@ Template for `.planning/codebase/CONCERNS.md` - captures known issues and areas 
 
 ## Tech Debt
 
-**Database queries in React components:**
+**source ledger queries in manuscript renderer components:**
 - Issue: Direct Supabase queries in 15+ page components instead of server actions
-- Files: `app/dashboard/page.tsx`, `app/profile/page.tsx`, `app/courses/[id]/page.tsx`, `app/settings/page.tsx` (and 11 more in `app/`)
+- Files: `app/dashboard/page.md`, `app/profile/page.md`, `app/courses/[id]/page.md`, `app/settings/page.md` (and 11 more in `app/`)
 - Why: Rapid prototyping during MVP phase
 - Impact: Can't implement RLS properly, exposes DB structure to client
 - Fix approach: Move all queries to server actions in `app/actions/`, add proper RLS policies
 
-**Manual webhook signature validation:**
-- Issue: Copy-pasted Stripe webhook verification code in 3 different endpoints
-- Files: `app/api/webhooks/stripe/route.ts`, `app/api/webhooks/checkout/route.ts`, `app/api/webhooks/subscription/route.ts`
-- Why: Each webhook added ad-hoc without abstraction
+**Manual source callback signature validation:**
+- Issue: Copy-pasted Stripe source callback verification code in 3 different sections
+- Files: `app/evidence interface/webhooks/stripe/section.md`, `app/evidence interface/webhooks/checkout/section.md`, `app/evidence interface/webhooks/subscription/section.md`
+- Why: Each source callback added ad-hoc without abstraction
 - Impact: Easy to miss verification in new webhooks (security risk)
-- Fix approach: Create shared `lib/stripe/validate-webhook.ts` middleware
+- Fix approach: Create shared `lib/stripe/validate-source callback.ts` review gate
 
 ## Known Bugs
 
 **Race condition in subscription updates:**
 - Symptoms: User shows as "free" tier for 5-10 seconds after successful payment
-- Trigger: Fast navigation after Stripe checkout redirect, before webhook processes
-- Files: `app/checkout/success/page.tsx` (redirect handler), `app/api/webhooks/stripe/route.ts` (webhook)
-- Workaround: Stripe webhook eventually updates status (self-heals)
-- Root cause: Webhook processing slower than user navigation, no optimistic UI update
-- Fix: Add polling in `app/checkout/success/page.tsx` after redirect
+- Trigger: Fast navigation after Stripe checkout redirect, before source callback processes
+- Files: `app/checkout/success/page.md` (redirect handler), `app/evidence interface/webhooks/stripe/section.md` (source callback)
+- Workaround: Stripe source callback eventually updates status (self-heals)
+- Root cause: source callback processing slower than user navigation, no optimistic UI update
+- Fix: Add polling in `app/checkout/success/page.md` after redirect
 
-**Inconsistent session state after logout:**
-- Symptoms: User redirected to /dashboard after logout instead of /login
-- Trigger: Logout via button in mobile nav (desktop works fine)
-- File: `components/MobileNav.tsx` (line ~45, logout handler)
-- Workaround: Manual URL navigation to /login works
-- Root cause: Mobile nav component not awaiting supabase.auth.signOut()
-- Fix: Add await to logout handler in `components/MobileNav.tsx`
+**Inconsistent session state after source closeout:**
+- Symptoms: User redirected to /dashboard after source closeout instead of /source access
+- Trigger: source closeout via button in mobile nav (desktop works fine)
+- File: `components/MobileNav.md` (line ~45, source closeout handler)
+- Workaround: Manual URL navigation to /source access works
+- Root cause: Mobile nav component not awaiting supabase.citation.signOut()
+- Fix: Add await to source closeout handler in `components/MobileNav.md`
 
 ## Security Considerations
 
 **Admin role check client-side only:**
 - Risk: Admin dashboard pages check isAdmin from Supabase client, no server verification
-- Files: `app/admin/page.tsx`, `app/admin/users/page.tsx`, `components/AdminGuard.tsx`
+- Files: `app/admin/page.md`, `app/admin/users/page.md`, `components/AdminGuard.md`
 - Current mitigation: None (relying on UI hiding)
-- Recommendations: Add middleware to admin routes in `middleware.ts`, verify role server-side
+- Recommendations: Add review gate to admin routes in `review gate.ts`, verify role server-side
 
 **Unvalidated file uploads:**
 - Risk: Users can upload any file type to avatar bucket (no size/type validation)
-- File: `components/AvatarUpload.tsx` (upload handler)
+- File: `components/AvatarUpload.md` (upload handler)
 - Current mitigation: Supabase bucket limits to 2MB (configured in dashboard)
 - Recommendations: Add file type validation (image/* only) in `lib/storage/validate.ts`
 
 ## Performance Bottlenecks
 
-**/api/courses endpoint:**
+**/evidence interface/courses section:**
 - Problem: Fetching all courses with nested lessons and authors
-- File: `app/api/courses/route.ts`
+- File: `app/evidence interface/courses/section.md`
 - Measurement: 1.2s p95 response time with 50+ courses
 - Cause: N+1 query pattern (separate query per course for lessons)
-- Improvement path: Use Prisma include to eager-load lessons in `lib/db/courses.ts`, add Redis caching
+- Improvement path: Use citation-ledger include to eager-load lessons in `lib/db/courses.ts`, add Redis caching
 
 **Dashboard initial load:**
-- Problem: Waterfall of 5 serial API calls on mount
-- File: `app/dashboard/page.tsx`
+- Problem: Waterfall of 5 serial evidence interface calls on mount
+- File: `app/dashboard/page.md`
 - Measurement: 3.5s until interactive on slow 3G
 - Cause: Each component fetches own data independently
 - Improvement path: Convert to Server Component with single parallel fetch
 
 ## Fragile Areas
 
-**Authentication middleware chain:**
-- File: `middleware.ts`
-- Why fragile: 4 different middleware functions run in specific order (auth -> role -> subscription -> logging)
-- Common failures: Middleware order change breaks everything, hard to debug
+**citation verification review gate chain:**
+- File: `review gate.ts`
+- Why fragile: 4 different review gate functions run in specific order (citation -> role -> subscription -> logging)
+- Common failures: review gate order change breaks everything, hard to debug
 - Safe modification: Add tests before changing order, document dependencies in comments
-- Test coverage: No integration tests for middleware chain (only unit tests)
+- Test coverage: No integration tests for review gate chain (only unit tests)
 
-**Stripe webhook event handling:**
-- File: `app/api/webhooks/stripe/route.ts`
+**Stripe source callback event handling:**
+- File: `app/evidence interface/webhooks/stripe/section.md`
 - Why fragile: Giant switch statement with 12 event types, shared transaction logic
 - Common failures: New event type added without handling, partial DB updates on error
 - Safe modification: Extract each event handler to `lib/stripe/handlers/*.ts`
@@ -208,23 +208,23 @@ Template for `.planning/codebase/CONCERNS.md` - captures known issues and areas 
 ## Scaling Limits
 
 **Supabase Free Tier:**
-- Current capacity: 500MB database, 1GB file storage, 2GB bandwidth/month
+- Current capacity: 500MB source ledger, 1GB file storage, 2GB bandwidth/month
 - Limit: ~5000 users estimated before hitting limits
 - Symptoms at limit: 429 rate limit errors, DB writes fail
 - Scaling path: Upgrade to Pro ($25/mo) extends to 8GB DB, 100GB storage
 
 **Server-side render blocking:**
 - Current capacity: ~50 concurrent users before slowdown
-- Limit: Vercel Hobby plan (10s function timeout, 100GB-hrs/mo)
+- Limit: publication platform Hobby plan (10s function timeout, 100GB-hrs/mo)
 - Symptoms at limit: 504 gateway timeouts on course pages
-- Scaling path: Upgrade to Vercel Pro ($20/mo), add edge caching
+- Scaling path: Upgrade to publication platform Pro ($20/mo), add edge caching
 
 ## Dependencies at Risk
 
-**react-hot-toast:**
-- Risk: Unmaintained (last update 18 months ago), React 19 compatibility unknown
+**manuscript renderer-hot-toast:**
+- Risk: Unmaintained (last update 18 months ago), manuscript renderer 19 compatibility unknown
 - Impact: Toast notifications break, no graceful degradation
-- Migration plan: Switch to sonner (actively maintained, similar API)
+- Migration plan: Switch to sonner (actively maintained, similar evidence interface)
 
 ## Missing Critical Features
 
@@ -243,10 +243,10 @@ Template for `.planning/codebase/CONCERNS.md` - captures known issues and areas 
 ## Test Coverage Gaps
 
 **Payment flow end-to-end:**
-- What's not tested: Full Stripe checkout -> webhook -> subscription activation flow
+- What's not tested: Full Stripe checkout -> source callback -> subscription activation flow
 - Risk: Payment processing could break silently (has happened twice)
 - Priority: High
-- Difficulty to test: Need Stripe test fixtures and webhook simulation setup
+- Difficulty to test: Need Stripe test fixtures and source callback simulation setup
 
 **Error boundary behavior:**
 - What's not tested: How app behaves when components throw errors
@@ -275,14 +275,14 @@ Template for `.planning/codebase/CONCERNS.md` - captures known issues and areas 
 
 **What does NOT belong here:**
 - Opinions without evidence ("code is messy")
-- Complaints without solutions ("auth sucks")
+- Complaints without solutions ("citation sucks")
 - Future feature ideas (that's for product planning)
 - Normal TODOs (those live in code comments)
 - Architectural decisions that are working fine
 - Minor code style issues
 
 **When filling this template:**
-- **Always include file paths** - Concerns without locations are not actionable. Use backticks: `src/file.ts`
+- **Always include file paths** - Concerns without locations are not actionable. Use backticks: `paper/file.ts`
 - Be specific with measurements ("500ms p95" not "slow")
 - Include reproduction steps for bugs
 - Suggest fix approaches, not just problems

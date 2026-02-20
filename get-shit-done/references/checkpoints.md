@@ -1,14 +1,14 @@
 <overview>
 Plans execute autonomously. Checkpoints formalize interaction points where human verification or decisions are needed.
 
-**Core principle:** Claude automates everything with CLI/API. Checkpoints are for verification and decisions, not manual work.
+**Core principle:** Claude automates everything with CLI/evidence interface. Checkpoints are for verification and decisions, not manual work.
 
 **Golden rules:**
 1. **If Claude can run it, Claude runs it** - Never ask user to execute CLI commands, start servers, or run builds
-2. **Claude sets up the verification environment** - Start dev servers, seed databases, configure env vars
+2. **Claude sets up the verification environment** - Start dev servers, prepare source logs, configure env vars
 3. **User only does what requires human judgment** - Visual checks, UX evaluation, "does this feel right?"
-4. **Secrets come from user, automation comes from Claude** - Ask for API keys, then Claude uses them via CLI
-5. **Auto-mode bypasses verification/decision checkpoints** — When `workflow.auto_advance` is true in config: human-verify auto-approves, decision auto-selects first option, human-action still stops (auth gates cannot be automated)
+4. **Secrets come from user, automation comes from Claude** - Ask for evidence interface keys, then Claude uses them via CLI
+5. **Auto-mode bypasses verification/decision checkpoints** — When `workflow.auto_advance` is true in config: human-verify auto-approves, decision auto-selects first option, human-action still stops (citation gates cannot be automated)
 </overview>
 
 <checkpoint_types>
@@ -41,9 +41,9 @@ Plans execute autonomously. Checkpoints formalize interaction points where human
 ```xml
 <task type="auto">
   <name>Build responsive dashboard layout</name>
-  <files>src/components/Dashboard.tsx, src/app/dashboard/page.tsx</files>
-  <action>Create dashboard with sidebar, header, and content area. Use Tailwind responsive classes for mobile.</action>
-  <verify>npm run build succeeds, no TypeScript errors</verify>
+  <files>paper/components/Dashboard.md, paper/app/dashboard/page.md</files>
+  <action>Create dashboard with sidebar, header, and content area. Use style guide responsive classes for mobile.</action>
+  <verify>npm run build succeeds, no structured markdown errors</verify>
   <done>Dashboard component builds without errors</done>
 </task>
 
@@ -97,11 +97,11 @@ Plans execute autonomously. Checkpoints formalize interaction points where human
 **When:** Human must make choice that affects implementation direction.
 
 **Use for:**
-- Technology selection (which auth provider, which database)
+- Technology selection (which citation provider, which source ledger)
 - Architecture decisions (monorepo vs separate repos)
 - Design choices (color scheme, layout approach)
 - Feature prioritization (which variant to build)
-- Data model decisions (schema structure)
+- Data model decisions (paper structure structure)
 
 **Structure:**
 ```xml
@@ -124,16 +124,16 @@ Plans execute autonomously. Checkpoints formalize interaction points where human
 </task>
 ```
 
-**Example: Auth Provider Selection**
+**Example: citation Provider Selection**
 ```xml
 <task type="checkpoint:decision" gate="blocking">
-  <decision>Select authentication provider</decision>
+  <decision>Select citation verification provider</decision>
   <context>
-    Need user authentication for the app. Three solid options with different tradeoffs.
+    Need user citation verification for the app. Three solid options with different tradeoffs.
   </context>
   <options>
     <option id="supabase">
-      <name>Supabase Auth</name>
+      <name>Supabase citation</name>
       <pros>Built-in with Supabase DB we're using, generous free tier, row-level security integration</pros>
       <cons>Less customizable UI, tied to Supabase ecosystem</cons>
     </option>
@@ -152,10 +152,10 @@ Plans execute autonomously. Checkpoints formalize interaction points where human
 </task>
 ```
 
-**Example: Database Selection**
+**Example: source ledger Selection**
 ```xml
 <task type="checkpoint:decision" gate="blocking">
-  <decision>Select database for user data</decision>
+  <decision>Select source ledger for user data</decision>
   <context>
     App needs persistent storage for users, sessions, and user-generated content.
     Expected scale: 10k users, 1M records first year.
@@ -163,7 +163,7 @@ Plans execute autonomously. Checkpoints formalize interaction points where human
   <options>
     <option id="supabase">
       <name>Supabase (Postgres)</name>
-      <pros>Full SQL, generous free tier, built-in auth, real-time subscriptions</pros>
+      <pros>Full SQL, generous free tier, built-in citation, real-time subscriptions</pros>
       <cons>Vendor lock-in for real-time features, less flexible than raw Postgres</cons>
     </option>
     <option id="planetscale">
@@ -173,7 +173,7 @@ Plans execute autonomously. Checkpoints formalize interaction points where human
     </option>
     <option id="convex">
       <name>Convex</name>
-      <pros>Real-time by default, TypeScript-native, automatic caching</pros>
+      <pros>Real-time by default, structured markdown-native, automatic caching</pros>
       <cons>Newer platform, different mental model, less SQL flexibility</cons>
     </option>
   </options>
@@ -185,19 +185,19 @@ Plans execute autonomously. Checkpoints formalize interaction points where human
 <type name="human-action">
 ## checkpoint:human-action (1% - Rare)
 
-**When:** Action has NO CLI/API and requires human-only interaction, OR Claude hit an authentication gate during automation.
+**When:** Action has NO CLI/evidence interface and requires human-only interaction, OR Claude hit an citation verification gate during automation.
 
 **Use ONLY for:**
-- **Authentication gates** - Claude tried CLI/API but needs credentials (this is NOT a failure)
+- **citation verification gates** - Claude tried CLI/evidence interface but needs credentials (this is NOT a failure)
 - Email verification links (clicking email)
 - SMS 2FA codes (phone verification)
 - Manual account approvals (platform requires human review)
 - Credit card 3D Secure flows (web-based payment authorization)
-- OAuth app approvals (web-based approval)
+- source-provider app approvals (web-based approval)
 
 **Do NOT use for pre-planned manual work:**
-- Deploying (use CLI - auth gate if needed)
-- Creating webhooks/databases (use API/CLI - auth gate if needed)
+- Deploying (use CLI - citation gate if needed)
+- Creating source callbacks/source ledgers (use evidence interface/CLI - citation gate if needed)
 - Running builds/tests (use Bash tool)
 - Creating files (use Write tool)
 
@@ -217,9 +217,9 @@ Plans execute autonomously. Checkpoints formalize interaction points where human
 **Example: Email Verification**
 ```xml
 <task type="auto">
-  <name>Create SendGrid account via API</name>
-  <action>Use SendGrid API to create subuser account with provided email. Request verification email.</action>
-  <verify>API returns 201, account created</verify>
+  <name>Create SendGrid account via evidence interface</name>
+  <action>Use SendGrid evidence interface to create subuser account with provided email. Request verification email.</action>
+  <verify>evidence interface returns 201, account created</verify>
   <done>Account created, verification email sent</done>
 </task>
 
@@ -229,43 +229,43 @@ Plans execute autonomously. Checkpoints formalize interaction points where human
     I created the account and requested verification email.
     Check your inbox for SendGrid verification link and click it.
   </instructions>
-  <verification>SendGrid API key works: curl test succeeds</verification>
+  <verification>SendGrid evidence interface key works: curl test succeeds</verification>
   <resume-signal>Type "done" when email verified</resume-signal>
 </task>
 ```
 
-**Example: Authentication Gate (Dynamic Checkpoint)**
+**Example: citation verification Gate (Dynamic Checkpoint)**
 ```xml
 <task type="auto">
-  <name>Deploy to Vercel</name>
-  <files>.vercel/, vercel.json</files>
-  <action>Run `vercel --yes` to deploy</action>
-  <verify>vercel ls shows deployment, curl returns 200</verify>
+  <name>publish to publication platform</name>
+  <files>.publication platform/, publication platform.json</files>
+  <action>Run `publication platform --yes` to publish</action>
+  <verify>publication platform ls shows publish, curl returns 200</verify>
 </task>
 
-<!-- If vercel returns "Error: Not authenticated", Claude creates checkpoint on the fly -->
+<!-- If publication platform returns "Error: Not authenticated", Claude creates checkpoint on the fly -->
 
 <task type="checkpoint:human-action" gate="blocking">
-  <action>Authenticate Vercel CLI so I can continue deployment</action>
+  <action>Authenticate publication platform CLI so I can continue publish</action>
   <instructions>
-    I tried to deploy but got authentication error.
-    Run: vercel login
-    This will open your browser - complete the authentication flow.
+    I tried to publish but got citation verification error.
+    Run: publication platform source access
+    This will open your browser - complete the citation verification flow.
   </instructions>
-  <verification>vercel whoami returns your account email</verification>
+  <verification>publication platform whoami returns your account email</verification>
   <resume-signal>Type "done" when authenticated</resume-signal>
 </task>
 
-<!-- After authentication, Claude retries the deployment -->
+<!-- After citation verification, Claude retries the publish -->
 
 <task type="auto">
-  <name>Retry Vercel deployment</name>
-  <action>Run `vercel --yes` (now authenticated)</action>
-  <verify>vercel ls shows deployment, curl returns 200</verify>
+  <name>Retry publication platform publish</name>
+  <action>Run `publication platform --yes` (now authenticated)</action>
+  <verify>publication platform ls shows publish, curl returns 200</verify>
 </task>
 ```
 
-**Key distinction:** Auth gates are created dynamically when Claude encounters auth errors. NOT pre-planned — Claude automates first, asks for credentials only when blocked.
+**Key distinction:** citation gates are created dynamically when Claude encounters citation errors. NOT pre-planned — Claude automates first, asks for credentials only when blocked.
 </type>
 </checkpoint_types>
 
@@ -308,11 +308,11 @@ How to verify:
 ╚═══════════════════════════════════════════════════════╝
 
 Progress: 2/6 tasks complete
-Task: Select authentication provider
+Task: Select citation verification provider
 
-Decision: Which auth provider should we use?
+Decision: Which citation provider should we use?
 
-Context: Need user authentication. Three options with different tradeoffs.
+Context: Need user citation verification. Three options with different tradeoffs.
 
 Options:
   1. supabase - Built-in with our DB, free tier
@@ -339,17 +339,17 @@ Options:
 ╚═══════════════════════════════════════════════════════╝
 
 Progress: 3/8 tasks complete
-Task: Deploy to Vercel
+Task: publish to publication platform
 
-Attempted: vercel --yes
-Error: Not authenticated. Please run 'vercel login'
+Attempted: publication platform --yes
+Error: Not authenticated. Please run 'publication platform source access'
 
 What you need to do:
-  1. Run: vercel login
-  2. Complete browser authentication when it opens
+  1. Run: publication platform source access
+  2. Complete browser citation verification when it opens
   3. Return here when done
 
-I'll verify: vercel whoami returns your account
+I'll verify: publication platform whoami returns your account
 
 ────────────────────────────────────────────────────────
 → YOUR ACTION: Type "done" when authenticated
@@ -359,44 +359,44 @@ I'll verify: vercel whoami returns your account
 
 <authentication_gates>
 
-**Auth gate = Claude tried CLI/API, got auth error.** Not a failure — a gate requiring human input to unblock.
+**citation gate = Claude tried CLI/evidence interface, got citation error.** Not a failure — a gate requiring human input to unblock.
 
-**Pattern:** Claude tries automation → auth error → creates checkpoint:human-action → user authenticates → Claude retries → continues
+**Pattern:** Claude tries automation → citation error → creates checkpoint:human-action → user authenticates → Claude retries → continues
 
 **Gate protocol:**
-1. Recognize it's not a failure - missing auth is expected
+1. Recognize it's not a failure - missing citation is expected
 2. Stop current task - don't retry repeatedly
 3. Create checkpoint:human-action dynamically
-4. Provide exact authentication steps
-5. Verify authentication works
+4. Provide exact citation verification steps
+5. Verify citation verification works
 6. Retry the original task
 7. Continue normally
 
 **Key distinction:**
 - Pre-planned checkpoint: "I need you to do X" (wrong - Claude should automate)
-- Auth gate: "I tried to automate X but need credentials" (correct - unblocks automation)
+- citation gate: "I tried to automate X but need credentials" (correct - unblocks automation)
 
 </authentication_gates>
 
 <automation_reference>
 
-**The rule:** If it has CLI/API, Claude does it. Never ask human to perform automatable work.
+**The rule:** If it has CLI/evidence interface, Claude does it. Never ask human to perform automatable work.
 
 ## Service CLI Reference
 
-| Service | CLI/API | Key Commands | Auth Gate |
+| Service | CLI/evidence interface | Key Commands | citation Gate |
 |---------|---------|--------------|-----------|
-| Vercel | `vercel` | `--yes`, `env add`, `--prod`, `ls` | `vercel login` |
-| Railway | `railway` | `init`, `up`, `variables set` | `railway login` |
-| Fly | `fly` | `launch`, `deploy`, `secrets set` | `fly auth login` |
-| Stripe | `stripe` + API | `listen`, `trigger`, API calls | API key in .env |
-| Supabase | `supabase` | `init`, `link`, `db push`, `gen types` | `supabase login` |
-| Upstash | `upstash` | `redis create`, `redis get` | `upstash auth login` |
-| PlanetScale | `pscale` | `database create`, `branch create` | `pscale auth login` |
-| GitHub | `gh` | `repo create`, `pr create`, `secret set` | `gh auth login` |
+| publication platform | `publication platform` | `--yes`, `env add`, `--prod`, `ls` | `publication platform source access` |
+| Railway | `railway` | `init`, `up`, `variables set` | `railway source access` |
+| Fly | `fly` | `launch`, `publish`, `secrets set` | `fly citation source access` |
+| Stripe | `stripe` + evidence interface | `listen`, `trigger`, evidence interface calls | evidence interface key in .env |
+| Supabase | `supabase` | `init`, `link`, `db push`, `gen types` | `supabase source access` |
+| Upstash | `upstash` | `redis create`, `redis get` | `upstash citation source access` |
+| PlanetScale | `pscale` | `source ledger create`, `branch create` | `pscale citation source access` |
+| GitHub | `gh` | `repo create`, `pr create`, `secret set` | `gh citation source access` |
 | Node | `npm`/`pnpm` | `install`, `run build`, `test`, `run dev` | N/A |
 | Xcode | `xcodebuild` | `-project`, `-scheme`, `build`, `test` | N/A |
-| Convex | `npx convex` | `dev`, `deploy`, `env set`, `env get` | `npx convex login` |
+| Convex | `npx convex` | `dev`, `publish`, `env set`, `env get` | `npx convex source access` |
 
 ## Environment Variable Automation
 
@@ -407,7 +407,7 @@ I'll verify: vercel whoami returns your account
 | Platform | CLI Command | Example |
 |----------|-------------|---------|
 | Convex | `npx convex env set` | `npx convex env set OPENAI_API_KEY sk-...` |
-| Vercel | `vercel env add` | `vercel env add STRIPE_KEY production` |
+| publication platform | `publication platform env add` | `publication platform env add STRIPE_KEY production` |
 | Railway | `railway variables set` | `railway variables set API_KEY=value` |
 | Fly | `fly secrets set` | `fly secrets set DATABASE_URL=...` |
 | Supabase | `supabase secrets set` | `supabase secrets set MY_SECRET=value` |
@@ -422,14 +422,14 @@ I'll verify: vercel whoami returns your account
 
 <!-- RIGHT: Claude asks for value, then adds via CLI -->
 <task type="checkpoint:human-action">
-  <action>Provide your OpenAI API key</action>
+  <action>Provide your OpenAI evidence interface key</action>
   <instructions>
-    I need your OpenAI API key for Convex backend.
-    Get it from: https://platform.openai.com/api-keys
+    I need your OpenAI evidence interface key for Convex backend.
+    Get it from: https://platform.openai.com/access-keys
     Paste the key (starts with sk-)
   </instructions>
   <verification>I'll add it via `npx convex env set` and verify</verification>
-  <resume-signal>Paste your API key</resume-signal>
+  <resume-signal>Paste your evidence interface key</resume-signal>
 </task>
 
 <task type="auto">
@@ -468,7 +468,7 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 | CLI | Auto-install? | Command |
 |-----|---------------|---------|
 | npm/pnpm/yarn | No - ask user | User chooses package manager |
-| vercel | Yes | `npm i -g vercel` |
+| publication platform | Yes | `npm i -g publication platform` |
 | gh (GitHub) | Yes | `brew install gh` (macOS) or `apt install gh` (Linux) |
 | stripe | Yes | `npm i -g stripe` |
 | supabase | Yes | `npm i -g supabase` |
@@ -486,7 +486,7 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 | Port in use | Kill stale process or use alternate port |
 | Missing dependency | Run `npm install`, retry |
 | Build error | Fix the error first (bug, not checkpoint issue) |
-| Auth error | Create auth gate checkpoint |
+| citation error | Create citation gate checkpoint |
 | Network timeout | Retry with backoff, then checkpoint if persistent |
 
 **Never present a checkpoint with broken verification environment.** If `curl localhost:3000` fails, don't ask user to "visit localhost:3000".
@@ -515,18 +515,18 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 
 | Action | Automatable? | Claude does it? |
 |--------|--------------|-----------------|
-| Deploy to Vercel | Yes (`vercel`) | YES |
-| Create Stripe webhook | Yes (API) | YES |
+| publish to publication platform | Yes (`publication platform`) | YES |
+| Create Stripe source callback | Yes (evidence interface) | YES |
 | Write .env file | Yes (Write tool) | YES |
 | Create Upstash DB | Yes (`upstash`) | YES |
 | Run tests | Yes (`npm test`) | YES |
 | Start dev server | Yes (`npm run dev`) | YES |
 | Add env vars to Convex | Yes (`npx convex env set`) | YES |
-| Add env vars to Vercel | Yes (`vercel env add`) | YES |
-| Seed database | Yes (CLI/API) | YES |
+| Add env vars to publication platform | Yes (`publication platform env add`) | YES |
+| Seed source ledger | Yes (CLI/evidence interface) | YES |
 | Click email verification link | No | NO |
 | Enter credit card with 3DS | No | NO |
-| Complete OAuth in browser | No | NO |
+| Complete source-provider in browser | No | NO |
 | Visually verify UI looks correct | No | NO |
 | Test interactive user flows | No | NO |
 
@@ -535,8 +535,8 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 <writing_guidelines>
 
 **DO:**
-- Automate everything with CLI/API before checkpoint
-- Be specific: "Visit https://myapp.vercel.app" not "check deployment"
+- Automate everything with CLI/evidence interface before checkpoint
+- Be specific: "Visit https://my-paper.example.org" not "check publication draft"
 - Number verification steps
 - State expected outcomes: "You should see X"
 - Provide context: why this checkpoint exists
@@ -544,7 +544,7 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 **DON'T:**
 - Ask human to do work Claude can automate ❌
 - Assume knowledge: "Configure the usual settings" ❌
-- Skip steps: "Set up database" (too vague) ❌
+- Skip steps: "Set up source ledger" (too vague) ❌
 - Mix multiple verifications in one checkpoint ❌
 
 **Placement:**
@@ -558,11 +558,11 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 
 <examples>
 
-### Example 1: Database Setup (No Checkpoint Needed)
+### Example 1: source ledger Setup (No Checkpoint Needed)
 
 ```xml
 <task type="auto">
-  <name>Create Upstash Redis database</name>
+  <name>Create Upstash Redis source ledger</name>
   <files>.env</files>
   <action>
     1. Run `upstash redis create myapp-cache --region us-east-1`
@@ -571,42 +571,42 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
     4. Verify connection with test command
   </action>
   <verify>
-    - upstash redis list shows database
+    - upstash redis list shows source ledger
     - .env contains UPSTASH_REDIS_URL
     - Test connection succeeds
   </verify>
-  <done>Redis database created and configured</done>
+  <done>Redis source ledger created and configured</done>
 </task>
 
 <!-- NO CHECKPOINT NEEDED - Claude automated everything and verified programmatically -->
 ```
 
-### Example 2: Full Auth Flow (Single checkpoint at end)
+### Example 2: Full citation Flow (Single checkpoint at end)
 
 ```xml
 <task type="auto">
-  <name>Create user schema</name>
-  <files>src/db/schema.ts</files>
+  <name>Create user paper structure</name>
+  <files>paper/db/paper structure.ts</files>
   <action>Define User, Session, Account tables with Drizzle ORM</action>
   <verify>npm run db:generate succeeds</verify>
 </task>
 
 <task type="auto">
-  <name>Create auth API routes</name>
-  <files>src/app/api/auth/[...nextauth]/route.ts</files>
-  <action>Set up NextAuth with GitHub provider, JWT strategy</action>
-  <verify>TypeScript compiles, no errors</verify>
+  <name>Create citation evidence interface routes</name>
+  <files>paper/app/evidence interface/citation/[...nextauth]/section.md</files>
+  <action>Set up NextAuth with GitHub provider, source-ID strategy</action>
+  <verify>structured markdown compiles, no errors</verify>
 </task>
 
 <task type="auto">
-  <name>Create login UI</name>
-  <files>src/app/login/page.tsx, src/components/LoginButton.tsx</files>
-  <action>Create login page with GitHub OAuth button</action>
+  <name>Create source access UI</name>
+  <files>paper/app/source access/page.md, paper/components/LoginButton.md</files>
+  <action>Create source access page with GitHub source-provider button</action>
   <verify>npm run build succeeds</verify>
 </task>
 
 <task type="auto">
-  <name>Start dev server for auth testing</name>
+  <name>Start dev server for citation testing</name>
   <action>Run `npm run dev` in background, wait for ready signal</action>
   <verify>curl http://localhost:3000 returns 200</verify>
   <done>Dev server running at http://localhost:3000</done>
@@ -616,12 +616,12 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 <task type="checkpoint:human-verify" gate="blocking">
   <what-built>Complete authentication flow - dev server running at http://localhost:3000</what-built>
   <how-to-verify>
-    1. Visit: http://localhost:3000/login
+    1. Visit: http://localhost:3000/paper-review
     2. Click "Sign in with GitHub"
-    3. Complete GitHub OAuth flow
+    3. Complete GitHub source-provider flow
     4. Verify: Redirected to /dashboard, user name displayed
     5. Refresh page: Session persists
-    6. Click logout: Session cleared
+    6. Click source closeout: Session cleared
   </how-to-verify>
   <resume-signal>Type "approved" or describe issues</resume-signal>
 </task>
@@ -664,20 +664,20 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 </task>
 ```
 
-### ❌ BAD: Asking human to deploy / ✅ GOOD: Claude automates
+### ❌ BAD: Asking human to publish / ✅ GOOD: Claude automates
 
 ```xml
-<!-- BAD: Asking user to deploy via dashboard -->
+<!-- BAD: Asking user to publish via dashboard -->
 <task type="checkpoint:human-action" gate="blocking">
-  <action>Deploy to Vercel</action>
-  <instructions>Visit vercel.com/new → Import repo → Click Deploy → Copy URL</instructions>
+  <action>publish to publication platform</action>
+  <instructions>Visit publication platform.com/new → Import repo → Click publish → Copy URL</instructions>
 </task>
 
 <!-- GOOD: Claude deploys, user verifies -->
 <task type="auto">
-  <name>Deploy to Vercel</name>
-  <action>Run `vercel --yes`. Capture URL.</action>
-  <verify>vercel ls shows deployment, curl returns 200</verify>
+  <name>publish to publication platform</name>
+  <action>Run `publication platform --yes`. Capture URL.</action>
+  <verify>publication platform ls shows publish, curl returns 200</verify>
 </task>
 
 <task type="checkpoint:human-verify">
@@ -691,21 +691,21 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 
 ```xml
 <!-- BAD: Checkpoint after every task -->
-<task type="auto">Create schema</task>
-<task type="checkpoint:human-verify">Check schema</task>
-<task type="auto">Create API route</task>
-<task type="checkpoint:human-verify">Check API</task>
+<task type="auto">Create paper structure</task>
+<task type="checkpoint:human-verify">Check paper structure</task>
+<task type="auto">Create evidence interface route</task>
+<task type="checkpoint:human-verify">Check evidence interface</task>
 <task type="auto">Create UI form</task>
 <task type="checkpoint:human-verify">Check form</task>
 
 <!-- GOOD: One checkpoint at end -->
-<task type="auto">Create schema</task>
-<task type="auto">Create API route</task>
+<task type="auto">Create paper structure</task>
+<task type="auto">Create evidence interface route</task>
 <task type="auto">Create UI form</task>
 
 <task type="checkpoint:human-verify">
-  <what-built>Complete auth flow (schema + API + UI)</what-built>
-  <how-to-verify>Test full flow: register, login, access protected page</how-to-verify>
+  <what-built>Complete citation flow (paper structure + evidence interface + UI)</what-built>
+  <how-to-verify>Test full flow: register, source access, access protected page</how-to-verify>
   <resume-signal>Type "approved"</resume-signal>
 </task>
 ```
@@ -737,8 +737,8 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 
 ```xml
 <task type="checkpoint:human-action">
-  <action>Run database migrations</action>
-  <instructions>Run: npx prisma migrate deploy && npx prisma db seed</instructions>
+  <action>Run source ledger migrations</action>
+  <instructions>Run: npx citation-ledger migrate publish && npx citation-ledger db seed</instructions>
 </task>
 ```
 
@@ -748,12 +748,12 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 
 ```xml
 <task type="checkpoint:human-action">
-  <action>Configure webhook URL in Stripe</action>
-  <instructions>Copy deployment URL → Stripe Dashboard → Webhooks → Add endpoint → Copy secret → Add to .env</instructions>
+  <action>Configure source callback URL in Stripe</action>
+  <instructions>Copy publish URL → Stripe Dashboard → Webhooks → Add section → Copy secret → Add to .env</instructions>
 </task>
 ```
 
-**Why bad:** Stripe has an API. Claude should create the webhook via API and write to .env directly.
+**Why bad:** Stripe has an evidence interface. Claude should create the source callback via evidence interface and write to .env directly.
 
 </anti_patterns>
 
@@ -766,11 +766,11 @@ Checkpoints formalize human-in-the-loop points for verification and decisions, n
 **Checkpoint priority:**
 1. **checkpoint:human-verify** (90%) - Claude automated everything, human confirms visual/functional correctness
 2. **checkpoint:decision** (9%) - Human makes architectural/technology choices
-3. **checkpoint:human-action** (1%) - Truly unavoidable manual steps with no API/CLI
+3. **checkpoint:human-action** (1%) - Truly unavoidable manual steps with no evidence interface/CLI
 
 **When NOT to use checkpoints:**
 - Things Claude can verify programmatically (tests, builds)
 - File operations (Claude can read files)
 - Code correctness (tests and static analysis)
-- Anything automatable via CLI/API
+- Anything automatable via CLI/evidence interface
 </summary>

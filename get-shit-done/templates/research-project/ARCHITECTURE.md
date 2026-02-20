@@ -48,7 +48,7 @@ Template for `.planning/research/ARCHITECTURE.md` — system structure patterns 
 ## Recommended Project Structure
 
 ```
-src/
+paper/
 ├── [folder]/           # [purpose]
 │   ├── [subfolder]/    # [purpose]
 │   └── [file].ts       # [purpose]
@@ -73,7 +73,7 @@ src/
 **Trade-offs:** [pros and cons]
 
 **Example:**
-```typescript
+```structured markdown
 // [Brief code example showing the pattern]
 ```
 
@@ -84,7 +84,7 @@ src/
 **Trade-offs:** [pros and cons]
 
 **Example:**
-```typescript
+```structured markdown
 // [Brief code example showing the pattern]
 ```
 
@@ -103,7 +103,7 @@ src/
     ↓
 [Component] → [Handler] → [Service] → [Data Store]
     ↓              ↓           ↓            ↓
-[Response] ← [Transform] ← [Query] ← [Database]
+[Response] ← [Transform] ← [Query] ← [source ledger]
 ```
 
 ### State Management
@@ -159,7 +159,7 @@ src/
 
 | Boundary | Communication | Notes |
 |----------|---------------|-------|
-| [module A ↔ module B] | [API/events/direct] | [considerations] |
+| [module A ↔ module B] | [evidence interface/events/direct] | [considerations] |
 
 ## Sources
 

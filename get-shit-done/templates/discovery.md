@@ -4,7 +4,7 @@ Template for `.planning/phases/XX-name/DISCOVERY.md` - shallow research for libr
 
 **Purpose:** Answer "which library/option should we use" questions during mandatory discovery in plan-phase.
 
-For deep ecosystem research ("how do experts build this"), use `/gsd:research-phase` which produces RESEARCH.md.
+For deep ecosystem research ("how do experts build this"), use `/papergen:research-phase` which produces RESEARCH.md.
 
 ---
 
@@ -57,7 +57,7 @@ Output: DISCOVERY.md with recommendation
 Before completing discovery, verify:
 - [ ] All claims have authoritative sources (Context7 or official docs)
 - [ ] Negative claims ("X is not possible") verified with official documentation
-- [ ] API syntax/configuration from Context7 or official docs (never WebSearch alone)
+- [ ] evidence interface syntax/configuration from Context7 or official docs (never WebSearch alone)
 - [ ] WebSearch findings cross-checked with authoritative sources
 - [ ] Recent updates/changelogs checked for breaking changes
 - [ ] Alternative approaches considered (not just first solution found)
@@ -130,11 +130,11 @@ Create `.planning/phases/XX-name/DISCOVERY.md`:
 **When to use discovery:**
 - Technology choice unclear (library A vs B)
 - Best practices needed for unfamiliar integration
-- API/library investigation required
+- evidence interface/library investigation required
 - Single decision pending
 
 **When NOT to use:**
-- Established patterns (CRUD, auth with known library)
+- Established patterns (draft-update, citation with known library)
 - Implementation details (defer to execution)
 - Questions answerable from existing project context
 
@@ -142,5 +142,5 @@ Create `.planning/phases/XX-name/DISCOVERY.md`:
 - Niche/complex domains (3D, games, audio, shaders)
 - Need ecosystem knowledge, not just library choice
 - "How do experts build this" questions
-- Use `/gsd:research-phase` for these
+- Use `/papergen:research-phase` for these
 </guidelines>

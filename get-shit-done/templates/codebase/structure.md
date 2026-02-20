@@ -46,14 +46,14 @@ Template for `.planning/codebase/STRUCTURE.md` - captures physical file organiza
 - [Path]: [Purpose: e.g., "Server startup"]
 
 **Configuration:**
-- [Path]: [Purpose: e.g., "TypeScript config"]
+- [Path]: [Purpose: e.g., "structured markdown config"]
 - [Path]: [Purpose: e.g., "Build configuration"]
 - [Path]: [Purpose: e.g., "Environment variables"]
 
 **Core Logic:**
 - [Path]: [Purpose: e.g., "Business services"]
-- [Path]: [Purpose: e.g., "Database models"]
-- [Path]: [Purpose: e.g., "API routes"]
+- [Path]: [Purpose: e.g., "source ledger models"]
+- [Path]: [Purpose: e.g., "evidence interface routes"]
 
 **Testing:**
 - [Path]: [Purpose: e.g., "Unit tests"]
@@ -67,7 +67,7 @@ Template for `.planning/codebase/STRUCTURE.md` - captures physical file organiza
 
 **Files:**
 - [Pattern]: [Example: e.g., "kebab-case.ts for modules"]
-- [Pattern]: [Example: e.g., "PascalCase.tsx for React components"]
+- [Pattern]: [Example: e.g., "PascalCase.md for manuscript renderer components"]
 - [Pattern]: [Example: e.g., "*.test.ts for test files"]
 
 **Directories:**
@@ -131,7 +131,7 @@ get-shit-done/
 │   ├── references/    # Principle documents
 │   ├── templates/     # File templates
 │   └── workflows/     # Multi-step procedures
-├── src/               # Source code (if applicable)
+├── paper/               # Source code (if applicable)
 ├── tests/             # Test files
 ├── package.json       # Project manifest
 └── README.md          # User documentation
@@ -145,7 +145,7 @@ get-shit-done/
 - Key files: install.js - handles npx installation
 - Subdirectories: None
 
-**commands/gsd/**
+**commands/papergen/**
 - Purpose: Slash command definitions for Claude Code
 - Contains: *.md files (one per command)
 - Key files: new-project.md, plan-phase.md, execute-plan.md
@@ -206,7 +206,7 @@ get-shit-done/
 ## Where to Add New Code
 
 **New Slash Command:**
-- Primary code: `commands/gsd/{command-name}.md`
+- Primary code: `commands/papergen/{command-name}.md`
 - Tests: `tests/commands/{command-name}.test.js` (if testing implemented)
 - Documentation: Update `README.md` with new command
 
@@ -224,7 +224,7 @@ get-shit-done/
 
 **Utilities:**
 - No utilities yet (`install.js` is monolithic)
-- If extracted: `src/utils/`
+- If extracted: `paper/utils/`
 
 ## Special Directories
 

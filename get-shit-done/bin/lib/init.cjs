@@ -18,8 +18,8 @@ function cmdInitExecutePhase(cwd, phase, raw) {
 
   const result = {
     // Models
-    executor_model: resolveModelInternal(cwd, 'gsd-executor'),
-    verifier_model: resolveModelInternal(cwd, 'gsd-verifier'),
+    executor_model: resolveModelInternal(cwd, 'papergen-executor'),
+    verifier_model: resolveModelInternal(cwd, 'papergen-verifier'),
 
     // Config flags
     commit_docs: config.commit_docs,
@@ -82,9 +82,9 @@ function cmdInitPlanPhase(cwd, phase, raw) {
 
   const result = {
     // Models
-    researcher_model: resolveModelInternal(cwd, 'gsd-phase-researcher'),
-    planner_model: resolveModelInternal(cwd, 'gsd-planner'),
-    checker_model: resolveModelInternal(cwd, 'gsd-plan-checker'),
+    researcher_model: resolveModelInternal(cwd, 'papergen-phase-researcher'),
+    planner_model: resolveModelInternal(cwd, 'papergen-planner'),
+    checker_model: resolveModelInternal(cwd, 'papergen-plan-checker'),
 
     // Workflow flags
     research_enabled: config.research,
@@ -171,9 +171,9 @@ function cmdInitNewProject(cwd, raw) {
 
   const result = {
     // Models
-    researcher_model: resolveModelInternal(cwd, 'gsd-project-researcher'),
-    synthesizer_model: resolveModelInternal(cwd, 'gsd-research-synthesizer'),
-    roadmapper_model: resolveModelInternal(cwd, 'gsd-roadmapper'),
+    researcher_model: resolveModelInternal(cwd, 'papergen-project-researcher'),
+    synthesizer_model: resolveModelInternal(cwd, 'papergen-research-synthesizer'),
+    roadmapper_model: resolveModelInternal(cwd, 'papergen-roadmapper'),
 
     // Config
     commit_docs: config.commit_docs,
@@ -202,15 +202,48 @@ function cmdInitNewProject(cwd, raw) {
   output(result, raw);
 }
 
+function cmdInitNewPaper(cwd, raw) {
+  const config = loadConfig(cwd);
+  const homedir = require('os').homedir();
+  const braveKeyFile = path.join(homedir, '.gsd', 'brave_api_key');
+  const hasBraveSearch = !!(process.env.BRAVE_API_KEY || fs.existsSync(braveKeyFile));
+
+  const result = {
+    // Models
+    researcher_model: resolveModelInternal(cwd, 'papergen-project-researcher'),
+    synthesizer_model: resolveModelInternal(cwd, 'papergen-research-synthesizer'),
+
+    // Config
+    commit_docs: config.commit_docs,
+    brave_search_available: hasBraveSearch,
+
+    // File existence
+    planning_exists: pathExistsInternal(cwd, '.planning'),
+    paper_exists: pathExistsInternal(cwd, 'paper/PAPER.md'),
+    paper_root_exists: pathExistsInternal(cwd, 'paper'),
+    has_git: pathExistsInternal(cwd, '.git'),
+
+    // Suggested paths
+    paper_root: 'paper',
+    paper_path: 'paper/PAPER.md',
+    source_log_path: 'paper/sources/SOURCE-LOG.md',
+    image_log_path: 'paper/images/IMAGE-SOURCES.md',
+    figures_dir: 'paper/figures',
+    sections_dir: 'paper/sections',
+  };
+
+  output(result, raw);
+}
+
 function cmdInitNewMilestone(cwd, raw) {
   const config = loadConfig(cwd);
   const milestone = getMilestoneInfo(cwd);
 
   const result = {
     // Models
-    researcher_model: resolveModelInternal(cwd, 'gsd-project-researcher'),
-    synthesizer_model: resolveModelInternal(cwd, 'gsd-research-synthesizer'),
-    roadmapper_model: resolveModelInternal(cwd, 'gsd-roadmapper'),
+    researcher_model: resolveModelInternal(cwd, 'papergen-project-researcher'),
+    synthesizer_model: resolveModelInternal(cwd, 'papergen-research-synthesizer'),
+    roadmapper_model: resolveModelInternal(cwd, 'papergen-roadmapper'),
 
     // Config
     commit_docs: config.commit_docs,
@@ -254,10 +287,10 @@ function cmdInitQuick(cwd, description, raw) {
 
   const result = {
     // Models
-    planner_model: resolveModelInternal(cwd, 'gsd-planner'),
-    executor_model: resolveModelInternal(cwd, 'gsd-executor'),
-    checker_model: resolveModelInternal(cwd, 'gsd-plan-checker'),
-    verifier_model: resolveModelInternal(cwd, 'gsd-verifier'),
+    planner_model: resolveModelInternal(cwd, 'papergen-planner'),
+    executor_model: resolveModelInternal(cwd, 'papergen-executor'),
+    checker_model: resolveModelInternal(cwd, 'papergen-plan-checker'),
+    verifier_model: resolveModelInternal(cwd, 'papergen-verifier'),
 
     // Config
     commit_docs: config.commit_docs,
@@ -326,8 +359,8 @@ function cmdInitVerifyWork(cwd, phase, raw) {
 
   const result = {
     // Models
-    planner_model: resolveModelInternal(cwd, 'gsd-planner'),
-    checker_model: resolveModelInternal(cwd, 'gsd-plan-checker'),
+    planner_model: resolveModelInternal(cwd, 'papergen-planner'),
+    checker_model: resolveModelInternal(cwd, 'papergen-plan-checker'),
 
     // Config
     commit_docs: config.commit_docs,
@@ -558,7 +591,7 @@ function cmdInitMapCodebase(cwd, raw) {
 
   const result = {
     // Models
-    mapper_model: resolveModelInternal(cwd, 'gsd-codebase-mapper'),
+    mapper_model: resolveModelInternal(cwd, 'papergen-codebase-mapper'),
 
     // Config
     commit_docs: config.commit_docs,
@@ -642,8 +675,8 @@ function cmdInitProgress(cwd, raw) {
 
   const result = {
     // Models
-    executor_model: resolveModelInternal(cwd, 'gsd-executor'),
-    planner_model: resolveModelInternal(cwd, 'gsd-planner'),
+    executor_model: resolveModelInternal(cwd, 'papergen-executor'),
+    planner_model: resolveModelInternal(cwd, 'papergen-planner'),
 
     // Config
     commit_docs: config.commit_docs,
@@ -682,6 +715,7 @@ module.exports = {
   cmdInitExecutePhase,
   cmdInitPlanPhase,
   cmdInitNewProject,
+  cmdInitNewPaper,
   cmdInitNewMilestone,
   cmdInitQuick,
   cmdInitResume,

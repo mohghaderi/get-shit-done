@@ -28,14 +28,14 @@ Then verify each level against the actual codebase.
 Load phase operation context:
 
 ```bash
-INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs init phase-op "${PHASE_ARG}")
+INIT=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs init phase-op "${PHASE_ARG}")
 ```
 
 Extract from init JSON: `phase_dir`, `phase_number`, `phase_name`, `has_plans`, `plan_count`.
 
 Then load phase details and list plans/summaries:
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs roadmap get-phase "${phase_number}"
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs roadmap get-phase "${phase_number}"
 grep -E "^| ${phase_number}" .planning/REQUIREMENTS.md 2>/dev/null
 ls "$phase_dir"/*-SUMMARY.md "$phase_dir"/*-PLAN.md 2>/dev/null
 ```
@@ -46,11 +46,11 @@ Extract **phase goal** from ROADMAP.md (the outcome to verify, not tasks) and **
 <step name="establish_must_haves">
 **Option A: Must-haves in PLAN frontmatter**
 
-Use gsd-tools to extract must_haves from each PLAN:
+Use papergen-tools to extract must_haves from each PLAN:
 
 ```bash
 for plan in "$PHASE_DIR"/*-PLAN.md; do
-  MUST_HAVES=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs frontmatter get "$plan" --field must_haves)
+  MUST_HAVES=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs frontmatter get "$plan" --field must_haves)
   echo "=== $plan ===" && echo "$MUST_HAVES"
 done
 ```
@@ -64,7 +64,7 @@ Aggregate all must_haves across plans for phase-level verification.
 If no must_haves in frontmatter (MUST_HAVES returns error or empty), check for Success Criteria:
 
 ```bash
-PHASE_DATA=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs roadmap get-phase "${phase_number}" --raw)
+PHASE_DATA=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs roadmap get-phase "${phase_number}" --raw)
 ```
 
 Parse the `success_criteria` array from the JSON output. If non-empty:
@@ -92,15 +92,15 @@ For each observable truth, determine if the codebase enables it.
 
 For each truth: identify supporting artifacts → check artifact status → check wiring → determine truth status.
 
-**Example:** Truth "User can see existing messages" depends on Chat.tsx (renders), /api/chat GET (provides), Message model (schema). If Chat.tsx is a stub or API returns hardcoded [] → FAILED. If all exist, are substantive, and connected → VERIFIED.
+**Example:** Truth "User can see existing messages" depends on Chat.md (renders), /evidence interface/chat GET (provides), Message model (paper structure). If Chat.md is a stub or evidence interface returns hardcoded [] → FAILED. If all exist, are substantive, and connected → VERIFIED.
 </step>
 
 <step name="verify_artifacts">
-Use gsd-tools for artifact verification against must_haves in each PLAN:
+Use papergen-tools for artifact verification against must_haves in each PLAN:
 
 ```bash
 for plan in "$PHASE_DIR"/*-PLAN.md; do
-  ARTIFACT_RESULT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs verify artifacts "$plan")
+  ARTIFACT_RESULT=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs verify artifacts "$plan")
   echo "=== $plan ===" && echo "$ARTIFACT_RESULT"
 done
 ```
@@ -114,8 +114,8 @@ Parse JSON result: `{ all_passed, passed, total, artifacts: [{path, exists, issu
 
 **Level 3 — Wired (manual check for artifacts that pass Levels 1-2):**
 ```bash
-grep -r "import.*$artifact_name" src/ --include="*.ts" --include="*.tsx"  # IMPORTED
-grep -r "$artifact_name" src/ --include="*.ts" --include="*.tsx" | grep -v "import"  # USED
+grep -r "import.*$artifact_name" paper/ --include="*.ts" --include="*.md"  # IMPORTED
+grep -r "$artifact_name" paper/ --include="*.ts" --include="*.md" | grep -v "import"  # USED
 ```
 WIRED = imported AND used. ORPHANED = exists but not imported/used.
 
@@ -128,11 +128,11 @@ WIRED = imported AND used. ORPHANED = exists but not imported/used.
 </step>
 
 <step name="verify_wiring">
-Use gsd-tools for key link verification against must_haves in each PLAN:
+Use papergen-tools for key link verification against must_haves in each PLAN:
 
 ```bash
 for plan in "$PHASE_DIR"/*-PLAN.md; do
-  LINKS_RESULT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs verify key-links "$plan")
+  LINKS_RESULT=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs verify key-links "$plan")
   echo "=== $plan ===" && echo "$LINKS_RESULT"
 done
 ```
@@ -148,8 +148,8 @@ Parse JSON result: `{ all_verified, verified, total, links: [{from, to, via, ver
 
 | Pattern | Check | Status |
 |---------|-------|--------|
-| Component → API | fetch/axios call to API path, response used (await/.then/setState) | WIRED / PARTIAL (call but unused response) / NOT_WIRED |
-| API → Database | Prisma/DB query on model, result returned via res.json() | WIRED / PARTIAL (query but not returned) / NOT_WIRED |
+| Component → evidence interface | fetch/axios call to evidence interface path, response used (await/.then/setState) | WIRED / PARTIAL (call but unused response) / NOT_WIRED |
+| evidence interface → source ledger | citation-ledger/DB query on model, result returned via res.json() | WIRED / PARTIAL (query but not returned) / NOT_WIRED |
 | Form → Handler | onSubmit with real implementation (fetch/axios/mutate/dispatch), not console.log/empty | WIRED / STUB (log-only/empty) / NOT_WIRED |
 | State → Render | useState variable appears in JSX (`{stateVar}` or `{stateVar.property}`) | WIRED / NOT_WIRED |
 
@@ -199,7 +199,7 @@ Format each as: Test Name → What to do → Expected result → Why can't verif
 <step name="generate_fix_plans">
 If gaps_found:
 
-1. **Cluster related gaps:** API stub + component unwired → "Wire frontend to backend". Multiple missing → "Complete core implementation". Wiring only → "Connect existing components".
+1. **Cluster related gaps:** evidence interface stub + component unwired → "Wire frontend to backend". Multiple missing → "Complete core implementation". Wiring only → "Connect existing components".
 
 2. **Generate plan per cluster:** Objective, 2-3 tasks (files/action/verify each), re-verify step. Keep focused: single concern per plan.
 

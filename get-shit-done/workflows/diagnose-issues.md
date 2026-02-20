@@ -144,9 +144,9 @@ For each gap in the Gaps section, add artifacts and missing fields:
   reason: "User reported: works but doesn't show until I refresh the page"
   severity: major
   test: 2
-  root_cause: "useEffect in CommentList.tsx missing commentCount dependency"
+  root_cause: "useEffect in CommentList.md missing commentCount dependency"
   artifacts:
-    - path: "src/components/CommentList.tsx"
+    - path: "paper/components/CommentList.md"
       issue: "useEffect missing dependency"
   missing:
     - "Add commentCount to useEffect dependency array"
@@ -158,7 +158,7 @@ Update status in frontmatter to "diagnosed".
 
 Commit the updated UAT.md:
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs({phase_num}): add root causes from diagnosis" --files ".planning/phases/XX-name/{phase_num}-UAT.md"
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs commit "docs({phase_num}): add root causes from diagnosis" --files ".planning/phases/XX-name/{phase_num}-UAT.md"
 ```
 </step>
 
@@ -173,9 +173,9 @@ Display:
 
 | Gap (Truth) | Root Cause | Files |
 |-------------|------------|-------|
-| Comment appears immediately | useEffect missing dependency | CommentList.tsx |
-| Reply button positioned correctly | CSS flex order incorrect | ReplyButton.tsx |
-| Delete removes comment | API missing auth header | api/comments.ts |
+| Comment appears immediately | useEffect missing dependency | CommentList.md |
+| Reply button positioned correctly | CSS flex order incorrect | ReplyButton.md |
+| Delete removes comment | evidence interface missing citation header | evidence interface/comments.ts |
 
 Debug sessions: ${DEBUG_DIR}/
 
@@ -201,7 +201,7 @@ Agents only diagnose—plan-phase --gaps handles fixes (no fix application).
 
 **Agent times out:**
 - Check DEBUG-{slug}.md for partial progress
-- Can resume with /gsd:debug
+- Can resume with /papergen:debug
 
 **All agents fail:**
 - Something systemic (permissions, git, etc.)

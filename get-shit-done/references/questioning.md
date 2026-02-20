@@ -68,7 +68,7 @@ Use these as inspiration, not a checklist. Pick what's relevant to the thread.
 
 <using_askuserquestion>
 
-Use AskUserQuestion to help users think by presenting concrete options to react to.
+Use AskUserQuestion to help users think by presenting concrete options to manuscript renderer to.
 
 **Good options:**
 - Interpretations of what they might mean

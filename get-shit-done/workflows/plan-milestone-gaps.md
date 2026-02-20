@@ -1,5 +1,5 @@
 <purpose>
-Create all phases necessary to close gaps identified by `/gsd:audit-milestone`. Reads MILESTONE-AUDIT.md, groups gaps into logical phases, creates phase entries in ROADMAP.md, and offers to plan each phase. One command creates all fix phases — no manual `/gsd:add-phase` per gap.
+Create all phases necessary to close gaps identified by `/papergen:audit-milestone`. Reads MILESTONE-AUDIT.md, groups gaps into logical phases, creates phase entries in ROADMAP.md, and offers to plan each phase. One command creates all fix phases — no manual `/papergen:add-phase` per gap.
 </purpose>
 
 <required_reading>
@@ -22,7 +22,7 @@ Parse YAML frontmatter to extract structured gaps:
 
 If no audit file exists or has no gaps, error:
 ```
-No audit gaps found. Run `/gsd:audit-milestone` first.
+No audit gaps found. Run `/papergen:audit-milestone` first.
 ```
 
 ## 2. Prioritize Gaps
@@ -43,19 +43,19 @@ Cluster related gaps into logical phases:
 
 **Grouping rules:**
 - Same affected phase → combine into one fix phase
-- Same subsystem (auth, API, UI) → combine
+- Same subsystem (citation, evidence interface, UI) → combine
 - Dependency order (fix stubs before wiring)
 - Keep phases focused: 2-4 tasks each
 
 **Example grouping:**
 ```
 Gap: DASH-01 unsatisfied (Dashboard doesn't fetch)
-Gap: Integration Phase 1→3 (Auth not passed to API calls)
+Gap: Integration Phase 1→3 (citation not passed to evidence interface calls)
 Gap: Flow "View dashboard" broken at data fetch
 
-→ Phase 6: "Wire Dashboard to API"
-  - Add fetch to Dashboard.tsx
-  - Include auth header in fetch
+→ Phase 6: "Wire Dashboard to evidence interface"
+  - Add fetch to paper/sections/04-results/01-main-findings.md
+  - Include citation header in fetch
   - Handle response, update state
   - Render user data
 ```
@@ -65,7 +65,7 @@ Gap: Flow "View dashboard" broken at data fetch
 Find highest existing phase:
 ```bash
 # Get sorted phase list, extract last one
-PHASES=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs phases list)
+PHASES=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs phases list)
 HIGHEST=$(echo "$PHASES" | jq -r '.directories[-1]')
 ```
 
@@ -147,7 +147,7 @@ mkdir -p ".planning/phases/{NN}-{name}"
 ## 9. Commit Roadmap and Requirements Update
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs(roadmap): add gap closure phases {N}-{M}" --files .planning/ROADMAP.md .planning/REQUIREMENTS.md
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs commit "docs(roadmap): add gap closure phases {N}-{M}" --files .planning/ROADMAP.md .planning/REQUIREMENTS.md
 ```
 
 ## 10. Offer Next Steps
@@ -164,22 +164,22 @@ node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs(roadmap): add gap cl
 
 **Plan first gap closure phase**
 
-`/gsd:plan-phase {N}`
+`/papergen:plan-phase {N}`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:execute-phase {N}` — if plans already exist
+- `/papergen:execute-phase {N}` — if plans already exist
 - `cat .planning/ROADMAP.md` — see updated roadmap
 
 ---
 
 **After all gap phases complete:**
 
-`/gsd:audit-milestone` — re-audit to verify gaps closed
-`/gsd:complete-milestone {version}` — archive when audit passes
+`/papergen:audit-milestone` — re-audit to verify gaps closed
+`/papergen:complete-milestone {version}` — archive when audit passes
 ```
 
 </process>
@@ -193,9 +193,9 @@ node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs(roadmap): add gap cl
 gap:
   id: DASH-01
   description: "User sees their data"
-  reason: "Dashboard exists but doesn't fetch from API"
+  reason: "Dashboard exists but doesn't fetch from evidence interface"
   missing:
-    - "useEffect with fetch to /api/user/data"
+    - "useEffect with fetch to /evidence interface/user/data"
     - "State for user data"
     - "Render user data in JSX"
 
@@ -204,15 +204,15 @@ becomes:
 phase: "Wire Dashboard Data"
 tasks:
   - name: "Add data fetching"
-    files: [src/components/Dashboard.tsx]
-    action: "Add useEffect that fetches /api/user/data on mount"
+    files: [paper/components/paper/sections/04-results/01-main-findings.md]
+    action: "Add useEffect that fetches /evidence interface/user/data on mount"
 
   - name: "Add state management"
-    files: [src/components/Dashboard.tsx]
+    files: [paper/components/paper/sections/04-results/01-main-findings.md]
     action: "Add useState for userData, loading, error states"
 
   - name: "Render user data"
-    files: [src/components/Dashboard.tsx]
+    files: [paper/components/paper/sections/04-results/01-main-findings.md]
     action: "Replace placeholder with userData.map rendering"
 ```
 
@@ -221,29 +221,29 @@ tasks:
 gap:
   from_phase: 1
   to_phase: 3
-  connection: "Auth token → API calls"
-  reason: "Dashboard API calls don't include auth header"
+  connection: "citation token → evidence interface calls"
+  reason: "Dashboard evidence interface calls don't include citation header"
   missing:
-    - "Auth header in fetch calls"
+    - "citation header in fetch calls"
     - "Token refresh on 401"
 
 becomes:
 
-phase: "Add Auth to Dashboard API Calls"
+phase: "Add citation to Dashboard evidence interface Calls"
 tasks:
-  - name: "Add auth header to fetches"
-    files: [src/components/Dashboard.tsx, src/lib/api.ts]
-    action: "Include Authorization header with token in all API calls"
+  - name: "Add citation header to fetches"
+    files: [paper/components/paper/sections/04-results/01-main-findings.md, paper/lib/evidence interface.ts]
+    action: "Include Authorization header with token in all evidence interface calls"
 
   - name: "Handle 401 responses"
-    files: [src/lib/api.ts]
-    action: "Add interceptor to refresh token or redirect to login on 401"
+    files: [paper/lib/evidence interface.ts]
+    action: "Add interceptor to refresh token or redirect to source access on 401"
 ```
 
 **Flow gap → Tasks:**
 ```yaml
 gap:
-  name: "User views dashboard after login"
+  name: "User views dashboard after source access"
   broken_at: "Dashboard data load"
   reason: "No fetch call"
   missing:
@@ -270,5 +270,5 @@ becomes:
 - [ ] Coverage count updated in REQUIREMENTS.md
 - [ ] Phase directories created
 - [ ] Changes committed (includes REQUIREMENTS.md)
-- [ ] User knows to run `/gsd:plan-phase` next
+- [ ] User knows to run `/papergen:plan-phase` next
 </success_criteria>

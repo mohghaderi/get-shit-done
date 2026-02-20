@@ -12,8 +12,8 @@ Read all files referenced by the invoking prompt's execution_context before star
 Ensure config exists and load current state:
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs config-ensure-section
-INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs state load)
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs config-ensure-section
+INIT=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs state load)
 ```
 
 Creates `.planning/config.json` with defaults if missing and loads current config values.
@@ -192,13 +192,13 @@ Display:
 | Git Branching        | {None/Per Phase/Per Milestone} |
 | Saved as Defaults    | {Yes/No} |
 
-These settings apply to future /gsd:plan-phase and /gsd:execute-phase runs.
+These settings apply to future /papergen:plan-phase and /papergen:execute-phase runs.
 
 Quick commands:
-- /gsd:set-profile <profile> — switch model profile
-- /gsd:plan-phase --research — force research
-- /gsd:plan-phase --skip-research — skip research
-- /gsd:plan-phase --skip-verify — skip plan check
+- /papergen:set-profile <profile> — switch model profile
+- /papergen:plan-phase --research — force research
+- /papergen:plan-phase --skip-research — skip research
+- /papergen:plan-phase --skip-verify — skip plan check
 ```
 </step>
 

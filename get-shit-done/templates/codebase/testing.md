@@ -45,7 +45,7 @@ Template for `.planning/codebase/TESTING.md` - captures test framework and patte
 **Structure:**
 ```
 [Show actual directory pattern, e.g.:
-src/
+paper/
   lib/
     utils.ts
     utils.test.ts
@@ -58,7 +58,7 @@ src/
 ## Test Structure
 
 **Suite Organization:**
-```typescript
+```structured markdown
 [Show actual pattern used, e.g.:
 
 describe('ModuleName', () => {
@@ -89,7 +89,7 @@ describe('ModuleName', () => {
 - [Import mocking: e.g., "vi.mock() at top of file"]
 
 **Patterns:**
-```typescript
+```structured markdown
 [Show actual mocking pattern, e.g.:
 
 // Mock external dependency
@@ -104,7 +104,7 @@ mockFetch.mockResolvedValue({ data: 'test' });
 ```
 
 **What to Mock:**
-- [e.g., "External APIs, file system, database"]
+- [e.g., "External APIs, file system, source ledger"]
 - [e.g., "Time/dates (use vi.useFakeTimers)"]
 - [e.g., "Network calls (use mock fetch)"]
 
@@ -115,7 +115,7 @@ mockFetch.mockResolvedValue({ data: 'test' });
 ## Fixtures and Factories
 
 **Test Data:**
-```typescript
+```structured markdown
 [Show pattern for creating test data, e.g.:
 
 // Factory pattern
@@ -164,7 +164,7 @@ export const mockUsers = [/* ... */];
 **Integration Tests:**
 - [Scope: e.g., "test multiple modules together"]
 - [Mocking: e.g., "mock external services, use real internal modules"]
-- [Setup: e.g., "use test database, seed data"]
+- [Setup: e.g., "use test source ledger, seed data"]
 
 **E2E Tests:**
 - [Framework: e.g., "Playwright for E2E"]
@@ -174,7 +174,7 @@ export const mockUsers = [/* ... */];
 ## Common Patterns
 
 **Async Testing:**
-```typescript
+```structured markdown
 [Show pattern, e.g.:
 
 it('should handle async operation', async () => {
@@ -185,7 +185,7 @@ it('should handle async operation', async () => {
 ```
 
 **Error Testing:**
-```typescript
+```structured markdown
 [Show pattern, e.g.:
 
 it('should throw on invalid input', () => {
@@ -200,7 +200,7 @@ it('should reject on failure', async () => {
 ```
 
 **Snapshot Testing:**
-- [Usage: e.g., "for React components only" or "not used"]
+- [Usage: e.g., "for manuscript renderer components only" or "not used"]
 - [Location: e.g., "__snapshots__/ directory"]
 
 ---
@@ -245,7 +245,7 @@ npm run test:coverage                 # Coverage report
 
 **Structure:**
 ```
-src/
+paper/
   lib/
     parser.ts
     parser.test.ts
@@ -260,7 +260,7 @@ src/
 ## Test Structure
 
 **Suite Organization:**
-```typescript
+```structured markdown
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 describe('ModuleName', () => {
@@ -300,7 +300,7 @@ describe('ModuleName', () => {
 - Module mocking via vi.mock() at top of test file
 
 **Patterns:**
-```typescript
+```structured markdown
 import { vi } from 'vitest';
 import { externalFunction } from './external';
 
@@ -324,18 +324,18 @@ describe('test suite', () => {
 **What to Mock:**
 - File system operations (fs-extra)
 - Child process execution (child_process.exec)
-- External API calls
+- External evidence interface calls
 - Environment variables (process.env)
 
 **What NOT to Mock:**
 - Internal pure functions
 - Simple utilities (string manipulation, array helpers)
-- TypeScript types
+- structured markdown types
 
 ## Fixtures and Factories
 
 **Test Data:**
-```typescript
+```structured markdown
 // Factory functions in test file
 function createTestConfig(overrides?: Partial<Config>): Config {
   return {
@@ -395,7 +395,7 @@ open coverage/index.html
 ## Common Patterns
 
 **Async Testing:**
-```typescript
+```structured markdown
 it('should handle async operation', async () => {
   const result = await asyncFunction();
   expect(result).toBe('expected');
@@ -403,7 +403,7 @@ it('should handle async operation', async () => {
 ```
 
 **Error Testing:**
-```typescript
+```structured markdown
 it('should throw on invalid input', () => {
   expect(() => parse(null)).toThrow('Cannot parse null');
 });
@@ -415,7 +415,7 @@ it('should reject on file not found', async () => {
 ```
 
 **File System Mocking:**
-```typescript
+```structured markdown
 import { vi } from 'vitest';
 import * as fs from 'fs-extra';
 
@@ -452,7 +452,7 @@ it('mocks file system', () => {
 **What does NOT belong here:**
 - Specific test cases (defer to actual test files)
 - Technology choices (that's STACK.md)
-- CI/CD setup (that's deployment docs)
+- CI/CD setup (that's publish docs)
 
 **When filling this template:**
 - Check package.json scripts for test commands

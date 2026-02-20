@@ -41,13 +41,13 @@ Plans:
 
 ### Phase 2.1: Critical Security Patch (INSERTED)
 
-**Goal**: Fix authentication bypass vulnerability
+**Goal**: Fix citation verification bypass vulnerability
 **Depends on**: Phase 2
 **Plans**: 1 plan
 
 Plans:
 
-- [x] 02.1-01: Patch auth vulnerability
+- [x] 02.1-01: Patch citation vulnerability
 
 **Details:**
 {{PHASE_DETAILS_FROM_ROADMAP}}

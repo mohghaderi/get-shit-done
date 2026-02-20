@@ -8,6 +8,10 @@ const fs = require('fs');
 const path = require('path');
 const { runGsdTools, createTempProject, cleanup } = require('./helpers.cjs');
 
+function toPosix(p) {
+  return p ? p.replace(/\\/g, '/') : p;
+}
+
 describe('init commands', () => {
   let tmpDir;
 
@@ -48,10 +52,10 @@ describe('init commands', () => {
     assert.strictEqual(output.state_path, '.planning/STATE.md');
     assert.strictEqual(output.roadmap_path, '.planning/ROADMAP.md');
     assert.strictEqual(output.requirements_path, '.planning/REQUIREMENTS.md');
-    assert.strictEqual(output.context_path, '.planning/phases/03-api/03-CONTEXT.md');
-    assert.strictEqual(output.research_path, '.planning/phases/03-api/03-RESEARCH.md');
-    assert.strictEqual(output.verification_path, '.planning/phases/03-api/03-VERIFICATION.md');
-    assert.strictEqual(output.uat_path, '.planning/phases/03-api/03-UAT.md');
+    assert.strictEqual(toPosix(output.context_path), '.planning/phases/03-api/03-CONTEXT.md');
+    assert.strictEqual(toPosix(output.research_path), '.planning/phases/03-api/03-RESEARCH.md');
+    assert.strictEqual(toPosix(output.verification_path), '.planning/phases/03-api/03-VERIFICATION.md');
+    assert.strictEqual(toPosix(output.uat_path), '.planning/phases/03-api/03-UAT.md');
   });
 
   test('init progress returns file paths', () => {
@@ -63,6 +67,18 @@ describe('init commands', () => {
     assert.strictEqual(output.roadmap_path, '.planning/ROADMAP.md');
     assert.strictEqual(output.project_path, '.planning/PROJECT.md');
     assert.strictEqual(output.config_path, '.planning/config.json');
+  });
+
+  test('init new-paper returns paper context', () => {
+    const result = runGsdTools('init new-paper', tmpDir);
+    assert.ok(result.success, `Command failed: ${result.error}`);
+
+    const output = JSON.parse(result.output);
+    assert.strictEqual(output.paper_root, 'paper');
+    assert.strictEqual(output.paper_path, 'paper/PAPER.md');
+    assert.strictEqual(output.sections_dir, 'paper/sections');
+    assert.strictEqual(output.source_log_path, 'paper/sources/SOURCE-LOG.md');
+    assert.strictEqual(output.image_log_path, 'paper/images/IMAGE-SOURCES.md');
   });
 
   test('init phase-op returns core and optional phase file paths', () => {
@@ -80,10 +96,10 @@ describe('init commands', () => {
     assert.strictEqual(output.state_path, '.planning/STATE.md');
     assert.strictEqual(output.roadmap_path, '.planning/ROADMAP.md');
     assert.strictEqual(output.requirements_path, '.planning/REQUIREMENTS.md');
-    assert.strictEqual(output.context_path, '.planning/phases/03-api/03-CONTEXT.md');
-    assert.strictEqual(output.research_path, '.planning/phases/03-api/03-RESEARCH.md');
-    assert.strictEqual(output.verification_path, '.planning/phases/03-api/03-VERIFICATION.md');
-    assert.strictEqual(output.uat_path, '.planning/phases/03-api/03-UAT.md');
+    assert.strictEqual(toPosix(output.context_path), '.planning/phases/03-api/03-CONTEXT.md');
+    assert.strictEqual(toPosix(output.research_path), '.planning/phases/03-api/03-RESEARCH.md');
+    assert.strictEqual(toPosix(output.verification_path), '.planning/phases/03-api/03-VERIFICATION.md');
+    assert.strictEqual(toPosix(output.uat_path), '.planning/phases/03-api/03-UAT.md');
   });
 
   test('init plan-phase omits optional paths if files missing', () => {

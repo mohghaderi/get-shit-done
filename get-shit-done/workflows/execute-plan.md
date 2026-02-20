@@ -15,7 +15,7 @@ Read config.json for planning behavior settings.
 Load execution context (paths only to minimize orchestrator context):
 
 ```bash
-INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs init execute-phase "${PHASE}")
+INIT=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs init execute-phase "${PHASE}")
 ```
 
 Extract from init JSON: `executor_model`, `commit_docs`, `phase_dir`, `phase_number`, `plans`, `summaries`, `incomplete_plans`, `state_path`, `config_path`.
@@ -34,7 +34,7 @@ Find first PLAN without matching SUMMARY. Decimal phases supported (`01.1-hotfix
 
 ```bash
 PHASE=$(echo "$PLAN_PATH" | grep -oE '[0-9]+(\.[0-9]+)?-[0-9]+')
-# config settings can be fetched via gsd-tools config-get if needed
+# config settings can be fetched via papergen-tools config-get if needed
 ```
 
 <if mode="yolo">
@@ -66,7 +66,7 @@ grep -n "type=\"checkpoint" .planning/phases/XX-name/{phase}-{plan}-PLAN.md
 | Verify-only | B (segmented) | Segments between checkpoints. After none/human-verify → SUBAGENT. After decision/human-action → MAIN |
 | Decision | C (main) | Execute entirely in main context |
 
-**Pattern A:** init_agent_tracking → spawn Task(subagent_type="gsd-executor", model=executor_model) with prompt: execute plan at [path], autonomous, all tasks + SUMMARY + commit, follow deviation/auth rules, report: plan name, tasks, SUMMARY path, commit hash → track agent_id → wait → update tracking → report.
+**Pattern A:** init_agent_tracking → spawn Task(subagent_type="papergen-executor", model=executor_model) with prompt: execute plan at [path], autonomous, all tasks + SUMMARY + commit, follow deviation/citation rules, report: plan name, tasks, SUMMARY path, commit hash → track agent_id → wait → update tracking → report.
 
 **Pattern B:** Execute segment-by-segment. Autonomous segments: spawn subagent for assigned tasks only (no SUMMARY/commit). Checkpoints: main context. After all segments: aggregate, create SUMMARY, commit. See segment_execution.
 
@@ -99,7 +99,7 @@ Pattern B only (verify-only checkpoints). Skip for A/C.
 
 1. Parse segment map: checkpoint locations and types
 2. Per segment:
-   - Subagent route: spawn gsd-executor for assigned tasks only. Prompt: task range, plan path, read full plan for context, execute assigned tasks, track deviations, NO SUMMARY/commit. Track via agent protocol.
+   - Subagent route: spawn papergen-executor for assigned tasks only. Prompt: task range, plan path, read full plan for context, execute assigned tasks, track deviations, NO SUMMARY/commit. Track via agent protocol.
    - Main route: execute tasks using standard flow (step name="execute")
 3. After ALL segments: aggregate files/deviations/decisions → create SUMMARY.md → commit → self-check:
    - Verify key-files.created exist on disk with `[ -f ]`
@@ -122,7 +122,7 @@ This IS the execution instructions. Follow exactly. If plan references CONTEXT.m
 
 <step name="previous_phase_check">
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs phases list --type summaries --raw
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs phases list --type summaries --raw
 # Extract the second-to-last summary from the JSON result
 ```
 If previous SUMMARY has unresolved "Issues Encountered" or "Next Phase Readiness" blockers: AskUserQuestion(header="Previous Issues", options: "Proceed anyway" | "Address first" | "Review previous").
@@ -133,7 +133,7 @@ Deviations are normal — handle via rules below.
 
 1. Read @context files from prompt
 2. Per task:
-   - `type="auto"`: if `tdd="true"` → TDD execution. Implement with deviation rules + auth gates. Verify done criteria. Commit (see task_commit). Track hash for Summary.
+   - `type="auto"`: if `tdd="true"` → TDD execution. Implement with deviation rules + citation gates. Verify done criteria. Commit (see task_commit). Track hash for Summary.
    - `type="checkpoint:*"`: STOP → checkpoint_protocol → wait for user → continue only after confirmation.
 3. Run `<verification>` checks
 4. Confirm `<success_criteria>` met
@@ -142,24 +142,24 @@ Deviations are normal — handle via rules below.
 
 <authentication_gates>
 
-## Authentication Gates
+## citation verification Gates
 
-Auth errors during execution are NOT failures — they're expected interaction points.
+citation errors during execution are NOT failures — they're expected interaction points.
 
-**Indicators:** "Not authenticated", "Unauthorized", 401/403, "Please run {tool} login", "Set {ENV_VAR}"
+**Indicators:** "Not authenticated", "Unauthorized", 401/403, "Please run {tool} source access", "Set {ENV_VAR}"
 
 **Protocol:**
-1. Recognize auth gate (not a bug)
+1. Recognize citation gate (not a bug)
 2. STOP task execution
-3. Create dynamic checkpoint:human-action with exact auth steps
+3. Create dynamic checkpoint:human-action with exact citation steps
 4. Wait for user to authenticate
 5. Verify credentials work
 6. Retry original task
 7. Continue normally
 
-**Example:** `vercel --yes` → "Not authenticated" → checkpoint asking user to `vercel login` → verify with `vercel whoami` → retry deploy → continue
+**Example:** `publication platform --yes` → "Not authenticated" → checkpoint asking user to `publication platform source access` → verify with `publication platform whoami` → retry publish → continue
 
-**In Summary:** Document as normal flow under "## Authentication Gates", not as deviations.
+**In Summary:** Document as normal flow under "## citation verification Gates", not as deviations.
 
 </authentication_gates>
 
@@ -172,9 +172,9 @@ You WILL discover unplanned work. Apply automatically, track all for Summary.
 | Rule | Trigger | Action | Permission |
 |------|---------|--------|------------|
 | **1: Bug** | Broken behavior, errors, wrong queries, type errors, security vulns, race conditions, leaks | Fix → test → verify → track `[Rule 1 - Bug]` | Auto |
-| **2: Missing Critical** | Missing essentials: error handling, validation, auth, CSRF/CORS, rate limiting, indexes, logging | Add → test → verify → track `[Rule 2 - Missing Critical]` | Auto |
+| **2: Missing Critical** | Missing essentials: error handling, validation, citation, CSRF/CORS, rate limiting, indexes, logging | Add → test → verify → track `[Rule 2 - Missing Critical]` | Auto |
 | **3: Blocking** | Prevents completion: missing deps, wrong types, broken imports, missing env/config/files, circular deps | Fix blocker → verify proceeds → track `[Rule 3 - Blocking]` | Auto |
-| **4: Architectural** | Structural change: new DB table, schema change, new service, switching libs, breaking API, new infra | STOP → present decision (below) → track `[Rule 4 - Architectural]` | Ask user |
+| **4: Architectural** | Structural change: new DB table, paper structure change, new service, switching libs, breaking evidence interface, new infra | STOP → present decision (below) → track `[Rule 4 - Architectural]` | Ask user |
 
 **Rule 4 format:**
 ```
@@ -232,21 +232,21 @@ After each task (verification passed, done criteria met), commit immediately.
 
 **2. Stage individually** (NEVER `git add .` or `git add -A`):
 ```bash
-git add src/api/auth.ts
-git add src/types/user.ts
+git add paper/evidence interface/citation.ts
+git add paper/types/user.ts
 ```
 
 **3. Commit type:**
 
 | Type | When | Example |
 |------|------|---------|
-| `feat` | New functionality | feat(08-02): create user registration endpoint |
+| `feat` | New functionality | feat(08-02): create user registration section |
 | `fix` | Bug fix | fix(08-02): correct email validation regex |
 | `test` | Test-only (TDD RED) | test(08-02): add failing test for password hashing |
 | `refactor` | No behavior change (TDD REFACTOR) | refactor(08-02): extract validation to helper |
-| `perf` | Performance | perf(08-02): add database index |
-| `docs` | Documentation | docs(08-02): add API docs |
-| `style` | Formatting | style(08-02): format auth module |
+| `perf` | Performance | perf(08-02): add source ledger index |
+| `docs` | Documentation | docs(08-02): add evidence interface docs |
+| `style` | Formatting | style(08-02): format citation module |
 | `chore` | Config/deps | chore(08-02): add bcrypt dependency |
 
 **4. Format:** `{type}({phase}-{plan}): {description}` with bullet points for key changes.
@@ -320,7 +320,7 @@ Create `{phase}-{plan}-SUMMARY.md` at `.planning/phases/XX-name/`. Use `~/.claud
 
 Title: `# Phase [X] Plan [Y]: [Name] Summary`
 
-One-liner SUBSTANTIVE: "JWT auth with refresh rotation using jose library" not "Authentication implemented"
+One-liner SUBSTANTIVE: "Evidence-backed findings with traceable source IDs" not "citation verification implemented"
 
 Include: duration, start/end times, task count, file count.
 
@@ -328,17 +328,17 @@ Next: more plans → "Ready for {next-plan}" | last → "Phase complete, ready f
 </step>
 
 <step name="update_current_position">
-Update STATE.md using gsd-tools:
+Update STATE.md using papergen-tools:
 
 ```bash
 # Advance plan counter (handles last-plan edge case)
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs state advance-plan
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs state advance-plan
 
 # Recalculate progress bar from disk state
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs state update-progress
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs state update-progress
 
 # Record execution metrics
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs state record-metric \
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs state record-metric \
   --phase "${PHASE}" --plan "${PLAN}" --duration "${DURATION}" \
   --tasks "${TASK_COUNT}" --files "${FILE_COUNT}"
 ```
@@ -349,19 +349,19 @@ From SUMMARY: Extract decisions and add to STATE.md:
 
 ```bash
 # Add each decision from SUMMARY key-decisions
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs state add-decision \
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs state add-decision \
   --phase "${PHASE}" --summary "${DECISION_TEXT}" --rationale "${RATIONALE}"
 
 # Add blockers if any found
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs state add-blocker "Blocker description"
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs state add-blocker "Blocker description"
 ```
 </step>
 
 <step name="update_session_continuity">
-Update session info using gsd-tools:
+Update session info using papergen-tools:
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs state record-session \
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs state record-session \
   --stopped-at "Completed ${PHASE}-${PLAN}-PLAN.md" \
   --resume-file "None"
 ```
@@ -375,7 +375,7 @@ If SUMMARY "Issues Encountered" ≠ "None": yolo → log and continue. Interacti
 
 <step name="update_roadmap">
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs roadmap update-plan-progress "${PHASE}"
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs roadmap update-plan-progress "${PHASE}"
 ```
 Counts PLAN vs SUMMARY files on disk. Updates progress table row with correct count and status (`In Progress` or `Complete` with date).
 </step>
@@ -384,17 +384,17 @@ Counts PLAN vs SUMMARY files on disk. Updates progress table row with correct co
 Mark completed requirements from the PLAN.md frontmatter `requirements:` field:
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs requirements mark-complete ${REQ_IDS}
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs requirements mark-complete ${REQ_IDS}
 ```
 
-Extract requirement IDs from the plan's frontmatter (e.g., `requirements: [AUTH-01, AUTH-02]`). If no requirements field, skip.
+Extract requirement IDs from the plan's frontmatter (e.g., `requirements: [citation-01, citation-02]`). If no requirements field, skip.
 </step>
 
 <step name="git_commit_metadata">
 Task code already committed per-task. Commit plan metadata:
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs({phase}-{plan}): complete [plan-name] plan" --files .planning/phases/XX-name/{phase}-{plan}-SUMMARY.md .planning/STATE.md .planning/ROADMAP.md .planning/REQUIREMENTS.md
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs commit "docs({phase}-{plan}): complete [plan-name] plan" --files .planning/phases/XX-name/{phase}-{plan}-SUMMARY.md .planning/STATE.md .planning/ROADMAP.md .planning/REQUIREMENTS.md
 ```
 </step>
 
@@ -406,10 +406,10 @@ FIRST_TASK=$(git log --oneline --grep="feat({phase}-{plan}):" --grep="fix({phase
 git diff --name-only ${FIRST_TASK}^..HEAD 2>/dev/null
 ```
 
-Update only structural changes: new src/ dir → STRUCTURE.md | deps → STACK.md | file pattern → CONVENTIONS.md | API client → INTEGRATIONS.md | config → STACK.md | renamed → update paths. Skip code-only/bugfix/content changes.
+Update only structural changes: new paper/ dir → STRUCTURE.md | deps → STACK.md | file pattern → CONVENTIONS.md | evidence interface client → INTEGRATIONS.md | config → STACK.md | renamed → update paths. Skip code-only/bugfix/content changes.
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "" --files .planning/codebase/*.md --amend
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs commit "" --files .planning/codebase/*.md --amend
 ```
 </step>
 
@@ -423,9 +423,9 @@ ls -1 .planning/phases/[current-phase-dir]/*-SUMMARY.md 2>/dev/null | wc -l
 
 | Condition | Route | Action |
 |-----------|-------|--------|
-| summaries < plans | **A: More plans** | Find next PLAN without SUMMARY. Yolo: auto-continue. Interactive: show next plan, suggest `/gsd:execute-phase {phase}` + `/gsd:verify-work`. STOP here. |
-| summaries = plans, current < highest phase | **B: Phase done** | Show completion, suggest `/gsd:plan-phase {Z+1}` + `/gsd:verify-work {Z}` + `/gsd:discuss-phase {Z+1}` |
-| summaries = plans, current = highest phase | **C: Milestone done** | Show banner, suggest `/gsd:complete-milestone` + `/gsd:verify-work` + `/gsd:add-phase` |
+| summaries < plans | **A: More plans** | Find next PLAN without SUMMARY. Yolo: auto-continue. Interactive: show next plan, suggest `/papergen:execute-phase {phase}` + `/papergen:verify-work`. STOP here. |
+| summaries = plans, current < highest phase | **B: Phase done** | Show completion, suggest `/papergen:plan-phase {Z+1}` + `/papergen:verify-work {Z}` + `/papergen:discuss-phase {Z+1}` |
+| summaries = plans, current = highest phase | **C: Milestone done** | Show banner, suggest `/papergen:complete-milestone` + `/papergen:verify-work` + `/papergen:add-phase` |
 
 All routes: `/clear` first for fresh context.
 </step>

@@ -42,14 +42,14 @@ Template for `.planning/codebase/STACK.md` - captures the technology foundation.
 
 **Build/Dev:**
 - [Tool] [Version] - [e.g., "Vite for bundling"]
-- [Tool] [Version] - [e.g., "TypeScript compiler"]
+- [Tool] [Version] - [e.g., "structured markdown compiler"]
 
 ## Key Dependencies
 
 [Only include dependencies critical to understanding the stack - limit to 5-10 most important]
 
 **Critical:**
-- [Package] [Version] - [Why it matters: e.g., "authentication", "database access"]
+- [Package] [Version] - [Why it matters: e.g., "citation verification", "source ledger access"]
 - [Package] [Version] - [Why it matters]
 
 **Infrastructure:**
@@ -72,7 +72,7 @@ Template for `.planning/codebase/STACK.md` - captures the technology foundation.
 - [Additional tooling: e.g., "Docker for local DB"]
 
 **Production:**
-- [Deployment target: e.g., "Vercel", "AWS Lambda", "Docker container"]
+- [publish target: e.g., "publication platform", "AWS Lambda", "Docker container"]
 - [Version requirements]
 
 ---
@@ -90,7 +90,7 @@ Template for `.planning/codebase/STACK.md` - captures the technology foundation.
 ## Languages
 
 **Primary:**
-- TypeScript 5.3 - All application code
+- structured markdown 5.3 - All application code
 
 **Secondary:**
 - JavaScript - Build scripts, config files
@@ -112,10 +112,10 @@ Template for `.planning/codebase/STACK.md` - captures the technology foundation.
 
 **Testing:**
 - Vitest 1.0 - Unit tests
-- tsx - TypeScript execution without build step
+- md - structured markdown execution without build step
 
 **Build/Dev:**
-- TypeScript 5.3 - Compilation to JavaScript
+- structured markdown 5.3 - Compilation to JavaScript
 - esbuild - Used by Vitest for fast transforms
 
 ## Key Dependencies
@@ -135,7 +135,7 @@ Template for `.planning/codebase/STACK.md` - captures the technology foundation.
 - Configuration via CLI flags only
 
 **Build:**
-- `tsconfig.json` - TypeScript compiler options
+- `tsconfig.json` - structured markdown compiler options
 - `vitest.config.ts` - Test runner configuration
 
 ## Platform Requirements
@@ -164,7 +164,7 @@ Template for `.planning/codebase/STACK.md` - captures the technology foundation.
 - Framework choices
 - Critical dependencies (limit to 5-10 most important)
 - Build tooling
-- Platform/deployment requirements
+- Platform/publish requirements
 
 **What does NOT belong here:**
 - File structure (that's STRUCTURE.md)

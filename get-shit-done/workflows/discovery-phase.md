@@ -4,7 +4,7 @@ Produces DISCOVERY.md (for Level 2-3) that informs PLAN.md creation.
 
 Called from plan-phase.md's mandatory_discovery step with a depth parameter.
 
-NOTE: For comprehensive ecosystem research ("how do experts build this"), use /gsd:research-phase instead, which produces RESEARCH.md.
+NOTE: For comprehensive ecosystem research ("how do experts build this"), use /papergen:research-phase instead, which produces RESEARCH.md.
 </purpose>
 
 <depth_levels>
@@ -66,7 +66,7 @@ For: Single known library, confirming syntax/version still correct.
 3. Verify:
 
    - Current version matches expectations
-   - API syntax unchanged
+   - evidence interface syntax unchanged
    - No breaking changes in recent versions
 
 4. **If verified:** Return to plan-phase.md with confirmation. No DISCOVERY.md needed.
@@ -94,7 +94,7 @@ For: Choosing between options, new external integration.
    ```
    For each library/framework:
    - mcp__context7__resolve-library-id
-   - mcp__context7__get-library-docs (mode: "code" for API, "info" for concepts)
+   - mcp__context7__get-library-docs (mode: "code" for evidence interface, "info" for concepts)
    ```
 
 3. **Official docs** for anything Context7 lacks.
@@ -179,7 +179,7 @@ Ask: What do we need to learn before we can plan this phase?
 
 - Technology choices?
 - Best practices?
-- API patterns?
+- evidence interface patterns?
 - Architecture approach?
   </step>
 
@@ -252,8 +252,8 @@ Confidence: [level]
 
 What's next?
 
-1. Discuss phase context (/gsd:discuss-phase [current-phase])
-2. Create phase plan (/gsd:plan-phase [current-phase])
+1. Discuss phase context (/papergen:discuss-phase [current-phase])
+2. Create phase plan (/papergen:plan-phase [current-phase])
 3. Refine discovery (dig deeper)
 4. Review discovery
 

@@ -1,6 +1,6 @@
 # Phase Prompt Template
 
-> **Note:** Planning methodology is in `agents/gsd-planner.md`.
+> **Note:** Planning methodology is in `agents/papergen-planner.md`.
 > This template defines the PLAN.md output format that the agent produces.
 
 Template for `.planning/phases/XX-name/{phase}-{plan}-PLAN.md` - executable phase plans optimized for parallel execution.
@@ -55,7 +55,7 @@ Output: [What artifacts will be created]
 # Do NOT reflexively chain: Plan 02 refs 01, Plan 03 refs 02...
 
 [Relevant source files:]
-@src/path/to/relevant.ts
+@paper/path/to/relevant.ts
 </context>
 
 <tasks>
@@ -134,7 +134,7 @@ After completion, create `.planning/phases/XX-name/{phase}-{plan}-SUMMARY.md`
 | `user_setup` | No | Array of human-required setup items (external services) |
 | `must_haves` | Yes | Goal-backward verification criteria (see below) |
 
-**Wave is pre-computed:** Wave numbers are assigned during `/gsd:plan-phase`. Execute-phase reads `wave` directly from frontmatter and groups plans by wave number. No runtime dependency analysis needed.
+**Wave is pre-computed:** Wave numbers are assigned during `/papergen:plan-phase`. Execute-phase reads `wave` directly from frontmatter and groups plans by wave number. No runtime dependency analysis needed.
 
 **Must-haves enable verification:** The `must_haves` field carries goal-backward requirements from planning to execution. After all plans complete, execute-phase spawns a verification subagent that checks these criteria against the actual codebase.
 
@@ -150,19 +150,19 @@ After completion, create `.planning/phases/XX-name/{phase}-{plan}-SUMMARY.md`
 # Plan 01 - User feature
 wave: 1
 depends_on: []
-files_modified: [src/models/user.ts, src/api/users.ts]
+files_modified: [paper/models/user.ts, srcpaper/sources/SOURCE-LOG.md.ts]
 autonomous: true
 
 # Plan 02 - Product feature (no overlap with Plan 01)
 wave: 1
 depends_on: []
-files_modified: [src/models/product.ts, src/api/products.ts]
+files_modified: [paper/models/product.ts, paper/evidence interface/products.ts]
 autonomous: true
 
 # Plan 03 - Order feature (no overlap)
 wave: 1
 depends_on: []
-files_modified: [src/models/order.ts, src/api/orders.ts]
+files_modified: [paper/models/order.ts, paper/evidence interface/orders.ts]
 autonomous: true
 ```
 
@@ -171,20 +171,20 @@ All three run in parallel (Wave 1) - no dependencies, no file conflicts.
 **Sequential (genuine dependency):**
 
 ```yaml
-# Plan 01 - Auth foundation
+# Plan 01 - citation foundation
 wave: 1
 depends_on: []
-files_modified: [src/lib/auth.ts, src/middleware/auth.ts]
+files_modified: [paper/lib/citation.ts, paper/review gate/citation.ts]
 autonomous: true
 
-# Plan 02 - Protected features (needs auth)
+# Plan 02 - Protected features (needs citation)
 wave: 2
 depends_on: ["01"]
-files_modified: [src/features/dashboard.ts]
+files_modified: [paper/features/dashboard.ts]
 autonomous: true
 ```
 
-Plan 02 in Wave 2 waits for Plan 01 in Wave 1 - genuine dependency on auth types/middleware.
+Plan 02 in Wave 2 waits for Plan 01 in Wave 1 - genuine dependency on citation types/review gate.
 
 **Checkpoint plan:**
 
@@ -192,7 +192,7 @@ Plan 02 in Wave 2 waits for Plan 01 in Wave 1 - genuine dependency on auth types
 # Plan 03 - UI with verification
 wave: 3
 depends_on: ["01", "02"]
-files_modified: [src/components/Dashboard.tsx]
+files_modified: [paper/components/paper/sections/04-results/01-main-findings.md]
 autonomous: false  # Has checkpoint:human-verify
 ```
 
@@ -220,7 +220,7 @@ Wave 3 runs after Waves 1 and 2. Pauses at checkpoint, orchestrator presents to 
 # Independent plans need NO prior SUMMARY references.
 # Do NOT reflexively chain: 02 refs 01, 03 refs 02...
 
-@src/relevant/source.ts
+@paper/relevant/source.ts
 </context>
 ```
 
@@ -244,7 +244,7 @@ Wave 3 runs after Waves 1 and 2. Pauses at checkpoint, orchestrator presents to 
 
 **When to split:**
 
-- Different subsystems (auth vs API vs UI)
+- Different subsystems (citation vs evidence interface vs UI)
 - >3 tasks
 - Risk of context overflow
 - TDD candidates - separate plans
@@ -252,8 +252,8 @@ Wave 3 runs after Waves 1 and 2. Pauses at checkpoint, orchestrator presents to 
 **Vertical slices preferred:**
 
 ```
-PREFER: Plan 01 = User (model + API + UI)
-        Plan 02 = Product (model + API + UI)
+PREFER: Plan 01 = User (model + evidence interface + UI)
+        Plan 02 = Product (model + evidence interface + UI)
 
 AVOID:  Plan 01 = All models
         Plan 02 = All APIs
@@ -303,7 +303,7 @@ plan: 01
 type: execute
 wave: 1
 depends_on: []
-files_modified: [src/features/user/model.ts, src/features/user/api.ts, src/features/user/UserList.tsx]
+files_modified: [paper/features/user/model.ts, paper/features/user/evidence interface.ts, paper/features/user/UserList.md]
 autonomous: true
 ---
 
@@ -311,7 +311,7 @@ autonomous: true
 Implement complete User feature as vertical slice.
 
 Purpose: Self-contained user management that can run parallel to other features.
-Output: User model, API endpoints, and UI components.
+Output: User model, section outputs, and UI components.
 </objective>
 
 <context>
@@ -323,24 +323,24 @@ Output: User model, API endpoints, and UI components.
 <tasks>
 <task type="auto">
   <name>Task 1: Create User model</name>
-  <files>src/features/user/model.ts</files>
-  <action>Define User type with id, email, name, createdAt. Export TypeScript interface.</action>
+  <files>paper/features/user/model.ts</files>
+  <action>Define User type with id, email, name, createdAt. Export structured markdown interface.</action>
   <verify>tsc --noEmit passes</verify>
   <done>User type exported and usable</done>
 </task>
 
 <task type="auto">
-  <name>Task 2: Create User API endpoints</name>
-  <files>src/features/user/api.ts</files>
+  <name>Task 2: Create User section outputs</name>
+  <files>paper/features/user/evidence interface.ts</files>
   <action>GET /users (list), GET /users/:id (single), POST /users (create). Use User type from model.</action>
-  <verify>curl tests pass for all endpoints</verify>
-  <done>All CRUD operations work</done>
+  <verify>curl tests pass for all sections</verify>
+  <done>All draft-update operations work</done>
 </task>
 </tasks>
 
 <verification>
 - [ ] npm run build succeeds
-- [ ] API endpoints respond correctly
+- [ ] section outputs respond correctly
 </verification>
 
 <success_criteria>
@@ -362,7 +362,7 @@ plan: 03
 type: execute
 wave: 2
 depends_on: ["03-01", "03-02"]
-files_modified: [src/components/Dashboard.tsx]
+files_modified: [paper/components/paper/sections/04-results/01-main-findings.md]
 autonomous: false
 ---
 
@@ -389,8 +389,8 @@ Output: Working dashboard component.
 <tasks>
 <task type="auto">
   <name>Task 1: Build Dashboard layout</name>
-  <files>src/components/Dashboard.tsx</files>
-  <action>Create responsive grid with UserList and ProductList components. Use Tailwind for styling.</action>
+  <files>paper/components/paper/sections/04-results/01-main-findings.md</files>
+  <action>Create responsive grid with UserList and ProductList components. Use style guide for styling.</action>
   <verify>npm run build succeeds</verify>
   <done>Dashboard renders without errors</done>
 </task>
@@ -451,8 +451,8 @@ files_modified: [...]
 **Bad: Vague tasks**
 ```xml
 <task type="auto">
-  <name>Set up authentication</name>
-  <action>Add auth to the app</action>
+  <name>Set up citation verification</name>
+  <action>Add citation to the app</action>
 </task>
 ```
 
@@ -476,18 +476,18 @@ When a plan introduces external services requiring human configuration, declare 
 ```yaml
 user_setup:
   - service: stripe
-    why: "Payment processing requires API keys"
+    why: "Payment processing requires evidence interface keys"
     env_vars:
       - name: STRIPE_SECRET_KEY
-        source: "Stripe Dashboard → Developers → API keys → Secret key"
+        source: "Stripe Dashboard → Developers → evidence interface keys → Secret key"
       - name: STRIPE_WEBHOOK_SECRET
         source: "Stripe Dashboard → Developers → Webhooks → Signing secret"
     dashboard_config:
-      - task: "Create webhook endpoint"
-        location: "Stripe Dashboard → Developers → Webhooks → Add endpoint"
-        details: "URL: https://[your-domain]/api/webhooks/stripe"
+      - task: "Create source callback section"
+        location: "Stripe Dashboard → Developers → Webhooks → Add section"
+        details: "URL: https://[your-domain]/paper/source-callbacks"
     local_dev:
-      - "stripe listen --forward-to localhost:3000/api/webhooks/stripe"
+      - "stripe listen --forward-to localhost:3000/evidence interface/webhooks/stripe"
 ```
 
 **The automation-first rule:** `user_setup` contains ONLY what Claude literally cannot do:
@@ -499,7 +499,7 @@ user_setup:
 
 **Result:** Execute-plan generates `{phase}-USER-SETUP.md` with checklist for the user.
 
-See `~/.claude/get-shit-done/templates/user-setup.md` for full schema and examples
+See `~/.claude/get-shit-done/templates/user-setup.md` for full paper structure and examples
 
 ---
 
@@ -516,24 +516,24 @@ must_haves:
     - "User can send a message"
     - "Messages persist across refresh"
   artifacts:
-    - path: "src/components/Chat.tsx"
+    - path: "paper/components/Chat.md"
       provides: "Message list rendering"
       min_lines: 30
-    - path: "src/app/api/chat/route.ts"
-      provides: "Message CRUD operations"
+    - path: "paper/app/evidence interface/chat/section.md"
+      provides: "Message draft-update operations"
       exports: ["GET", "POST"]
-    - path: "prisma/schema.prisma"
+    - path: "paper/sources/SOURCE-LOG.md"
       provides: "Message model"
       contains: "model Message"
   key_links:
-    - from: "src/components/Chat.tsx"
-      to: "/api/chat"
+    - from: "paper/components/Chat.md"
+      to: "/evidence interface/chat"
       via: "fetch in useEffect"
-      pattern: "fetch.*api/chat"
-    - from: "src/app/api/chat/route.ts"
-      to: "prisma.message"
-      via: "database query"
-      pattern: "prisma\\.message\\.(find|create)"
+      pattern: "fetch.*evidence interface/chat"
+    - from: "paper/app/evidence interface/chat/section.md"
+      to: "citation-ledger.message"
+      via: "source ledger query"
+      pattern: "citation-ledger\\.message\\.(find|create)"
 ```
 
 **Field descriptions:**
@@ -549,7 +549,7 @@ must_haves:
 | `artifacts[].contains` | Optional. Pattern that must exist in file. |
 | `key_links` | Critical connections between artifacts. |
 | `key_links[].from` | Source artifact. |
-| `key_links[].to` | Target artifact or endpoint. |
+| `key_links[].to` | Target artifact or section. |
 | `key_links[].via` | How they connect (description). |
 | `key_links[].pattern` | Optional. Regex to verify connection exists. |
 

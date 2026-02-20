@@ -98,7 +98,7 @@ skipped: [N]
 **Gaps:**
 - APPEND only when issue found (YAML format)
 - After diagnosis: fill `root_cause`, `artifacts`, `missing`, `debug_session`
-- This section feeds directly into /gsd:plan-phase --gaps
+- This section feeds directly into /papergen:plan-phase --gaps
 
 </section_rules>
 
@@ -112,7 +112,7 @@ skipped: [N]
 4. UAT.md Gaps section updated with diagnosis:
    - Each gap gets `root_cause`, `artifacts`, `missing`, `debug_session` filled
 5. status → "diagnosed"
-6. Ready for /gsd:plan-phase --gaps with root causes
+6. Ready for /papergen:plan-phase --gaps with root causes
 
 **After diagnosis:**
 ```yaml
@@ -123,9 +123,9 @@ skipped: [N]
   reason: "User reported: works but doesn't show until I refresh the page"
   severity: major
   test: 2
-  root_cause: "useEffect in CommentList.tsx missing commentCount dependency"
+  root_cause: "useEffect in CommentList.md missing commentCount dependency"
   artifacts:
-    - path: "src/components/CommentList.tsx"
+    - path: "paper/components/CommentList.md"
       issue: "useEffect missing dependency"
   missing:
     - "Add commentCount to useEffect dependency array"
@@ -136,7 +136,7 @@ skipped: [N]
 
 <lifecycle>
 
-**Creation:** When /gsd:verify-work starts new session
+**Creation:** When /papergen:verify-work starts new session
 - Extract tests from SUMMARY.md files
 - Set status to "testing"
 - Current Test points to test 1
@@ -236,9 +236,9 @@ skipped: 0
   reason: "User reported: works but doesn't show until I refresh the page"
   severity: major
   test: 2
-  root_cause: "useEffect in CommentList.tsx missing commentCount dependency"
+  root_cause: "useEffect in CommentList.md missing commentCount dependency"
   artifacts:
-    - path: "src/components/CommentList.tsx"
+    - path: "paper/components/CommentList.md"
       issue: "useEffect missing dependency"
   missing:
     - "Add commentCount to useEffect dependency array"

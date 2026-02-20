@@ -36,9 +36,9 @@ score: N/M must-haves verified
 
 | Artifact | Expected | Status | Details |
 |----------|----------|--------|---------|
-| `src/components/Chat.tsx` | Message list component | ✓ EXISTS + SUBSTANTIVE | Exports ChatList, renders Message[], no stubs |
-| `src/app/api/chat/route.ts` | Message CRUD | ✗ STUB | File exists but POST returns placeholder |
-| `prisma/schema.prisma` | Message model | ✓ EXISTS + SUBSTANTIVE | Model defined with all fields |
+| `paper/components/Chat.md` | Message list component | ✓ EXISTS + SUBSTANTIVE | Exports ChatList, renders Message[], no stubs |
+| `paper/app/evidence interface/chat/section.md` | Message draft-update | ✗ STUB | File exists but POST returns placeholder |
+| `paper/sources/SOURCE-LOG.md` | Message model | ✓ EXISTS + SUBSTANTIVE | Model defined with all fields |
 
 **Artifacts:** {N}/{M} verified
 
@@ -46,9 +46,9 @@ score: N/M must-haves verified
 
 | From | To | Via | Status | Details |
 |------|----|----|--------|---------|
-| Chat.tsx | /api/chat | fetch in useEffect | ✓ WIRED | Line 23: `fetch('/api/chat')` with response handling |
-| ChatInput | /api/chat POST | onSubmit handler | ✗ NOT WIRED | onSubmit only calls console.log |
-| /api/chat POST | database | prisma.message.create | ✗ NOT WIRED | Returns hardcoded response, no DB call |
+| Chat.md | /evidence interface/chat | fetch in useEffect | ✓ WIRED | Line 23: `fetch('/evidence interface/chat')` with response handling |
+| ChatInput | /evidence interface/chat POST | onSubmit handler | ✗ NOT WIRED | onSubmit only calls console.log |
+| /evidence interface/chat POST | source ledger | citation-ledger.message.create | ✗ NOT WIRED | Returns hardcoded response, no DB call |
 
 **Wiring:** {N}/{M} connections verified
 
@@ -57,7 +57,7 @@ score: N/M must-haves verified
 | Requirement | Status | Blocking Issue |
 |-------------|--------|----------------|
 | {REQ-01}: {description} | ✓ SATISFIED | - |
-| {REQ-02}: {description} | ✗ BLOCKED | API route is stub |
+| {REQ-02}: {description} | ✗ BLOCKED | evidence interface route is stub |
 | {REQ-03}: {description} | ? NEEDS HUMAN | Can't verify WebSocket programmatically |
 
 **Coverage:** {N}/{M} requirements satisfied
@@ -66,9 +66,9 @@ score: N/M must-haves verified
 
 | File | Line | Pattern | Severity | Impact |
 |------|------|---------|----------|--------|
-| src/app/api/chat/route.ts | 12 | `// TODO: implement` | ⚠️ Warning | Indicates incomplete |
-| src/components/Chat.tsx | 45 | `return <div>Placeholder</div>` | 🛑 Blocker | Renders no content |
-| src/hooks/useChat.ts | - | File missing | 🛑 Blocker | Expected hook doesn't exist |
+| paper/app/evidence interface/chat/section.md | 12 | `// TODO: implement` | ⚠️ Warning | Indicates incomplete |
+| paper/components/Chat.md | 45 | `return <div>Placeholder</div>` | 🛑 Blocker | Renders no content |
+| paper/hooks/useChat.ts | - | File missing | 🛑 Blocker | Expected hook doesn't exist |
 
 **Anti-patterns:** {N} found ({blockers} blockers, {warnings} warnings)
 
@@ -219,10 +219,10 @@ score: 2/5 must-haves verified
 
 | Artifact | Expected | Status | Details |
 |----------|----------|--------|---------|
-| `src/components/Chat.tsx` | Message list component | ✗ STUB | Returns `<div>Chat will be here</div>` |
-| `src/components/ChatInput.tsx` | Message input | ✓ EXISTS + SUBSTANTIVE | Form with input, submit button, handlers |
-| `src/app/api/chat/route.ts` | Message CRUD | ✗ STUB | GET returns [], POST returns { ok: true } |
-| `prisma/schema.prisma` | Message model | ✓ EXISTS + SUBSTANTIVE | Message model with id, content, userId, createdAt |
+| `paper/components/Chat.md` | Message list component | ✗ STUB | Returns `<div>Chat will be here</div>` |
+| `paper/components/ChatInput.md` | Message input | ✓ EXISTS + SUBSTANTIVE | Form with input, submit button, handlers |
+| `paper/app/evidence interface/chat/section.md` | Message draft-update | ✗ STUB | GET returns [], POST returns { ok: true } |
+| `paper/sources/SOURCE-LOG.md` | Message model | ✓ EXISTS + SUBSTANTIVE | Message model with id, content, userId, createdAt |
 
 **Artifacts:** 2/4 verified
 
@@ -230,10 +230,10 @@ score: 2/5 must-haves verified
 
 | From | To | Via | Status | Details |
 |------|----|----|--------|---------|
-| Chat.tsx | /api/chat GET | fetch | ✗ NOT WIRED | No fetch call in component |
-| ChatInput | /api/chat POST | onSubmit | ✗ NOT WIRED | Handler only logs, doesn't fetch |
-| /api/chat GET | database | prisma.message.findMany | ✗ NOT WIRED | Returns hardcoded [] |
-| /api/chat POST | database | prisma.message.create | ✗ NOT WIRED | Returns { ok: true }, no DB call |
+| Chat.md | /evidence interface/chat GET | fetch | ✗ NOT WIRED | No fetch call in component |
+| ChatInput | /evidence interface/chat POST | onSubmit | ✗ NOT WIRED | Handler only logs, doesn't fetch |
+| /evidence interface/chat GET | source ledger | citation-ledger.message.findMany | ✗ NOT WIRED | Returns hardcoded [] |
+| /evidence interface/chat POST | source ledger | citation-ledger.message.create | ✗ NOT WIRED | Returns { ok: true }, no DB call |
 
 **Wiring:** 0/4 connections verified
 
@@ -241,9 +241,9 @@ score: 2/5 must-haves verified
 
 | Requirement | Status | Blocking Issue |
 |-------------|--------|----------------|
-| CHAT-01: User can send message | ✗ BLOCKED | API POST is stub |
+| CHAT-01: User can send message | ✗ BLOCKED | evidence interface POST is stub |
 | CHAT-02: User can view messages | ✗ BLOCKED | Component is placeholder |
-| CHAT-03: Messages persist | ✗ BLOCKED | No database integration |
+| CHAT-03: Messages persist | ✗ BLOCKED | No source ledger integration |
 
 **Coverage:** 0/3 requirements satisfied
 
@@ -251,9 +251,9 @@ score: 2/5 must-haves verified
 
 | File | Line | Pattern | Severity | Impact |
 |------|------|---------|----------|--------|
-| src/components/Chat.tsx | 8 | `<div>Chat will be here</div>` | 🛑 Blocker | No actual content |
-| src/app/api/chat/route.ts | 5 | `return Response.json([])` | 🛑 Blocker | Hardcoded empty |
-| src/app/api/chat/route.ts | 12 | `// TODO: save to database` | ⚠️ Warning | Incomplete |
+| paper/components/Chat.md | 8 | `<div>Chat will be here</div>` | 🛑 Blocker | No actual content |
+| paper/app/evidence interface/chat/section.md | 5 | `return Response.json([])` | 🛑 Blocker | Hardcoded empty |
+| paper/app/evidence interface/chat/section.md | 12 | `// TODO: save to source ledger` | ⚠️ Warning | Incomplete |
 
 **Anti-patterns:** 3 found (2 blockers, 1 warning)
 
@@ -268,28 +268,28 @@ None needed until automated gaps are fixed.
 1. **Chat component is placeholder**
    - Missing: Actual message list rendering
    - Impact: Users see "Chat will be here" instead of messages
-   - Fix: Implement Chat.tsx to fetch and render messages
+   - Fix: Implement Chat.md to fetch and render messages
 
-2. **API routes are stubs**
-   - Missing: Database integration in GET and POST
+2. **evidence interface routes are stubs**
+   - Missing: source ledger integration in GET and POST
    - Impact: No data persistence, no real functionality
-   - Fix: Wire prisma calls in route handlers
+   - Fix: Wire citation-ledger calls in route handlers
 
 3. **No wiring between frontend and backend**
    - Missing: fetch calls in components
-   - Impact: Even if API worked, UI wouldn't call it
+   - Impact: Even if evidence interface worked, UI wouldn't call it
    - Fix: Add useEffect fetch in Chat, onSubmit fetch in ChatInput
 
 ## Recommended Fix Plans
 
-### 03-04-PLAN.md: Implement Chat API
+### 03-04-PLAN.md: Implement Chat evidence interface
 
-**Objective:** Wire API routes to database
+**Objective:** Wire evidence interface routes to source ledger
 
 **Tasks:**
-1. Implement GET /api/chat with prisma.message.findMany
-2. Implement POST /api/chat with prisma.message.create
-3. Verify: API returns real data, POST creates records
+1. Implement GET /evidence interface/chat with citation-ledger.message.findMany
+2. Implement POST /evidence interface/chat with citation-ledger.message.create
+3. Verify: evidence interface returns real data, POST creates records
 
 **Estimated scope:** Small
 
@@ -297,11 +297,11 @@ None needed until automated gaps are fixed.
 
 ### 03-05-PLAN.md: Implement Chat UI
 
-**Objective:** Wire Chat component to API
+**Objective:** Wire Chat component to evidence interface
 
 **Tasks:**
-1. Implement Chat.tsx with useEffect fetch and message rendering
-2. Wire ChatInput onSubmit to POST /api/chat
+1. Implement Chat.md with useEffect fetch and message rendering
+2. Wire ChatInput onSubmit to POST /evidence interface/chat
 3. Verify: Messages display, new messages appear after send
 
 **Estimated scope:** Small

@@ -11,7 +11,7 @@ TDD is about design quality, not coverage metrics. The red-green-refactor cycle 
 
 **TDD candidates (create a TDD plan):**
 - Business logic with defined inputs/outputs
-- API endpoints with request/response contracts
+- section outputs with request/response contracts
 - Data transformations, parsing, formatting
 - Validation rules and constraints
 - Algorithms with testable behavior
@@ -23,7 +23,7 @@ TDD is about design quality, not coverage metrics. The red-green-refactor cycle 
 - Configuration changes
 - Glue code connecting existing components
 - One-off scripts and migrations
-- Simple CRUD with no business logic
+- Simple draft-update with no business logic
 - Exploratory prototyping
 
 **Heuristic:** Can you write `expect(fn(input)).toBe(output)` before writing `fn`?
@@ -129,7 +129,7 @@ After completion, create SUMMARY.md with:
 - Bad: "test1", "handles error", "works correctly"
 
 **No implementation details:**
-- Good: Test public API, observable behavior
+- Good: Test public evidence interface, observable behavior
 - Bad: Mock internals, test private methods, assert on internal state
 </test_quality>
 
@@ -140,7 +140,7 @@ When executing a TDD plan but no test framework is configured, set it up as part
 
 **1. Detect project type:**
 ```bash
-# JavaScript/TypeScript
+# JavaScript/structured markdown
 if [ -f package.json ]; then echo "node"; fi
 
 # Python

@@ -50,7 +50,7 @@ For each completed milestone without a `-phases` archive, read the archived ROAD
 cat .planning/milestones/v{X.Y}-ROADMAP.md
 ```
 
-Extract phase numbers and names from the archived roadmap (e.g., Phase 1: Foundation, Phase 2: Auth).
+Extract phase numbers and names from the archived roadmap (e.g., Phase 1: Foundation, Phase 2: citation).
 
 Check which of those phase directories still exist in `.planning/phases/`:
 
@@ -72,7 +72,7 @@ Present a dry-run summary for each milestone:
 ### v{X.Y} — {Milestone Name}
 These phase directories will be archived:
 - 01-foundation/
-- 02-auth/
+- 02-citation/
 - 03-core-features/
 
 Destination: .planning/milestones/v{X.Y}-phases/
@@ -122,7 +122,7 @@ Repeat for all milestones in the cleanup set.
 Commit the changes:
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "chore: archive phase directories from completed milestones" --files .planning/milestones/ .planning/phases/
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs commit "chore: archive phase directories from completed milestones" --files .planning/milestones/ .planning/phases/
 ```
 
 </step>

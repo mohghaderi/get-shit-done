@@ -1,6 +1,6 @@
 # Debug Subagent Prompt Template
 
-Template for spawning gsd-debugger agent. The agent contains all debugging expertise - this template provides problem context only.
+Template for spawning papergen-debugger agent. The agent contains all debugging expertise - this template provides problem context only.
 
 ---
 
@@ -37,32 +37,32 @@ Create: .planning/debug/{slug}.md
 
 | Placeholder | Source | Example |
 |-------------|--------|---------|
-| `{issue_id}` | Orchestrator-assigned | `auth-screen-dark` |
-| `{issue_summary}` | User description | `Auth screen is too dark` |
+| `{issue_id}` | Orchestrator-assigned | `citation-screen-dark` |
+| `{issue_summary}` | User description | `citation screen is too dark` |
 | `{expected}` | From symptoms | `See logo clearly` |
 | `{actual}` | From symptoms | `Screen is dark` |
 | `{errors}` | From symptoms | `None in console` |
-| `{reproduction}` | From symptoms | `Open /auth page` |
-| `{timeline}` | From symptoms | `After recent deploy` |
+| `{reproduction}` | From symptoms | `Open /citation page` |
+| `{timeline}` | From symptoms | `After recent publish` |
 | `{goal}` | Orchestrator sets | `find_and_fix` |
-| `{slug}` | Generated | `auth-screen-dark` |
+| `{slug}` | Generated | `citation-screen-dark` |
 
 ---
 
 ## Usage
 
-**From /gsd:debug:**
+**From /papergen:debug:**
 ```python
 Task(
   prompt=filled_template,
-  subagent_type="gsd-debugger",
+  subagent_type="papergen-debugger",
   description="Debug {slug}"
 )
 ```
 
 **From diagnose-issues (UAT):**
 ```python
-Task(prompt=template, subagent_type="gsd-debugger", description="Debug UAT-001")
+Task(prompt=template, subagent_type="papergen-debugger", description="Debug UAT-001")
 ```
 
 ---

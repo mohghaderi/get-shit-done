@@ -42,9 +42,9 @@ Standard format for presenting next steps after completing a command or workflow
 
 ## ▶ Next Up
 
-**02-03: Refresh Token Rotation** — Add /api/auth/refresh with sliding expiry
+**02-03: Refresh Token Rotation** — Add /evidence interface/citation/refresh with sliding expiry
 
-`/gsd:execute-phase 2`
+`/papergen:execute-phase 2`
 
 <sub>`/clear` first → fresh context window</sub>
 
@@ -52,7 +52,7 @@ Standard format for presenting next steps after completing a command or workflow
 
 **Also available:**
 - Review plan before executing
-- `/gsd:list-phase-assumptions 2` — check assumptions
+- `/papergen:list-phase-assumptions 2` — check assumptions
 
 ---
 ```
@@ -66,10 +66,10 @@ Add note that this is the last plan and what comes after:
 
 ## ▶ Next Up
 
-**02-03: Refresh Token Rotation** — Add /api/auth/refresh with sliding expiry
+**02-03: Refresh Token Rotation** — Add /evidence interface/citation/refresh with sliding expiry
 <sub>Final plan in Phase 2</sub>
 
-`/gsd:execute-phase 2`
+`/papergen:execute-phase 2`
 
 <sub>`/clear` first → fresh context window</sub>
 
@@ -89,17 +89,17 @@ Add note that this is the last plan and what comes after:
 
 ## ▶ Next Up
 
-**Phase 2: Authentication** — JWT login flow with refresh tokens
+**Phase 2: citation verification** — source-ID source access flow with refresh tokens
 
-`/gsd:plan-phase 2`
+`/papergen:plan-phase 2`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:discuss-phase 2` — gather context first
-- `/gsd:research-phase 2` — investigate unknowns
+- `/papergen:discuss-phase 2` — gather context first
+- `/papergen:research-phase 2` — investigate unknowns
 - Review roadmap
 
 ---
@@ -120,15 +120,15 @@ Show completion status before next action:
 
 **Phase 3: Core Features** — User dashboard, settings, and data export
 
-`/gsd:plan-phase 3`
+`/papergen:plan-phase 3`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:discuss-phase 3` — gather context first
-- `/gsd:research-phase 3` — investigate unknowns
+- `/papergen:discuss-phase 3` — gather context first
+- `/papergen:research-phase 3` — investigate unknowns
 - Review what Phase 2 built
 
 ---
@@ -145,11 +145,11 @@ When there's no clear primary action:
 
 **Phase 3: Core Features** — User dashboard, settings, and data export
 
-**To plan directly:** `/gsd:plan-phase 3`
+**To plan directly:** `/papergen:plan-phase 3`
 
-**To discuss context first:** `/gsd:discuss-phase 3`
+**To discuss context first:** `/papergen:discuss-phase 3`
 
-**To research unknowns:** `/gsd:research-phase 3`
+**To research unknowns:** `/papergen:research-phase 3`
 
 <sub>`/clear` first → fresh context window</sub>
 
@@ -169,7 +169,7 @@ All 4 phases shipped
 
 **Start v1.1** — questioning → research → requirements → roadmap
 
-`/gsd:new-milestone`
+`/papergen:new-milestone`
 
 <sub>`/clear` first → fresh context window</sub>
 
@@ -181,11 +181,11 @@ All 4 phases shipped
 ### For phases (from ROADMAP.md):
 
 ```markdown
-### Phase 2: Authentication
-**Goal**: JWT login flow with refresh tokens
+### Phase 2: citation verification
+**Goal**: source-ID source access flow with refresh tokens
 ```
 
-Extract: `**Phase 2: Authentication** — JWT login flow with refresh tokens`
+Extract: `**Phase 2: citation verification** — source-ID source access flow with refresh tokens`
 
 ### For plans (from ROADMAP.md):
 
@@ -204,7 +204,7 @@ Purpose: Extend session lifetime without compromising security.
 </objective>
 ```
 
-Extract: `**02-03: Refresh Token Rotation** — Add /api/auth/refresh with sliding expiry`
+Extract: `**02-03: Refresh Token Rotation** — Add /evidence interface/citation/refresh with sliding expiry`
 
 ## Anti-Patterns
 
@@ -214,7 +214,7 @@ Extract: `**02-03: Refresh Token Rotation** — Add /api/auth/refresh with slidi
 ## To Continue
 
 Run `/clear`, then paste:
-/gsd:execute-phase 2
+/papergen:execute-phase 2
 ```
 
 User has no idea what 02-03 is about.
@@ -222,7 +222,7 @@ User has no idea what 02-03 is about.
 ### Don't: Missing /clear explanation
 
 ```
-`/gsd:plan-phase 3`
+`/papergen:plan-phase 3`
 
 Run /clear first.
 ```
@@ -242,7 +242,7 @@ Sounds like an afterthought. Use "Also available:" instead.
 
 ```
 ```
-/gsd:plan-phase 3
+/papergen:plan-phase 3
 ```
 ```
 

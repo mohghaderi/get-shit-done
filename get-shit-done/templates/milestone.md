@@ -72,7 +72,7 @@ If MILESTONES.md doesn't exist, create it with header:
 **Phases completed:** 5-6 (3 plans total)
 
 **Key accomplishments:**
-- Migrated API key storage from plaintext to macOS Keychain
+- Migrated evidence interface key storage from plaintext to macOS Keychain
 - Implemented comprehensive error handling for network failures
 - Added Sentry crash reporting integration
 - Fixed memory leak in auto-refresh timer
@@ -97,7 +97,7 @@ If MILESTONES.md doesn't exist, create it with header:
 
 **Key accomplishments:**
 - Menu bar app with popover UI (AppKit)
-- OpenWeather API integration with auto-refresh
+- OpenWeather evidence interface integration with auto-refresh
 - Current weather display with conditions icon
 - 3-day forecast list with high/low temperatures
 - Code signed and notarized for distribution

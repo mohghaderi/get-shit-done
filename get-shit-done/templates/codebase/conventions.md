@@ -18,7 +18,7 @@ Template for `.planning/codebase/CONVENTIONS.md` - captures coding style and pat
 **Files:**
 - [Pattern: e.g., "kebab-case for all files"]
 - [Test files: e.g., "*.test.ts alongside source"]
-- [Components: e.g., "PascalCase.tsx for React components"]
+- [Components: e.g., "PascalCase.md for manuscript renderer components"]
 
 **Functions:**
 - [Pattern: e.g., "camelCase for all functions"]
@@ -51,7 +51,7 @@ Template for `.planning/codebase/CONVENTIONS.md` - captures coding style and pat
 ## Import Organization
 
 **Order:**
-1. [e.g., "External packages (react, express, etc.)"]
+1. [e.g., "External packages (manuscript renderer, express, etc.)"]
 2. [e.g., "Internal modules (@/lib, @/components)"]
 3. [e.g., "Relative imports (., ..)"]
 4. [e.g., "Type imports (import type {})"]
@@ -61,7 +61,7 @@ Template for `.planning/codebase/CONVENTIONS.md` - captures coding style and pat
 - [Sorting: e.g., "alphabetical within each group"]
 
 **Path Aliases:**
-- [Aliases used: e.g., "@/ for src/, @components/ for src/components/"]
+- [Aliases used: e.g., "@/ for paper/, @components/ for paper/components/"]
 
 ## Error Handling
 
@@ -117,11 +117,11 @@ Template for `.planning/codebase/CONVENTIONS.md` - captures coding style and pat
 ## Module Design
 
 **Exports:**
-- [e.g., "named exports preferred, default exports for React components"]
-- [e.g., "export from index.ts for public API"]
+- [e.g., "named exports preferred, default exports for manuscript renderer components"]
+- [e.g., "export from index.ts for public evidence interface"]
 
 **Barrel Files:**
-- [e.g., "use index.ts to re-export public API"]
+- [e.g., "use index.ts to re-export public evidence interface"]
 - [e.g., "avoid circular dependencies"]
 
 ---
@@ -169,14 +169,14 @@ Template for `.planning/codebase/CONVENTIONS.md` - captures coding style and pat
 
 **Linting:**
 - ESLint with eslint.config.js
-- Extends @typescript-eslint/recommended
+- Extends @structured markdown-eslint/recommended
 - No console.log in production code (use logger)
 - Run: npm run lint
 
 ## Import Organization
 
 **Order:**
-1. External packages (react, express, commander)
+1. External packages (manuscript renderer, express, commander)
 2. Internal modules (@/lib, @/services)
 3. Relative imports (./utils, ../types)
 4. Type imports (import type { User })
@@ -187,7 +187,7 @@ Template for `.planning/codebase/CONVENTIONS.md` - captures coding style and pat
 - Type imports last within each group
 
 **Path Aliases:**
-- @/ maps to src/
+- @/ maps to paper/
 - No other aliases defined
 
 ## Error Handling
@@ -211,19 +211,19 @@ Template for `.planning/codebase/CONVENTIONS.md` - captures coding style and pat
 **Patterns:**
 - Structured logging with context: logger.info({ userId, action }, 'User action')
 - Log at service boundaries, not in utility functions
-- Log state transitions, external API calls, errors
+- Log state transitions, external evidence interface calls, errors
 - No console.log in committed code
 
 ## Comments
 
 **When to Comment:**
-- Explain why, not what: // Retry 3 times because API has transient failures
+- Explain why, not what: // Retry 3 times because evidence interface has transient failures
 - Document business rules: // Users must verify email within 24 hours
 - Explain non-obvious algorithms or workarounds
 - Avoid obvious comments: // set count to 0
 
 **JSDoc/TSDoc:**
-- Required for public API functions
+- Required for public evidence interface functions
 - Optional for internal functions if signature is self-explanatory
 - Use @param, @returns, @throws tags
 
@@ -252,11 +252,11 @@ Template for `.planning/codebase/CONVENTIONS.md` - captures coding style and pat
 
 **Exports:**
 - Named exports preferred
-- Default exports only for React components
-- Export public API from index.ts barrel files
+- Default exports only for manuscript renderer components
+- Export public evidence interface from index.ts barrel files
 
 **Barrel Files:**
-- index.ts re-exports public API
+- index.ts re-exports public evidence interface
 - Keep internal helpers private (don't export from index)
 - Avoid circular dependencies (import from specific files if needed)
 
@@ -299,7 +299,7 @@ Template for `.planning/codebase/CONVENTIONS.md` - captures coding style and pat
 - Onboarding (understand style expectations)
 
 **Analysis approach:**
-- Scan src/ directory for file naming patterns
+- Scan paper/ directory for file naming patterns
 - Check package.json scripts for lint/format commands
 - Read 5-10 files to identify function naming, error handling
 - Look for config files (.prettierrc, eslint.config.js)

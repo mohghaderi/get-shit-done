@@ -12,7 +12,7 @@ Read all files referenced by the invoking prompt's execution_context before star
 Load todo context:
 
 ```bash
-INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs init todos)
+INIT=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs init todos)
 ```
 
 Extract from init JSON: `todo_count`, `todos`, `pending_dir`.
@@ -21,14 +21,14 @@ If `todo_count` is 0:
 ```
 No pending todos.
 
-Todos are captured during work sessions with /gsd:add-todo.
+Todos are captured during work sessions with /papergen:add-todo.
 
 ---
 
 Would you like to:
 
-1. Continue with current phase (/gsd:progress)
-2. Add a todo now (/gsd:add-todo)
+1. Continue with current phase (/papergen:progress)
+2. Add a todo now (/papergen:add-todo)
 ```
 
 Exit.
@@ -36,8 +36,8 @@ Exit.
 
 <step name="parse_filter">
 Check for area filter in arguments:
-- `/gsd:check-todos` → show all
-- `/gsd:check-todos api` → filter to area:api only
+- `/papergen:check-todos` → show all
+- `/papergen:check-todos evidence interface` → filter to area:evidence interface only
 </step>
 
 <step name="list_todos">
@@ -48,14 +48,14 @@ Parse and display as numbered list:
 ```
 Pending Todos:
 
-1. Add auth token refresh (api, 2d ago)
+1. Add citation token refresh (evidence interface, 2d ago)
 2. Fix modal z-index issue (ui, 1d ago)
-3. Refactor database connection pool (database, 5h ago)
+3. Refactor source ledger connection pool (source ledger, 5h ago)
 
 ---
 
 Reply with a number to view details, or:
-- `/gsd:check-todos [area]` to filter by area
+- `/papergen:check-todos [area]` to filter by area
 - `q` to exit
 ```
 
@@ -117,7 +117,7 @@ Use AskUserQuestion:
 - question: "What would you like to do with this todo?"
 - options:
   - "Work on it now" — move to done, start working
-  - "Create a phase" — /gsd:add-phase with this scope
+  - "Create a phase" — /papergen:add-phase with this scope
   - "Brainstorm approach" — think through before deciding
   - "Put it back" — return to list
 </step>
@@ -133,7 +133,7 @@ Update STATE.md todo count. Present problem/solution context. Begin work or ask 
 Note todo reference in phase planning notes. Keep in pending. Return to list or exit.
 
 **Create a phase:**
-Display: `/gsd:add-phase [description from todo]`
+Display: `/papergen:add-phase [description from todo]`
 Keep in pending. User runs command in fresh context.
 
 **Brainstorm approach:**
@@ -154,7 +154,7 @@ If todo was moved to done/, commit the change:
 
 ```bash
 git rm --cached .planning/todos/pending/[filename] 2>/dev/null || true
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: start work on todo - [title]" --files .planning/todos/done/[filename] .planning/STATE.md
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs commit "docs: start work on todo - [title]" --files .planning/todos/done/[filename] .planning/STATE.md
 ```
 
 Tool respects `commit_docs` config and gitignore automatically.

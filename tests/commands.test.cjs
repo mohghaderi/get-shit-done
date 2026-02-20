@@ -623,3 +623,53 @@ describe('scaffold command', () => {
     assert.strictEqual(output.reason, 'already_exists');
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// paper init command
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('paper command', () => {
+  let tmpDir;
+
+  beforeEach(() => {
+    tmpDir = createTempProject();
+  });
+
+  afterEach(() => {
+    cleanup(tmpDir);
+  });
+
+  test('paper init scaffolds nested markdown structure', () => {
+    const result = runGsdTools('paper init "AI Governance for Public Sector Systems"', tmpDir);
+    assert.ok(result.success, `Command failed: ${result.error}`);
+
+    const output = JSON.parse(result.output);
+    assert.strictEqual(output.created, true);
+    assert.strictEqual(output.root, 'paper');
+    assert.ok(output.section_count >= 10, 'should scaffold default section set');
+
+    assert.ok(fs.existsSync(path.join(tmpDir, 'paper', 'PAPER.md')), 'paper entrypoint created');
+    assert.ok(fs.existsSync(path.join(tmpDir, 'paper', 'sources', 'SOURCE-LOG.md')), 'source log created');
+    assert.ok(fs.existsSync(path.join(tmpDir, 'paper', 'images', 'IMAGE-SOURCES.md')), 'image log created');
+    assert.ok(fs.existsSync(path.join(tmpDir, 'paper', 'figures', 'research-workflow.puml')), 'plantuml file created');
+    assert.ok(
+      fs.existsSync(path.join(tmpDir, 'paper', 'sections', '02-introduction', '01-background.md')),
+      'nested section markdown created'
+    );
+  });
+
+  test('paper init does not overwrite existing files', () => {
+    fs.mkdirSync(path.join(tmpDir, 'paper', 'sections', '02-introduction'), { recursive: true });
+    const existingFile = path.join(tmpDir, 'paper', 'sections', '02-introduction', '01-background.md');
+    fs.writeFileSync(existingFile, '# Custom content\n');
+
+    const result = runGsdTools('paper init "Topic"', tmpDir);
+    assert.ok(result.success, `Command failed: ${result.error}`);
+
+    const output = JSON.parse(result.output);
+    assert.ok(output.skipped_files.includes('paper/sections/02-introduction/01-background.md'));
+
+    const content = fs.readFileSync(existingFile, 'utf-8');
+    assert.strictEqual(content, '# Custom content\n', 'existing content must remain unchanged');
+  });
+});

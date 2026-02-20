@@ -120,10 +120,10 @@ If found, delete them — phase is complete, handoffs are stale.
 
 <step name="update_roadmap_and_state">
 
-**Delegate ROADMAP.md and STATE.md updates to gsd-tools:**
+**Delegate ROADMAP.md and STATE.md updates to papergen-tools:**
 
 ```bash
-TRANSITION=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs phase complete "${current_phase}")
+TRANSITION=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs phase complete "${current_phase}")
 ```
 
 The CLI handles:
@@ -192,7 +192,7 @@ Before:
 ```markdown
 ### Active
 
-- [ ] JWT authentication
+- [ ] source-ID citation verification
 - [ ] Real-time sync < 500ms
 - [ ] Offline mode
 
@@ -201,18 +201,18 @@ Before:
 - OAuth2 — complexity not needed for v1
 ```
 
-After (Phase 2 shipped JWT auth, discovered rate limiting needed):
+After (Phase 2 shipped source-ID citation, discovered rate limiting needed):
 
 ```markdown
 ### Validated
 
-- ✓ JWT authentication — Phase 2
+- ✓ source-ID citation verification — Phase 2
 
 ### Active
 
 - [ ] Real-time sync < 500ms
 - [ ] Offline mode
-- [ ] Rate limiting on sync endpoint
+- [ ] Rate limiting on sync section
 
 ### Out of Scope
 
@@ -233,12 +233,12 @@ After (Phase 2 shipped JWT auth, discovered rate limiting needed):
 
 <step name="update_current_position_after_transition">
 
-**Note:** Basic position updates (Current Phase, Status, Current Plan, Last Activity) were already handled by `gsd-tools phase complete` in the update_roadmap_and_state step.
+**Note:** Basic position updates (Current Phase, Status, Current Plan, Last Activity) were already handled by `papergen-tools phase complete` in the update_roadmap_and_state step.
 
 Verify the updates are correct by reading STATE.md. If the progress bar needs updating, use:
 
 ```bash
-PROGRESS=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs progress bar --raw)
+PROGRESS=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs progress bar --raw)
 ```
 
 Update the progress bar line in STATE.md with the result.
@@ -292,11 +292,11 @@ Before:
 ```markdown
 ### Blockers/Concerns
 
-- ⚠️ [Phase 1] Database schema not indexed for common queries
+- ⚠️ [Phase 1] source ledger paper structure not indexed for common queries
 - ⚠️ [Phase 2] WebSocket reconnection behavior on flaky networks unknown
 ```
 
-After (if database indexing was addressed in Phase 2):
+After (if source ledger indexing was addressed in Phase 2):
 
 ```markdown
 ### Blockers/Concerns
@@ -337,7 +337,7 @@ Resume file: None
 
 **MANDATORY: Verify milestone status before presenting next steps.**
 
-**Use the transition result from `gsd-tools phase complete`:**
+**Use the transition result from `papergen-tools phase complete`:**
 
 The `is_last_phase` field from the phase complete result tells you directly:
 - `is_last_phase: false` → More phases remain → Go to **Route A**
@@ -347,7 +347,7 @@ The `next_phase` and `next_phase_name` fields give you the next phase details.
 
 If you need additional context, use:
 ```bash
-ROADMAP=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs roadmap analyze)
+ROADMAP=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs roadmap analyze)
 ```
 
 This returns all phases with goals, disk status, and completion info.
@@ -378,7 +378,7 @@ Next: Phase [X+1] — [Name]
 ⚡ Auto-continuing: Plan Phase [X+1] in detail
 ```
 
-Exit skill and invoke SlashCommand("/gsd:plan-phase [X+1] --auto")
+Exit skill and invoke SlashCommand("/papergen:plan-phase [X+1] --auto")
 
 **If CONTEXT.md does NOT exist:**
 
@@ -390,7 +390,7 @@ Next: Phase [X+1] — [Name]
 ⚡ Auto-continuing: Discuss Phase [X+1] first
 ```
 
-Exit skill and invoke SlashCommand("/gsd:discuss-phase [X+1] --auto")
+Exit skill and invoke SlashCommand("/papergen:discuss-phase [X+1] --auto")
 
 </if>
 
@@ -407,15 +407,15 @@ Exit skill and invoke SlashCommand("/gsd:discuss-phase [X+1] --auto")
 
 **Phase [X+1]: [Name]** — [Goal from ROADMAP.md]
 
-`/gsd:discuss-phase [X+1]` — gather context and clarify approach
+`/papergen:discuss-phase [X+1]` — gather context and clarify approach
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:plan-phase [X+1]` — skip discussion, plan directly
-- `/gsd:research-phase [X+1]` — investigate unknowns
+- `/papergen:plan-phase [X+1]` — skip discussion, plan directly
+- `/papergen:research-phase [X+1]` — investigate unknowns
 
 ---
 ```
@@ -432,15 +432,15 @@ Exit skill and invoke SlashCommand("/gsd:discuss-phase [X+1] --auto")
 **Phase [X+1]: [Name]** — [Goal from ROADMAP.md]
 <sub>✓ Context gathered, ready to plan</sub>
 
-`/gsd:plan-phase [X+1]`
+`/papergen:plan-phase [X+1]`
 
 <sub>`/clear` first → fresh context window</sub>
 
 ---
 
 **Also available:**
-- `/gsd:discuss-phase [X+1]` — revisit context
-- `/gsd:research-phase [X+1]` — investigate unknowns
+- `/papergen:discuss-phase [X+1]` — revisit context
+- `/papergen:research-phase [X+1]` — investigate unknowns
 
 ---
 ```
@@ -453,7 +453,7 @@ Exit skill and invoke SlashCommand("/gsd:discuss-phase [X+1] --auto")
 
 **Clear auto-advance** — milestone boundary is the natural stopping point:
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs config-set workflow.auto_advance false
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs config-set workflow.auto_advance false
 ```
 
 <if mode="yolo">
@@ -466,7 +466,7 @@ Phase {X} marked complete.
 ⚡ Auto-continuing: Complete milestone and archive
 ```
 
-Exit skill and invoke SlashCommand("/gsd:complete-milestone {version}")
+Exit skill and invoke SlashCommand("/papergen:complete-milestone {version}")
 
 </if>
 
@@ -483,7 +483,7 @@ Exit skill and invoke SlashCommand("/gsd:complete-milestone {version}")
 
 **Complete Milestone {version}** — archive and prepare for next
 
-`/gsd:complete-milestone {version}`
+`/papergen:complete-milestone {version}`
 
 <sub>`/clear` first → fresh context window</sub>
 

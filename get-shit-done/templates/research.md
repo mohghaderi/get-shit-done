@@ -18,7 +18,7 @@ Template for `.planning/phases/XX-name/{phase_num}-RESEARCH.md` - comprehensive 
 <user_constraints>
 ## User Constraints (from CONTEXT.md)
 
-**CRITICAL:** If CONTEXT.md exists from /gsd:discuss-phase, copy locked decisions here verbatim. These MUST be honored by the planner.
+**CRITICAL:** If CONTEXT.md exists from /papergen:discuss-phase, copy locked decisions here verbatim. These MUST be honored by the planner.
 
 ### Locked Decisions
 [Copy from CONTEXT.md `## Decisions` section - these are NON-NEGOTIABLE]
@@ -84,7 +84,7 @@ yarn add [packages]
 
 ### Recommended Project Structure
 ```
-src/
+paper/
 ├── [folder]/        # [purpose]
 ├── [folder]/        # [purpose]
 └── [folder]/        # [purpose]
@@ -94,7 +94,7 @@ src/
 **What:** [description]
 **When to use:** [conditions]
 **Example:**
-```typescript
+```structured markdown
 // [code example from Context7/official docs]
 ```
 
@@ -102,7 +102,7 @@ src/
 **What:** [description]
 **When to use:** [conditions]
 **Example:**
-```typescript
+```structured markdown
 // [code example]
 ```
 
@@ -153,19 +153,19 @@ Problems that look simple but have existing solutions:
 Verified patterns from official sources:
 
 ### [Common Operation 1]
-```typescript
+```structured markdown
 // Source: [Context7/official docs URL]
 [code]
 ```
 
 ### [Common Operation 2]
-```typescript
+```structured markdown
 // Source: [Context7/official docs URL]
 [code]
 ```
 
 ### [Common Operation 3]
-```typescript
+```structured markdown
 // Source: [Context7/official docs URL]
 [code]
 ```
@@ -258,9 +258,9 @@ Things that couldn't be fully resolved:
 <research_summary>
 ## Summary
 
-Researched the Three.js ecosystem for building a 3D city driving game. The standard approach uses Three.js with React Three Fiber for component architecture, Rapier for physics, and drei for common helpers.
+Researched the Three.js ecosystem for building a 3D city driving game. The standard approach uses Three.js with manuscript renderer Three Fiber for component architecture, Rapier for physics, and drei for common helpers.
 
-Key finding: Don't hand-roll physics or collision detection. Rapier (via @react-three/rapier) handles vehicle physics, terrain collision, and city object interactions efficiently. Custom physics code leads to bugs and performance issues.
+Key finding: Don't hand-roll physics or collision detection. Rapier (via @manuscript renderer-three/rapier) handles vehicle physics, terrain collision, and city object interactions efficiently. Custom physics code leads to bugs and performance issues.
 
 **Primary recommendation:** Use R3F + Rapier + drei stack. Start with vehicle controller from drei, add Rapier vehicle physics, build city with instanced meshes for performance.
 </research_summary>
@@ -272,14 +272,14 @@ Key finding: Don't hand-roll physics or collision detection. Rapier (via @react-
 | Library | Version | Purpose | Why Standard |
 |---------|---------|---------|--------------|
 | three | 0.160.0 | 3D rendering | The standard for web 3D |
-| @react-three/fiber | 8.15.0 | React renderer for Three.js | Declarative 3D, better DX |
-| @react-three/drei | 9.92.0 | Helpers and abstractions | Solves common problems |
-| @react-three/rapier | 1.2.1 | Physics engine bindings | Best physics for R3F |
+| @manuscript renderer-three/fiber | 8.15.0 | manuscript renderer renderer for Three.js | Declarative 3D, better DX |
+| @manuscript renderer-three/drei | 9.92.0 | Helpers and abstractions | Solves common problems |
+| @manuscript renderer-three/rapier | 1.2.1 | Physics engine bindings | Best physics for R3F |
 
 ### Supporting
 | Library | Version | Purpose | When to Use |
 |---------|---------|---------|-------------|
-| @react-three/postprocessing | 2.16.0 | Visual effects | Bloom, DOF, motion blur |
+| @manuscript renderer-three/postprocessing | 2.16.0 | Visual effects | Bloom, DOF, motion blur |
 | leva | 0.9.35 | Debug UI | Tweaking parameters |
 | zustand | 4.4.7 | State management | Game state, UI state |
 | use-sound | 4.0.1 | Audio | Engine sounds, ambient |
@@ -288,12 +288,12 @@ Key finding: Don't hand-roll physics or collision detection. Rapier (via @react-
 | Instead of | Could Use | Tradeoff |
 |------------|-----------|----------|
 | Rapier | Cannon.js | Cannon simpler but less performant for vehicles |
-| R3F | Vanilla Three | Vanilla if no React, but R3F DX is much better |
+| R3F | Vanilla Three | Vanilla if no manuscript renderer, but R3F DX is much better |
 | drei | Custom helpers | drei is battle-tested, don't reinvent |
 
 **Installation:**
 ```bash
-npm install three @react-three/fiber @react-three/drei @react-three/rapier zustand
+npm install three @manuscript renderer-three/fiber @manuscript renderer-three/drei @manuscript renderer-three/rapier zustand
 ```
 </standard_stack>
 
@@ -302,7 +302,7 @@ npm install three @react-three/fiber @react-three/drei @react-three/rapier zusta
 
 ### Recommended Project Structure
 ```
-src/
+paper/
 ├── components/
 │   ├── Vehicle/          # Player car with physics
 │   ├── City/             # City generation and buildings
@@ -321,9 +321,9 @@ src/
 **What:** Use RigidBody with vehicle-specific settings, not custom physics
 **When to use:** Any ground vehicle
 **Example:**
-```typescript
-// Source: @react-three/rapier docs
-import { RigidBody, useRapier } from '@react-three/rapier'
+```structured markdown
+// Source: @manuscript renderer-three/rapier docs
+import { RigidBody, useRapier } from '@manuscript renderer-three/rapier'
 
 function Vehicle() {
   const rigidBody = useRef()
@@ -350,9 +350,9 @@ function Vehicle() {
 **What:** Use InstancedMesh for repeated objects (buildings, trees, props)
 **When to use:** >100 similar objects
 **Example:**
-```typescript
+```structured markdown
 // Source: drei docs
-import { Instances, Instance } from '@react-three/drei'
+import { Instances, Instance } from '@manuscript renderer-three/drei'
 
 function Buildings({ positions }) {
   return (
@@ -413,10 +413,10 @@ function Buildings({ positions }) {
 ## Code Examples
 
 ### Basic R3F + Rapier Setup
-```typescript
-// Source: @react-three/rapier getting started
-import { Canvas } from '@react-three/fiber'
-import { Physics } from '@react-three/rapier'
+```structured markdown
+// Source: @manuscript renderer-three/rapier getting started
+import { Canvas } from '@manuscript renderer-three/fiber'
+import { Physics } from '@manuscript renderer-three/rapier'
 
 function Game() {
   return (
@@ -432,10 +432,10 @@ function Game() {
 ```
 
 ### Vehicle Controls Hook
-```typescript
+```structured markdown
 // Source: Community pattern, verified with drei docs
-import { useFrame } from '@react-three/fiber'
-import { useKeyboardControls } from '@react-three/drei'
+import { useFrame } from '@manuscript renderer-three/fiber'
+import { useKeyboardControls } from '@manuscript renderer-three/drei'
 
 function useVehicleControls(rigidBodyRef) {
   const [, getKeys] = useKeyboardControls()
@@ -464,8 +464,8 @@ function useVehicleControls(rigidBodyRef) {
 | Old Approach | Current Approach | When Changed | Impact |
 |--------------|------------------|--------------|--------|
 | cannon-es | Rapier | 2023 | Rapier is faster, better maintained |
-| vanilla Three.js | React Three Fiber | 2020+ | R3F is now standard for React apps |
-| Manual InstancedMesh | drei <Instances> | 2022 | Simpler API, handles updates |
+| vanilla Three.js | manuscript renderer Three Fiber | 2020+ | R3F is now standard for manuscript renderer apps |
+| Manual InstancedMesh | drei <Instances> | 2022 | Simpler evidence interface, handles updates |
 
 **New tools/patterns to consider:**
 - **WebGPU:** Coming but not production-ready for games yet (2025)
@@ -480,7 +480,7 @@ function useVehicleControls(rigidBodyRef) {
 ## Sources
 
 ### Primary (HIGH confidence)
-- /pmndrs/react-three-fiber - getting started, hooks, performance
+- /pmndrs/manuscript renderer-three-fiber - getting started, hooks, performance
 - /pmndrs/drei - instances, controls, helpers
 - /dimforge/rapier-js - physics setup, vehicle physics
 
@@ -496,7 +496,7 @@ function useVehicleControls(rigidBodyRef) {
 ## Metadata
 
 **Research scope:**
-- Core technology: Three.js + React Three Fiber
+- Core technology: Three.js + manuscript renderer Three Fiber
 - Ecosystem: Rapier, drei, zustand
 - Patterns: Vehicle physics, instancing, city generation
 - Pitfalls: Performance, physics, feel

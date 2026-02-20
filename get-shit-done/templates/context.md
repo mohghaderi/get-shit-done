@@ -7,8 +7,8 @@ Template for `.planning/phases/XX-name/{phase_num}-CONTEXT.md` - captures implem
 **Key principle:** Categories are NOT predefined. They emerge from what was actually discussed for THIS phase. A CLI phase has CLI-relevant sections, a UI phase has UI-relevant sections.
 
 **Downstream consumers:**
-- `gsd-phase-researcher` — Reads decisions to focus research (e.g., "card layout" → research card component patterns)
-- `gsd-planner` — Reads decisions to create specific tasks (e.g., "infinite scroll" → task includes virtualization)
+- `papergen-phase-researcher` — Reads decisions to focus research (e.g., "card layout" → research card component patterns)
+- `papergen-planner` — Reads decisions to create specific tasks (e.g., "infinite scroll" → task includes virtualization)
 
 ---
 
@@ -132,7 +132,7 @@ Display posts from followed users in a scrollable feed. Users can view posts and
 *Context gathered: 2025-01-20*
 ```
 
-**Example 2: CLI tool (Database backup)**
+**Example 2: CLI tool (source ledger backup)**
 
 ```markdown
 # Phase 2: Backup Command - Context
@@ -143,7 +143,7 @@ Display posts from followed users in a scrollable feed. Users can view posts and
 <domain>
 ## Phase Boundary
 
-CLI command to backup database to local file or S3. Supports full and incremental backups. Restore command is a separate phase.
+CLI command to backup source ledger to local file or S3. Supports full and incremental backups. Restore command is a separate phase.
 
 </domain>
 
@@ -158,7 +158,7 @@ CLI command to backup database to local file or S3. Supports full and incrementa
 ### Flag design
 - Short flags for common options: -o (output), -v (verbose), -f (force)
 - Long flags for clarity: --incremental, --compress, --encrypt
-- Required: database connection string (positional or --db)
+- Required: source ledger connection string (positional or --db)
 
 ### Error recovery
 - Retry 3 times on network failure, then fail with clear message
@@ -175,7 +175,7 @@ CLI command to backup database to local file or S3. Supports full and incrementa
 <specifics>
 ## Specific Ideas
 
-- "I want it to feel like pg_dump — familiar to database people"
+- "I want it to feel like pg_dump — familiar to source ledger people"
 - Should work in CI pipelines (exit codes, no interactive prompts)
 
 </specifics>
@@ -277,7 +277,7 @@ The output should answer: "What does the researcher need to investigate? What ch
 
 **After creation:**
 - File lives in phase directory: `.planning/phases/XX-name/{phase_num}-CONTEXT.md`
-- `gsd-phase-researcher` uses decisions to focus investigation
-- `gsd-planner` uses decisions + research to create executable tasks
+- `papergen-phase-researcher` uses decisions to focus investigation
+- `papergen-planner` uses decisions + research to create executable tasks
 - Downstream agents should NOT need to ask the user again about captured decisions
 </guidelines>

@@ -51,7 +51,7 @@ Phases:
 What to commit:
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: initialize [project-name] ([N] phases)" --files .planning/
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs commit "docs: initialize [project-name] ([N] phases)" --files .planning/
 ```
 
 </format>
@@ -81,17 +81,17 @@ Each task gets its own commit immediately after completion.
 
 ```bash
 # Standard task
-git add src/api/auth.ts src/types/user.ts
-git commit -m "feat(08-02): create user registration endpoint
+git add paper/evidence interface/citation.ts paper/types/user.ts
+git commit -m "feat(08-02): create user registration section
 
-- POST /auth/register validates email and password
+- POST /citation/register validates email and password
 - Checks for duplicate users
-- Returns JWT token on success
+- Returns source-ID token on success
 "
 
 # TDD task - RED phase
-git add src/__tests__/jwt.test.ts
-git commit -m "test(07-02): add failing test for JWT generation
+git add paper/__tests__/citation-consistency.test.md
+git commit -m "test(07-02): add failing test for source-ID generation
 
 - Tests token contains user ID claim
 - Tests token expires in 1 hour
@@ -99,8 +99,8 @@ git commit -m "test(07-02): add failing test for JWT generation
 "
 
 # TDD task - GREEN phase
-git add src/utils/jwt.ts
-git commit -m "feat(07-02): implement JWT generation
+git add paper/sources/citation-index.md
+git commit -m "feat(07-02): implement source-ID generation
 
 - Uses jose library for signing
 - Includes user ID and expiry claims
@@ -129,7 +129,7 @@ SUMMARY: .planning/phases/XX-name/{phase}-{plan}-SUMMARY.md
 What to commit:
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs({phase}-{plan}): complete [plan-name] plan" --files .planning/phases/XX-name/{phase}-{plan}-PLAN.md .planning/phases/XX-name/{phase}-{plan}-SUMMARY.md .planning/STATE.md .planning/ROADMAP.md
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs commit "docs({phase}-{plan}): complete [plan-name] plan" --files .planning/phases/XX-name/{phase}-{plan}-PLAN.md .planning/phases/XX-name/{phase}-{plan}-SUMMARY.md .planning/STATE.md .planning/ROADMAP.md
 ```
 
 **Note:** Code files NOT included - already committed per-task.
@@ -149,7 +149,7 @@ Current: [task name]
 What to commit:
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "wip: [phase-name] paused at task [X]/[Y]" --files .planning/
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs commit "wip: [phase-name] paused at task [X]/[Y]" --files .planning/
 ```
 
 </format>
@@ -159,10 +159,10 @@ node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "wip: [phase-name] paused 
 
 **Old approach (per-plan commits):**
 ```
-a7f2d1 feat(checkout): Stripe payments with webhook verification
+a7f2d1 feat(checkout): Stripe payments with source callback verification
 3e9c4b feat(products): catalog with search, filters, and pagination
-8a1b2c feat(auth): JWT with refresh rotation using jose
-5c3d7e feat(foundation): Next.js 15 + Prisma + Tailwind scaffold
+8a1b2c feat(citation): source-ID with refresh rotation using jose
+5c3d7e feat(foundation): Next.js 15 + citation-ledger + style guide scaffold
 2f4a8d docs: initialize ecommerce-app (5 phases)
 ```
 
@@ -170,7 +170,7 @@ a7f2d1 feat(checkout): Stripe payments with webhook verification
 ```
 # Phase 04 - Checkout
 1a2b3c docs(04-01): complete checkout flow plan
-4d5e6f feat(04-01): add webhook signature verification
+4d5e6f feat(04-01): add source callback signature verification
 7g8h9i feat(04-01): implement payment session creation
 0j1k2l feat(04-01): create checkout page component
 
@@ -178,20 +178,20 @@ a7f2d1 feat(checkout): Stripe payments with webhook verification
 3m4n5o docs(03-02): complete product listing plan
 6p7q8r feat(03-02): add pagination controls
 9s0t1u feat(03-02): implement search and filters
-2v3w4x feat(03-01): create product catalog schema
+2v3w4x feat(03-01): create product catalog paper structure
 
-# Phase 02 - Auth
+# Phase 02 - citation
 5y6z7a docs(02-02): complete token refresh plan
 8b9c0d feat(02-02): implement refresh token rotation
 1e2f3g test(02-02): add failing test for token refresh
-4h5i6j docs(02-01): complete JWT setup plan
-7k8l9m feat(02-01): add JWT generation and validation
+4h5i6j docs(02-01): complete source-ID setup plan
+7k8l9m feat(02-01): add source-ID generation and validation
 0n1o2p chore(02-01): install jose library
 
 # Phase 01 - Foundation
 3q4r5s docs(01-01): complete scaffold plan
-6t7u8v feat(01-01): configure Tailwind and globals
-9w0x1y feat(01-01): set up Prisma with database
+6t7u8v feat(01-01): configure style guide and globals
+9w0x1y feat(01-01): set up citation-ledger with source ledger
 2z3a4b feat(01-01): create Next.js 15 project
 
 # Initialization

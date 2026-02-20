@@ -500,7 +500,7 @@ function cmdScaffold(cwd, type, options, raw) {
   switch (type) {
     case 'context': {
       filePath = path.join(phaseDir, `${padded}-CONTEXT.md`);
-      content = `---\nphase: "${padded}"\nname: "${name || phaseInfo?.phase_name || 'Unnamed'}"\ncreated: ${today}\n---\n\n# Phase ${phase}: ${name || phaseInfo?.phase_name || 'Unnamed'} — Context\n\n## Decisions\n\n_Decisions will be captured during /gsd:discuss-phase ${phase}_\n\n## Discretion Areas\n\n_Areas where the executor can use judgment_\n\n## Deferred Ideas\n\n_Ideas to consider later_\n`;
+      content = `---\nphase: "${padded}"\nname: "${name || phaseInfo?.phase_name || 'Unnamed'}"\ncreated: ${today}\n---\n\n# Phase ${phase}: ${name || phaseInfo?.phase_name || 'Unnamed'} — Context\n\n## Decisions\n\n_Decisions will be captured during /papergen:discuss-phase ${phase}_\n\n## Discretion Areas\n\n_Areas where the executor can use judgment_\n\n## Deferred Ideas\n\n_Ideas to consider later_\n`;
       break;
     }
     case 'uat': {
@@ -540,6 +540,132 @@ function cmdScaffold(cwd, type, options, raw) {
   output({ created: true, path: relPath }, raw, relPath);
 }
 
+function cmdPaperInit(cwd, topic, raw) {
+  if (!topic || !topic.trim()) {
+    error('topic required for paper init');
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+  const paperRoot = path.join(cwd, 'paper');
+  const sectionsRoot = path.join(paperRoot, 'sections');
+  const sourcesRoot = path.join(paperRoot, 'sources');
+  const figuresRoot = path.join(paperRoot, 'figures');
+  const imagesRoot = path.join(paperRoot, 'images');
+
+  const created = [];
+  const skipped = [];
+  const toRel = (filePath) => path.relative(cwd, filePath).replace(/\\/g, '/');
+
+  const writeIfMissing = (filePath, content) => {
+    if (fs.existsSync(filePath)) {
+      skipped.push(toRel(filePath));
+      return;
+    }
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, content, 'utf-8');
+    created.push(toRel(filePath));
+  };
+
+  fs.mkdirSync(sectionsRoot, { recursive: true });
+  fs.mkdirSync(sourcesRoot, { recursive: true });
+  fs.mkdirSync(figuresRoot, { recursive: true });
+  fs.mkdirSync(imagesRoot, { recursive: true });
+
+  writeIfMissing(
+    path.join(paperRoot, 'README.md'),
+    `# Research Paper Workspace\n\nTopic: ${topic.trim()}\n\nGenerated: ${today}\n\n## Structure\n\n- \`paper/PAPER.md\`: Main manuscript entry point\n- \`paper/sections/\`: Nested section files\n- \`paper/sources/SOURCE-LOG.md\`: Citation/source ledger\n- \`paper/figures/\`: PlantUML diagrams\n- \`paper/images/IMAGE-SOURCES.md\`: External image tracking\n`
+  );
+
+  writeIfMissing(
+    path.join(paperRoot, 'PAPER.md'),
+    `# ${topic.trim()}\n\n> Assembly document for publication. Pull finalized text from \`paper/sections/\`.\n\n## Abstract\n\nSee: [sections/01-front-matter/01-abstract.md](sections/01-front-matter/01-abstract.md)\n\n## Sections\n\n- [Introduction](sections/02-introduction/01-background.md)\n- [Methods](sections/03-methods/01-study-design.md)\n- [Results](sections/04-results/01-main-findings.md)\n- [Discussion](sections/05-discussion/01-interpretation.md)\n- [Conclusion](sections/06-conclusion/01-conclusion.md)\n\n## Figures\n\n- [Research Workflow](figures/research-workflow.puml)\n`
+  );
+
+  writeIfMissing(
+    path.join(sourcesRoot, 'SOURCE-LOG.md'),
+    `# Source Log\n\n| ID | Claim/Use | Source | URL | Accessed | Confidence |\n|----|-----------|--------|-----|----------|------------|\n`
+  );
+
+  writeIfMissing(
+    path.join(imagesRoot, 'IMAGE-SOURCES.md'),
+    `# Image Sources\n\n| Figure | Purpose | Source Page | Direct Image URL | License | Accessed |\n|--------|---------|-------------|------------------|---------|----------|\n`
+  );
+
+  writeIfMissing(
+    path.join(figuresRoot, 'research-workflow.puml'),
+    `@startuml\nskinparam monochrome true\nskinparam shadowing false\n\nstart\n:Define research question;\n:Collect sources;\n:Extract evidence and citations;\n:Draft section files;\n:Generate figures and integrate images;\n:Assemble manuscript;\nstop\n@enduml\n`
+  );
+
+  const sectionFiles = [
+    {
+      rel: '01-front-matter/01-abstract.md',
+      title: 'Abstract',
+      prompt: 'Summarize objective, method, core findings, and implications in 150-250 words.',
+    },
+    {
+      rel: '02-introduction/01-background.md',
+      title: 'Introduction: Background',
+      prompt: 'Establish context and define domain terms needed for the paper.',
+    },
+    {
+      rel: '02-introduction/02-research-questions.md',
+      title: 'Introduction: Research Questions',
+      prompt: 'State primary and secondary research questions with explicit scope.',
+    },
+    {
+      rel: '03-methods/01-study-design.md',
+      title: 'Methods: Study Design',
+      prompt: 'Describe search strategy, inclusion criteria, and analysis approach.',
+    },
+    {
+      rel: '03-methods/02-data-collection.md',
+      title: 'Methods: Data Collection',
+      prompt: 'Document data sources, collection period, and extraction method.',
+    },
+    {
+      rel: '04-results/01-main-findings.md',
+      title: 'Results: Main Findings',
+      prompt: 'Present evidence-backed findings with source-linked claims.',
+    },
+    {
+      rel: '04-results/02-limitations.md',
+      title: 'Results: Limitations',
+      prompt: 'List methodological and source-quality limitations.',
+    },
+    {
+      rel: '05-discussion/01-interpretation.md',
+      title: 'Discussion: Interpretation',
+      prompt: 'Interpret findings and compare with competing explanations.',
+    },
+    {
+      rel: '05-discussion/02-implications.md',
+      title: 'Discussion: Implications',
+      prompt: 'Explain practical and theoretical implications.',
+    },
+    {
+      rel: '06-conclusion/01-conclusion.md',
+      title: 'Conclusion',
+      prompt: 'Summarize conclusions, contributions, and future work.',
+    },
+  ];
+
+  for (const section of sectionFiles) {
+    writeIfMissing(
+      path.join(sectionsRoot, section.rel),
+      `# ${section.title}\n\n## Objective\n\n${section.prompt}\n\n## Draft\n\n_TODO: Write section content with citations._\n\n## Evidence Notes\n\n- Claim:\n- Evidence:\n- Source IDs: []\n`
+    );
+  }
+
+  output({
+    created: true,
+    topic: topic.trim(),
+    root: 'paper',
+    section_count: sectionFiles.length,
+    created_files: created,
+    skipped_files: skipped,
+  }, raw);
+}
+
 module.exports = {
   cmdGenerateSlug,
   cmdCurrentTimestamp,
@@ -553,4 +679,5 @@ module.exports = {
   cmdProgressRender,
   cmdTodoComplete,
   cmdScaffold,
+  cmdPaperInit,
 };

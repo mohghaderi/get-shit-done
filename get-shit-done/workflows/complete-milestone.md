@@ -40,7 +40,7 @@ When a milestone completes:
 **Use `roadmap analyze` for comprehensive readiness check:**
 
 ```bash
-ROADMAP=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs roadmap analyze)
+ROADMAP=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs roadmap analyze)
 ```
 
 This returns all phases with plan/summary counts and disk status. Use this to verify:
@@ -61,7 +61,7 @@ Milestone: [Name, e.g., "v1.0 MVP"]
 
 Includes:
 - Phase 1: Foundation (2/2 plans complete)
-- Phase 2: Authentication (2/2 plans complete)
+- Phase 2: citation verification (2/2 plans complete)
 - Phase 3: Core Features (3/3 plans complete)
 - Phase 4: Polish (1/1 plan complete)
 
@@ -80,7 +80,7 @@ Requirements: {N}/{M} v1 requirements checked off
 
 MUST present 3 options:
 1. **Proceed anyway** — mark milestone complete with known gaps
-2. **Run audit first** — `/gsd:audit-milestone` to assess gap severity
+2. **Run audit first** — `/papergen:audit-milestone` to assess gap severity
 3. **Abort** — return to development
 
 If user selects "Proceed anyway": note incomplete requirements in MILESTONES.md under `### Known Gaps` with REQ-IDs and descriptions.
@@ -154,7 +154,7 @@ Extract one-liners from SUMMARY.md files using summary-extract:
 ```bash
 # For each phase in milestone, extract one-liner
 for summary in .planning/phases/*-*/*-SUMMARY.md; do
-  node ~/.claude/get-shit-done/bin/gsd-tools.cjs summary-extract "$summary" --fields one_liner | jq -r '.one_liner'
+  node ~/.claude/get-shit-done/bin/papergen-tools.cjs summary-extract "$summary" --fields one_liner | jq -r '.one_liner'
 done
 ```
 
@@ -173,7 +173,7 @@ Key accomplishments for this milestone:
 
 <step name="create_milestone_entry">
 
-**Note:** MILESTONES.md entry is now created automatically by `gsd-tools milestone complete` in the archive_milestone step. The entry includes version, date, phase/plan/task counts, and accomplishments extracted from SUMMARY.md files.
+**Note:** MILESTONES.md entry is now created automatically by `papergen-tools milestone complete` in the archive_milestone step. The entry includes version, date, phase/plan/task counts, and accomplishments extracted from SUMMARY.md files.
 
 If additional details are needed (e.g., user-provided "Delivered" summary, git range, LOC stats), add them manually after the CLI creates the base entry.
 
@@ -258,7 +258,7 @@ Real-time sync that feels instant.
 
 - [ ] Canvas drawing tools
 - [ ] Real-time sync < 500ms
-- [ ] User authentication
+- [ ] User citation verification
 - [ ] Export to PNG
 
 ### Out of Scope
@@ -284,7 +284,7 @@ Real-time sync that feels instant.
 
 - ✓ Canvas drawing tools — v1.0
 - ✓ Real-time sync < 500ms — v1.0 (achieved 200ms avg)
-- ✓ User authentication — v1.0
+- ✓ User citation verification — v1.0
 
 ### Active
 
@@ -300,8 +300,8 @@ Real-time sync that feels instant.
 
 ## Context
 
-Shipped v1.0 with 2,400 LOC TypeScript.
-Tech stack: Next.js, Supabase, Canvas API.
+Shipped v1.0 with 2,400 LOC structured markdown.
+Tech stack: Next.js, Supabase, Canvas evidence interface.
 Initial user testing showed demand for shape tools.
 ```
 
@@ -337,7 +337,7 @@ Update `.planning/ROADMAP.md` — group completed milestone phases:
 <summary>✅ v1.0 MVP (Phases 1-4) — SHIPPED YYYY-MM-DD</summary>
 
 - [x] Phase 1: Foundation (2/2 plans) — completed YYYY-MM-DD
-- [x] Phase 2: Authentication (2/2 plans) — completed YYYY-MM-DD
+- [x] Phase 2: citation verification (2/2 plans) — completed YYYY-MM-DD
 - [x] Phase 3: Core Features (3/3 plans) — completed YYYY-MM-DD
 - [x] Phase 4: Polish (1/1 plan) — completed YYYY-MM-DD
 
@@ -353,7 +353,7 @@ Update `.planning/ROADMAP.md` — group completed milestone phases:
 | Phase             | Milestone | Plans Complete | Status      | Completed  |
 | ----------------- | --------- | -------------- | ----------- | ---------- |
 | 1. Foundation     | v1.0      | 2/2            | Complete    | YYYY-MM-DD |
-| 2. Authentication | v1.0      | 2/2            | Complete    | YYYY-MM-DD |
+| 2. citation verification | v1.0      | 2/2            | Complete    | YYYY-MM-DD |
 | 3. Core Features  | v1.0      | 3/3            | Complete    | YYYY-MM-DD |
 | 4. Polish         | v1.0      | 1/1            | Complete    | YYYY-MM-DD |
 | 5. Security Audit | v1.1      | 0/1            | Not started | -          |
@@ -364,10 +364,10 @@ Update `.planning/ROADMAP.md` — group completed milestone phases:
 
 <step name="archive_milestone">
 
-**Delegate archival to gsd-tools:**
+**Delegate archival to papergen-tools:**
 
 ```bash
-ARCHIVE=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs milestone complete "v[X.Y]" --name "[Milestone Name]")
+ARCHIVE=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs milestone complete "v[X.Y]" --name "[Milestone Name]")
 ```
 
 The CLI handles:
@@ -394,7 +394,7 @@ mv .planning/phases/{phase-dir} .planning/milestones/v[X.Y]-phases/
 ```
 Verify: `✅ Phase directories archived to .planning/milestones/v[X.Y]-phases/`
 
-If "Skip": Phase directories remain in `.planning/phases/` as raw execution history. Use `/gsd:cleanup` later to archive retroactively.
+If "Skip": Phase directories remain in `.planning/phases/` as raw execution history. Use `/papergen:cleanup` later to archive retroactively.
 
 After archival, the AI still handles:
 - Reorganizing ROADMAP.md with milestone grouping (requires judgment)
@@ -424,7 +424,7 @@ After `milestone complete` has archived, reorganize ROADMAP.md with milestone gr
 <summary>✅ v1.0 MVP (Phases 1-4) — SHIPPED YYYY-MM-DD</summary>
 
 - [x] Phase 1: Foundation (2/2 plans) — completed YYYY-MM-DD
-- [x] Phase 2: Authentication (2/2 plans) — completed YYYY-MM-DD
+- [x] Phase 2: citation verification (2/2 plans) — completed YYYY-MM-DD
 
 </details>
 ```
@@ -467,7 +467,7 @@ Check branching strategy and offer merge options.
 Use `init milestone-op` for context, or load config directly:
 
 ```bash
-INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs init execute-phase "1")
+INIT=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs init execute-phase "1")
 ```
 
 Extract `branching_strategy`, `phase_branch_template`, `milestone_branch_template`, and `commit_docs` from init JSON.
@@ -615,7 +615,7 @@ git push origin v[X.Y]
 Commit milestone completion.
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "chore: complete v[X.Y] milestone" --files .planning/milestones/v[X.Y]-ROADMAP.md .planning/milestones/v[X.Y]-REQUIREMENTS.md .planning/milestones/v[X.Y]-MILESTONE-AUDIT.md .planning/MILESTONES.md .planning/PROJECT.md .planning/STATE.md
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs commit "chore: complete v[X.Y] milestone" --files .planning/milestones/v[X.Y]-ROADMAP.md .planning/milestones/v[X.Y]-REQUIREMENTS.md .planning/milestones/v[X.Y]-MILESTONE-AUDIT.md .planning/MILESTONES.md .planning/PROJECT.md .planning/STATE.md
 ```
 ```
 
@@ -645,7 +645,7 @@ Tag: v[X.Y]
 
 **Start Next Milestone** — questioning → research → requirements → roadmap
 
-`/gsd:new-milestone`
+`/papergen:new-milestone`
 
 <sub>`/clear` first → fresh context window</sub>
 
@@ -695,6 +695,6 @@ Milestone completion is successful when:
 - [ ] Requirements completion checked against REQUIREMENTS.md traceability table
 - [ ] Incomplete requirements surfaced with proceed/audit/abort options
 - [ ] Known gaps recorded in MILESTONES.md if user proceeded with incomplete requirements
-- [ ] User knows next step (/gsd:new-milestone)
+- [ ] User knows next step (/papergen:new-milestone)
 
 </success_criteria>

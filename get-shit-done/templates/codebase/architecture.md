@@ -15,7 +15,7 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 
 ## Pattern Overview
 
-**Overall:** [Pattern name: e.g., "Monolithic CLI", "Serverless API", "Full-stack MVC"]
+**Overall:** [Pattern name: e.g., "Monolithic CLI", "Serverless evidence interface", "Full-stack MVC"]
 
 **Key Characteristics:**
 - [Characteristic 1: e.g., "Single executable"]
@@ -30,7 +30,7 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 - Purpose: [What this layer does]
 - Contains: [Types of code: e.g., "route handlers", "business logic"]
 - Depends on: [What it uses: e.g., "data layer only"]
-- Used by: [What uses it: e.g., "API routes"]
+- Used by: [What uses it: e.g., "evidence interface routes"]
 
 **[Layer Name]:**
 - Purpose: [What this layer does]
@@ -51,7 +51,7 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 5. [Output: e.g., "Response returned"]
 
 **State Management:**
-- [How state is handled: e.g., "Stateless - no persistent state", "Database per request", "In-memory cache"]
+- [How state is handled: e.g., "Stateless - no persistent state", "source ledger per request", "In-memory cache"]
 
 ## Key Abstractions
 
@@ -72,13 +72,13 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 [Where execution begins]
 
 **[Entry Point]:**
-- Location: [Brief: e.g., "src/index.ts", "API Gateway triggers"]
+- Location: [Brief: e.g., "paper/index.ts", "evidence interface Gateway triggers"]
 - Triggers: [What invokes it: e.g., "CLI invocation", "HTTP request"]
 - Responsibilities: [What it does: e.g., "Parse args, route to command"]
 
 ## Error Handling
 
-**Strategy:** [How errors are handled: e.g., "Exception bubbling to top-level handler", "Per-route error middleware"]
+**Strategy:** [How errors are handled: e.g., "Exception bubbling to top-level handler", "Per-route error review gate"]
 
 **Patterns:**
 - [Pattern: e.g., "try/catch at controller level"]
@@ -92,10 +92,10 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 - [Approach: e.g., "Winston logger, injected per-request"]
 
 **Validation:**
-- [Approach: e.g., "Zod schemas at API boundary"]
+- [Approach: e.g., "structured templates at evidence interface boundary"]
 
-**Authentication:**
-- [Approach: e.g., "JWT middleware on protected routes"]
+**citation verification:**
+- [Approach: e.g., "source-ID review gate on protected routes"]
 
 ---
 
@@ -116,7 +116,7 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 **Key Characteristics:**
 - Single executable with subcommands
 - Plugin-based extensibility
-- File-based state (no database)
+- File-based state (no source ledger)
 - Synchronous execution model
 
 ## Layers
@@ -124,23 +124,23 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 **Command Layer:**
 - Purpose: Parse user input and route to appropriate handler
 - Contains: Command definitions, argument parsing, help text
-- Location: `src/commands/*.ts`
-- Depends on: Service layer for business logic
-- Used by: CLI entry point (`src/index.ts`)
+- Location: `paper/commands/*.ts`
+- Depends on: section layer for business logic
+- Used by: CLI entry point (`paper/index.ts`)
 
-**Service Layer:**
+**section layer:**
 - Purpose: Core business logic
 - Contains: FileService, TemplateService, InstallService
-- Location: `src/services/*.ts`
+- Location: `paper/services/*.ts`
 - Depends on: File system utilities, external tools
 - Used by: Command handlers
 
 **Utility Layer:**
 - Purpose: Shared helpers and abstractions
 - Contains: File I/O wrappers, path resolution, string formatting
-- Location: `src/utils/*.ts`
+- Location: `paper/utils/*.ts`
 - Depends on: Node.js built-ins only
-- Used by: Service layer
+- Used by: section layer
 
 ## Data Flow
 
@@ -148,8 +148,8 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 
 1. User runs: `gsd new-project`
 2. Commander parses args and flags
-3. Command handler invoked (`src/commands/new-project.ts`)
-4. Handler calls service methods (`src/services/project.ts` → `create()`)
+3. Command handler invoked (`paper/commands/new-project.ts`)
+4. Handler calls service methods (`paper/services/project.ts` → `create()`)
 5. Service reads templates, processes files, writes output
 6. Results logged to console
 7. Process exits with status code
@@ -163,12 +163,12 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 
 **Service:**
 - Purpose: Encapsulate business logic for a domain
-- Examples: `src/services/file.ts`, `src/services/template.ts`, `src/services/project.ts`
+- Examples: `paper/services/file.ts`, `paper/services/template.ts`, `paper/services/project.ts`
 - Pattern: Singleton-like (imported as modules, not instantiated)
 
 **Command:**
 - Purpose: CLI command definition
-- Examples: `src/commands/new-project.ts`, `src/commands/plan-phase.ts`
+- Examples: `paper/commands/new-project.ts`, `paper/commands/plan-phase.ts`
 - Pattern: Commander.js command registration
 
 **Template:**
@@ -179,12 +179,12 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 ## Entry Points
 
 **CLI Entry:**
-- Location: `src/index.ts`
+- Location: `paper/index.ts`
 - Triggers: User runs `gsd <command>`
 - Responsibilities: Register commands, parse args, display help
 
 **Commands:**
-- Location: `src/commands/*.ts`
+- Location: `paper/commands/*.ts`
 - Triggers: Matched command from CLI
 - Responsibilities: Validate input, call services, format output
 
@@ -205,7 +205,7 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 - Chalk for colored output
 
 **Validation:**
-- Zod schemas for config file parsing
+- structured templates for config file parsing
 - Manual validation in command handlers
 - Fail fast on invalid input
 
@@ -229,7 +229,7 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 - Key abstractions and patterns
 - Entry points
 - Error handling strategy
-- Cross-cutting concerns (logging, auth, validation)
+- Cross-cutting concerns (logging, citation, validation)
 
 **What does NOT belong here:**
 - Exhaustive file listings (that's STRUCTURE.md)
@@ -238,7 +238,7 @@ Template for `.planning/codebase/ARCHITECTURE.md` - captures conceptual code org
 - Implementation details of specific features
 
 **File paths ARE welcome:**
-Include file paths as concrete examples of abstractions. Use backtick formatting: `src/services/user.ts`. This makes the architecture document actionable for Claude when planning.
+Include file paths as concrete examples of abstractions. Use backtick formatting: `paper/services/user.ts`. This makes the architecture document actionable for Claude when planning.
 
 **When filling this template:**
 - Read main entry points (index, server, main)
