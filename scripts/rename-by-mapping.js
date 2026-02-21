@@ -315,28 +315,34 @@ function mappingPreviewVariants(from, to) {
   const toWords = splitWords(to);
 
   const variants = [];
+  const seen = new Set();
+  function addVariant(left, right) {
+    const key = `${left}\u0000${right}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    variants.push([left, right]);
+  }
 
   if (fromWords.length === 1 && toWords.length === 1) {
-    variants.push([from.toLowerCase(), to.toLowerCase()]);
-    variants.push([from.toUpperCase(), to.toUpperCase()]);
-    variants.push([toTitleCaseWord(from), toTitleCaseWord(to)]);
+    addVariant(from.toLowerCase(), to.toLowerCase());
+    addVariant(from.toUpperCase(), to.toUpperCase());
+    addVariant(toTitleCaseWord(from), toTitleCaseWord(to));
     return variants;
   }
 
-  const styles = [
-    { name: 'space-lower', sep: ' ', caseFn: (w) => w.toLowerCase() },
-    { name: 'space-title', sep: ' ', caseFn: (w) => toTitleCaseWord(w) },
-    { name: 'kebab-lower', sep: '-', caseFn: (w) => w.toLowerCase() },
-    { name: 'kebab-title', sep: '-', caseFn: (w) => toTitleCaseWord(w) },
-    { name: 'snake-lower', sep: '_', caseFn: (w) => w.toLowerCase() },
-    { name: 'snake-upper', sep: '_', caseFn: (w) => w.toUpperCase() },
-    { name: 'space-upper', sep: ' ', caseFn: (w) => w.toUpperCase() }
+  const separators = [' ', '-', '_'];
+  const caseFns = [
+    (w) => w.toLowerCase(),
+    (w) => toTitleCaseWord(w),
+    (w) => w.toUpperCase()
   ];
 
-  for (const style of styles) {
-    const left = fromWords.map(style.caseFn).join(style.sep);
-    const right = toWords.map(style.caseFn).join(style.sep);
-    variants.push([left, right]);
+  for (const sep of separators) {
+    for (const caseFn of caseFns) {
+      const left = fromWords.map(caseFn).join(sep);
+      const right = toWords.map(caseFn).join(sep);
+      addVariant(left, right);
+    }
   }
 
   return variants;
