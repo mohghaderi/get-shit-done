@@ -79,6 +79,8 @@ describe('init commands', () => {
     assert.strictEqual(output.sections_dir, 'paper/sections');
     assert.strictEqual(output.source_log_path, 'paper/sources/SOURCE-LOG.md');
     assert.strictEqual(output.image_log_path, 'paper/images/IMAGE-SOURCES.md');
+    assert.strictEqual(output.protocol_path, 'paper/methodology/PROTOCOL.md');
+    assert.strictEqual(output.reproducibility_path, 'paper/reproducibility/REPRODUCIBILITY.md');
   });
 
   test('init phase-op returns core and optional phase file paths', () => {

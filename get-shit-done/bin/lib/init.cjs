@@ -230,6 +230,17 @@ function cmdInitNewPaper(cwd, raw) {
     image_log_path: 'paper/images/IMAGE-SOURCES.md',
     figures_dir: 'paper/figures',
     sections_dir: 'paper/sections',
+    methodology_dir: 'paper/methodology',
+    data_dir: 'paper/data',
+    reproducibility_dir: 'paper/reproducibility',
+    ethics_dir: 'paper/ethics',
+    protocol_path: 'paper/methodology/PROTOCOL.md',
+    inclusion_exclusion_path: 'paper/methodology/INCLUSION-EXCLUSION.md',
+    quality_appraisal_path: 'paper/methodology/QUALITY-APPRAISAL.md',
+    bias_register_path: 'paper/methodology/BIAS-REGISTER.md',
+    extraction_sheet_path: 'paper/data/EXTRACTION-SHEET.md',
+    reproducibility_path: 'paper/reproducibility/REPRODUCIBILITY.md',
+    ethics_path: 'paper/ethics/ETHICS-STATEMENT.md',
   };
 
   output(result, raw);

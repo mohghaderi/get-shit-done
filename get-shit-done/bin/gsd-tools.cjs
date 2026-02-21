@@ -69,6 +69,7 @@
  *
  * Paper:
  *   paper init <topic>                 Scaffold a research-paper workspace
+ *   paper validate                     Validate scientific completeness artifacts
  *
  * Frontmatter CRUD:
  *   frontmatter get <file> [--field k] Extract frontmatter as JSON
@@ -479,8 +480,10 @@ async function main() {
       const subcommand = args[1];
       if (subcommand === 'init') {
         commands.cmdPaperInit(cwd, args.slice(2).join(' '), raw);
+      } else if (subcommand === 'validate') {
+        commands.cmdPaperValidate(cwd, raw);
       } else {
-        error('Unknown paper subcommand. Available: init');
+        error('Unknown paper subcommand. Available: init, validate');
       }
       break;
     }

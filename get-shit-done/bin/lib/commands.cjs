@@ -551,6 +551,11 @@ function cmdPaperInit(cwd, topic, raw) {
   const sourcesRoot = path.join(paperRoot, 'sources');
   const figuresRoot = path.join(paperRoot, 'figures');
   const imagesRoot = path.join(paperRoot, 'images');
+  const methodologyRoot = path.join(paperRoot, 'methodology');
+  const dataRoot = path.join(paperRoot, 'data');
+  const reproducibilityRoot = path.join(paperRoot, 'reproducibility');
+  const ethicsRoot = path.join(paperRoot, 'ethics');
+  const appendixRoot = path.join(paperRoot, 'appendix');
 
   const created = [];
   const skipped = [];
@@ -570,20 +575,25 @@ function cmdPaperInit(cwd, topic, raw) {
   fs.mkdirSync(sourcesRoot, { recursive: true });
   fs.mkdirSync(figuresRoot, { recursive: true });
   fs.mkdirSync(imagesRoot, { recursive: true });
+  fs.mkdirSync(methodologyRoot, { recursive: true });
+  fs.mkdirSync(dataRoot, { recursive: true });
+  fs.mkdirSync(reproducibilityRoot, { recursive: true });
+  fs.mkdirSync(ethicsRoot, { recursive: true });
+  fs.mkdirSync(appendixRoot, { recursive: true });
 
   writeIfMissing(
     path.join(paperRoot, 'README.md'),
-    `# Research Paper Workspace\n\nTopic: ${topic.trim()}\n\nGenerated: ${today}\n\n## Structure\n\n- \`paper/PAPER.md\`: Main manuscript entry point\n- \`paper/sections/\`: Nested section files\n- \`paper/sources/SOURCE-LOG.md\`: Citation/source ledger\n- \`paper/figures/\`: PlantUML diagrams\n- \`paper/images/IMAGE-SOURCES.md\`: External image tracking\n`
+    `# Research Paper Workspace\n\nTopic: ${topic.trim()}\n\nGenerated: ${today}\n\n## Structure\n\n- \`paper/PAPER.md\`: Main manuscript entry point\n- \`paper/sections/\`: Nested section files\n- \`paper/sources/SOURCE-LOG.md\`: Citation/source ledger\n- \`paper/figures/\`: PlantUML diagrams\n- \`paper/images/IMAGE-SOURCES.md\`: External image tracking\n- \`paper/methodology/\`: Protocol, selection criteria, bias and quality appraisal\n- \`paper/data/\`: Extraction tables and evidence matrix\n- \`paper/reproducibility/\`: Search strings, run logs, reproducibility notes\n- \`paper/ethics/\`: Ethical considerations and disclosure\n`
   );
 
   writeIfMissing(
     path.join(paperRoot, 'PAPER.md'),
-    `# ${topic.trim()}\n\n> Assembly document for publication. Pull finalized text from \`paper/sections/\`.\n\n## Abstract\n\nSee: [sections/01-front-matter/01-abstract.md](sections/01-front-matter/01-abstract.md)\n\n## Sections\n\n- [Introduction](sections/02-introduction/01-background.md)\n- [Methods](sections/03-methods/01-study-design.md)\n- [Results](sections/04-results/01-main-findings.md)\n- [Discussion](sections/05-discussion/01-interpretation.md)\n- [Conclusion](sections/06-conclusion/01-conclusion.md)\n\n## Figures\n\n- [Research Workflow](figures/research-workflow.puml)\n`
+    `# ${topic.trim()}\n\n> Assembly document for publication. Pull finalized text from \`paper/sections/\`.\n\n## Abstract\n\nSee: [sections/01-front-matter/01-abstract.md](sections/01-front-matter/01-abstract.md)\n\n## Sections\n\n- [Introduction](sections/02-introduction/01-background.md)\n- [Methods](sections/03-methods/01-study-design.md)\n- [Results](sections/04-results/01-main-findings.md)\n- [Discussion](sections/05-discussion/01-interpretation.md)\n- [Conclusion](sections/06-conclusion/01-conclusion.md)\n\n## Research Rigor Artifacts\n\n- [Protocol](methodology/PROTOCOL.md)\n- [Inclusion and Exclusion Criteria](methodology/INCLUSION-EXCLUSION.md)\n- [Quality Appraisal](methodology/QUALITY-APPRAISAL.md)\n- [Bias Register](methodology/BIAS-REGISTER.md)\n- [Evidence Extraction Sheet](data/EXTRACTION-SHEET.md)\n- [Reproducibility Notes](reproducibility/REPRODUCIBILITY.md)\n- [Ethics Statement](ethics/ETHICS-STATEMENT.md)\n\n## Figures\n\n- [Research Workflow](figures/research-workflow.puml)\n- [Evidence Flow](figures/evidence-flow.puml)\n`
   );
 
   writeIfMissing(
     path.join(sourcesRoot, 'SOURCE-LOG.md'),
-    `# Source Log\n\n| ID | Claim/Use | Source | URL | Accessed | Confidence |\n|----|-----------|--------|-----|----------|------------|\n`
+    `# Source Log\n\n| ID | Claim/Use | Source | Source Type | URL/DOI | Published | Accessed | Quality Score (1-5) | Confidence |\n|----|-----------|--------|-------------|---------|-----------|----------|---------------------|------------|\n`
   );
 
   writeIfMissing(
@@ -592,8 +602,53 @@ function cmdPaperInit(cwd, topic, raw) {
   );
 
   writeIfMissing(
+    path.join(methodologyRoot, 'PROTOCOL.md'),
+    `# Research Protocol\n\n## Objective\n\n- Primary objective:\n- Secondary objectives:\n\n## Research Questions\n\n1. \n2. \n\n## Scope\n\n- Domain boundaries:\n- Population/context:\n- Time window:\n\n## Planned Outputs\n\n- Sections to produce:\n- Figures to include:\n- Evidence artifacts to maintain:\n`
+  );
+
+  writeIfMissing(
+    path.join(methodologyRoot, 'INCLUSION-EXCLUSION.md'),
+    `# Inclusion and Exclusion Criteria\n\n## Inclusion Criteria\n\n- \n\n## Exclusion Criteria\n\n- \n\n## Screening Workflow\n\n- Title/abstract screening:\n- Full-text screening:\n- Tie-break process:\n`
+  );
+
+  writeIfMissing(
+    path.join(methodologyRoot, 'QUALITY-APPRAISAL.md'),
+    `# Quality Appraisal Framework\n\n## Rubric\n\n| Criterion | Description | Score Range |\n|----------|-------------|-------------|\n| Methodological clarity | Is method clearly described? | 1-5 |\n| Evidence strength | Are claims supported by robust evidence? | 1-5 |\n| Recency/relevance | Is source current and in-scope? | 1-5 |\n| Replicability | Could another researcher reproduce process? | 1-5 |\n\n## Thresholds\n\n- High quality:\n- Medium quality:\n- Low quality:\n`
+  );
+
+  writeIfMissing(
+    path.join(methodologyRoot, 'BIAS-REGISTER.md'),
+    `# Bias Register\n\n| Bias Risk | Where Observed | Impact | Mitigation | Status |\n|----------|----------------|--------|------------|--------|\n`
+  );
+
+  writeIfMissing(
+    path.join(dataRoot, 'EXTRACTION-SHEET.md'),
+    `# Evidence Extraction Sheet\n\n| Source ID | Research Question | Key Finding | Counterevidence | Effect/Direction | Notes |\n|-----------|-------------------|-------------|-----------------|------------------|-------|\n`
+  );
+
+  writeIfMissing(
+    path.join(reproducibilityRoot, 'REPRODUCIBILITY.md'),
+    `# Reproducibility Notes\n\n## Search Queries Used\n\n- \n\n## Databases/Repositories\n\n- \n\n## Date of Searches\n\n- \n\n## Re-run Procedure\n\n1. Repeat queries above with same filters.\n2. Re-apply inclusion/exclusion criteria.\n3. Compare extracted findings and variance notes.\n`
+  );
+
+  writeIfMissing(
+    path.join(ethicsRoot, 'ETHICS-STATEMENT.md'),
+    `# Ethics and Disclosure\n\n## Ethical Considerations\n\n- Potential harms/misuse risks:\n- Fairness or representation concerns:\n- Sensitive data handling notes:\n\n## Conflicts of Interest\n\n- \n\n## Limitations Disclosure\n\n- \n`
+  );
+
+  writeIfMissing(
+    path.join(appendixRoot, 'GLOSSARY.md'),
+    `# Glossary\n\n| Term | Definition |\n|------|------------|\n`
+  );
+
+  writeIfMissing(
     path.join(figuresRoot, 'research-workflow.puml'),
     `@startuml\nskinparam monochrome true\nskinparam shadowing false\n\nstart\n:Define research question;\n:Collect sources;\n:Extract evidence and citations;\n:Draft section files;\n:Generate figures and integrate images;\n:Assemble manuscript;\nstop\n@enduml\n`
+  );
+
+  writeIfMissing(
+    path.join(figuresRoot, 'evidence-flow.puml'),
+    `@startuml\nskinparam monochrome true\nskinparam shadowing false\n\nstart\n:Collect candidate sources;\n:Screen by inclusion/exclusion;\n:Assess source quality;\n:Extract findings + counterevidence;\n:Synthesize into results/discussion;\nstop\n@enduml\n`
   );
 
   const sectionFiles = [
@@ -623,6 +678,16 @@ function cmdPaperInit(cwd, topic, raw) {
       prompt: 'Document data sources, collection period, and extraction method.',
     },
     {
+      rel: '03-methods/03-quality-appraisal.md',
+      title: 'Methods: Quality Appraisal',
+      prompt: 'Define evidence quality rubric and explain how low-quality sources are handled.',
+    },
+    {
+      rel: '03-methods/04-bias-and-validity.md',
+      title: 'Methods: Bias and Validity',
+      prompt: 'Identify major bias risks and describe mitigation strategy.',
+    },
+    {
       rel: '04-results/01-main-findings.md',
       title: 'Results: Main Findings',
       prompt: 'Present evidence-backed findings with source-linked claims.',
@@ -631,6 +696,11 @@ function cmdPaperInit(cwd, topic, raw) {
       rel: '04-results/02-limitations.md',
       title: 'Results: Limitations',
       prompt: 'List methodological and source-quality limitations.',
+    },
+    {
+      rel: '04-results/03-evidence-matrix.md',
+      title: 'Results: Evidence Matrix',
+      prompt: 'Map each research question to supporting evidence and counterevidence.',
     },
     {
       rel: '05-discussion/01-interpretation.md',
@@ -646,6 +716,11 @@ function cmdPaperInit(cwd, topic, raw) {
       rel: '06-conclusion/01-conclusion.md',
       title: 'Conclusion',
       prompt: 'Summarize conclusions, contributions, and future work.',
+    },
+    {
+      rel: '06-conclusion/02-future-work.md',
+      title: 'Conclusion: Future Work',
+      prompt: 'List unresolved questions and propose concrete next studies.',
     },
   ];
 
@@ -666,6 +741,128 @@ function cmdPaperInit(cwd, topic, raw) {
   }, raw);
 }
 
+function cmdPaperValidate(cwd, raw) {
+  const paperRoot = path.join(cwd, 'paper');
+  const requiredFiles = [
+    'paper/PAPER.md',
+    'paper/sources/SOURCE-LOG.md',
+    'paper/methodology/PROTOCOL.md',
+    'paper/methodology/INCLUSION-EXCLUSION.md',
+    'paper/methodology/QUALITY-APPRAISAL.md',
+    'paper/methodology/BIAS-REGISTER.md',
+    'paper/data/EXTRACTION-SHEET.md',
+    'paper/reproducibility/REPRODUCIBILITY.md',
+    'paper/ethics/ETHICS-STATEMENT.md',
+  ];
+
+  const missingFiles = requiredFiles.filter(rel => !fs.existsSync(path.join(cwd, rel)));
+
+  const sourceLogPath = path.join(cwd, 'paper', 'sources', 'SOURCE-LOG.md');
+  const extractionPath = path.join(cwd, 'paper', 'data', 'EXTRACTION-SHEET.md');
+  const sectionsDir = path.join(cwd, 'paper', 'sections');
+
+  const sectionSourceIds = new Set();
+  let counterevidenceSignals = 0;
+  const sectionFilesScanned = [];
+
+  if (fs.existsSync(sectionsDir)) {
+    const stack = [sectionsDir];
+    while (stack.length > 0) {
+      const dir = stack.pop();
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          stack.push(full);
+          continue;
+        }
+        if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+
+        sectionFilesScanned.push(path.relative(cwd, full).replace(/\\/g, '/'));
+        const content = fs.readFileSync(full, 'utf-8');
+        const ids = content.match(/\[SRC-\d+\]/g) || [];
+        ids.forEach(id => sectionSourceIds.add(id.replace(/[\[\]]/g, '')));
+
+        // Look for filled counterevidence lines from section template.
+        const counterMatch = content.match(/- Competing finding:\s*(.+)/i);
+        if (counterMatch && counterMatch[1] && counterMatch[1].trim().length > 0) {
+          counterevidenceSignals += 1;
+        }
+      }
+    }
+  }
+
+  const sourceRows = [];
+  const logSourceIds = new Set();
+  const invalidQualityRows = [];
+
+  if (fs.existsSync(sourceLogPath)) {
+    const content = fs.readFileSync(sourceLogPath, 'utf-8');
+    const lines = content.split(/\r?\n/);
+    for (const line of lines) {
+      if (!/^\|\s*SRC-\d+/i.test(line)) continue;
+      const cells = line.split('|').slice(1, -1).map(c => c.trim());
+      if (cells.length < 9) continue;
+
+      const id = cells[0];
+      const qualityRaw = cells[7];
+      const quality = Number(qualityRaw);
+      logSourceIds.add(id);
+      sourceRows.push({ id, qualityRaw });
+
+      if (!Number.isFinite(quality) || quality < 1 || quality > 5) {
+        invalidQualityRows.push({ id, quality: qualityRaw });
+      }
+    }
+  }
+
+  // Extraction-sheet based counterevidence check.
+  let extractionCounterevidenceCount = 0;
+  if (fs.existsSync(extractionPath)) {
+    const content = fs.readFileSync(extractionPath, 'utf-8');
+    const lines = content.split(/\r?\n/);
+    for (const line of lines) {
+      if (!/^\|\s*SRC-\d+/i.test(line)) continue;
+      const cells = line.split('|').slice(1, -1).map(c => c.trim());
+      if (cells.length < 6) continue;
+      const counter = cells[3];
+      if (counter && !/^(-|none|n\/a)$/i.test(counter)) {
+        extractionCounterevidenceCount += 1;
+      }
+    }
+  }
+
+  const missingSourceIds = [...sectionSourceIds].filter(id => !logSourceIds.has(id));
+  const hasCounterevidence = (counterevidenceSignals + extractionCounterevidenceCount) > 0;
+
+  const checks = {
+    required_files_present: missingFiles.length === 0,
+    section_source_ids_present_in_log: missingSourceIds.length === 0,
+    source_quality_scores_valid: invalidQualityRows.length === 0 && sourceRows.length > 0,
+    counterevidence_present: hasCounterevidence,
+  };
+
+  const valid = Object.values(checks).every(Boolean);
+
+  const result = {
+    valid,
+    checks,
+    stats: {
+      section_files_scanned: sectionFilesScanned.length,
+      section_source_id_count: sectionSourceIds.size,
+      source_log_row_count: sourceRows.length,
+      counterevidence_signals: counterevidenceSignals + extractionCounterevidenceCount,
+    },
+    issues: {
+      missing_files: missingFiles,
+      missing_source_ids_in_log: missingSourceIds,
+      invalid_quality_rows: invalidQualityRows,
+    },
+  };
+
+  output(result, raw, valid ? 'valid' : 'invalid');
+}
+
 module.exports = {
   cmdGenerateSlug,
   cmdCurrentTimestamp,
@@ -680,4 +877,5 @@ module.exports = {
   cmdTodoComplete,
   cmdScaffold,
   cmdPaperInit,
+  cmdPaperValidate,
 };

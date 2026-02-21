@@ -652,6 +652,11 @@ describe('paper command', () => {
     assert.ok(fs.existsSync(path.join(tmpDir, 'paper', 'sources', 'SOURCE-LOG.md')), 'source log created');
     assert.ok(fs.existsSync(path.join(tmpDir, 'paper', 'images', 'IMAGE-SOURCES.md')), 'image log created');
     assert.ok(fs.existsSync(path.join(tmpDir, 'paper', 'figures', 'research-workflow.puml')), 'plantuml file created');
+    assert.ok(fs.existsSync(path.join(tmpDir, 'paper', 'figures', 'evidence-flow.puml')), 'evidence flow diagram created');
+    assert.ok(fs.existsSync(path.join(tmpDir, 'paper', 'methodology', 'PROTOCOL.md')), 'protocol scaffold created');
+    assert.ok(fs.existsSync(path.join(tmpDir, 'paper', 'methodology', 'BIAS-REGISTER.md')), 'bias register scaffold created');
+    assert.ok(fs.existsSync(path.join(tmpDir, 'paper', 'reproducibility', 'REPRODUCIBILITY.md')), 'reproducibility scaffold created');
+    assert.ok(fs.existsSync(path.join(tmpDir, 'paper', 'ethics', 'ETHICS-STATEMENT.md')), 'ethics scaffold created');
     assert.ok(
       fs.existsSync(path.join(tmpDir, 'paper', 'sections', '02-introduction', '01-background.md')),
       'nested section markdown created'
@@ -671,5 +676,53 @@ describe('paper command', () => {
 
     const content = fs.readFileSync(existingFile, 'utf-8');
     assert.strictEqual(content, '# Custom content\n', 'existing content must remain unchanged');
+  });
+
+  test('paper validate passes when scientific artifacts are complete', () => {
+    const init = runGsdTools('paper init "Valid Paper Topic"', tmpDir);
+    assert.ok(init.success, `Init failed: ${init.error}`);
+
+    fs.writeFileSync(
+      path.join(tmpDir, 'paper', 'sections', '04-results', '01-main-findings.md'),
+      `# Results\n\nClaim with citation [SRC-01].\n\n## Counterevidence\n\n- Competing finding: Another source reports weaker effect.\n`
+    );
+    fs.writeFileSync(
+      path.join(tmpDir, 'paper', 'sources', 'SOURCE-LOG.md'),
+      `# Source Log\n\n| ID | Claim/Use | Source | Source Type | URL/DOI | Published | Accessed | Quality Score (1-5) | Confidence |\n|----|-----------|--------|-------------|---------|-----------|----------|---------------------|------------|\n| SRC-01 | Main claim | Example Source | journal | https://example.org | 2024-01-01 | 2026-02-20 | 4 | high |\n`
+    );
+    fs.writeFileSync(
+      path.join(tmpDir, 'paper', 'data', 'EXTRACTION-SHEET.md'),
+      `# Evidence Extraction Sheet\n\n| Source ID | Research Question | Key Finding | Counterevidence | Effect/Direction | Notes |\n|-----------|-------------------|-------------|-----------------|------------------|-------|\n| SRC-01 | RQ1 | Positive association | Conflicting subgroup effect | mixed | review |\n`
+    );
+
+    const result = runGsdTools('paper validate', tmpDir);
+    assert.ok(result.success, `Validate failed: ${result.error}`);
+    const output = JSON.parse(result.output);
+    assert.strictEqual(output.valid, true, 'paper should be valid');
+    assert.strictEqual(output.checks.required_files_present, true);
+    assert.strictEqual(output.checks.section_source_ids_present_in_log, true);
+    assert.strictEqual(output.checks.source_quality_scores_valid, true);
+    assert.strictEqual(output.checks.counterevidence_present, true);
+  });
+
+  test('paper validate fails when scientific artifacts are incomplete', () => {
+    const init = runGsdTools('paper init "Incomplete Paper Topic"', tmpDir);
+    assert.ok(init.success, `Init failed: ${init.error}`);
+
+    // Missing source-log entry for SRC-99 and no counterevidence.
+    fs.writeFileSync(
+      path.join(tmpDir, 'paper', 'sections', '04-results', '01-main-findings.md'),
+      `# Results\n\nUnsupported citation [SRC-99].\n`
+    );
+    // Break required artifact.
+    fs.rmSync(path.join(tmpDir, 'paper', 'methodology', 'PROTOCOL.md'));
+
+    const result = runGsdTools('paper validate', tmpDir);
+    assert.ok(result.success, `Validate failed: ${result.error}`);
+    const output = JSON.parse(result.output);
+    assert.strictEqual(output.valid, false, 'paper should be invalid');
+    assert.strictEqual(output.checks.required_files_present, false);
+    assert.strictEqual(output.checks.section_source_ids_present_in_log, false);
+    assert.strictEqual(output.checks.counterevidence_present, false);
   });
 });

@@ -61,6 +61,14 @@ Initialize a document-first research paper workspace.
 
 Usage: `/papergen:new-paper "Your topic here"`
 
+**Scientific completeness validation**
+
+Use `papergen-tools` directly to validate paper rigor artifacts:
+
+```bash
+node ~/.claude/get-shit-done/bin/papergen-tools.cjs paper validate
+```
+
 **`/papergen:map-codebase`**
 Map an existing codebase for brownfield projects.
 
