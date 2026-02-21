@@ -1,1 +1,12 @@
-node scripts/gen-docs.js . .tmp\design-doc.md
+For generating docs
+node scripts/gen-docs.js . .tmp\paper.md
+
+for generating docs as pdf
+node scripts/gen-docs.js . .tmp\paper.md --pdf
+
+for converting md to pdf
+node scripts/md-to-pdf.js .tmp\paper.md
+
+For renaming project
+node scripts/rename-by-mapping.js --dir . --dry-run
+
