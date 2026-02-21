@@ -3,18 +3,22 @@ Concatenate Markdown files from a folder (default: current working directory)
 into a single Markdown file with depth-based section titles.
 
 Usage:
-  node scripts/gen-docs.js [inputDir] [outputFile]
+  node scripts/gen-docs.js [inputDir] [outputFile] [--pdf]
 
 Examples:
   node scripts/gen-docs.js
-  node scripts/gen-docs.js ./docs ./dist/paper-doc.md
+  node scripts/gen-docs.js ./docs ./dist/paper.md
+  node scripts/gen-docs.js ./docs ./dist/paper.md --pdf
 */
 
 const fs = require("fs")
 const path = require("path")
+const { convertMarkdownToPdf } = require("./gen-pdf")
 
-const inputDir = path.resolve(process.argv[2] || process.cwd())
-const outputFile = path.resolve(process.argv[3] || path.join(process.cwd(), "paper-doc.md"))
+const cli = parseArgs(process.argv.slice(2))
+const inputDir = path.resolve(cli.inputDir || process.cwd())
+const outputFile = path.resolve(cli.outputFile || path.join(process.cwd(), "paper.md"))
+const shouldGeneratePdf = cli.generatePdf
 
 const IGNORE_DIRS = new Set([".git", "node_modules", "dist", "build", ".quasar"])
 const MD_EXTENSION = ".md"
@@ -53,6 +57,16 @@ function main() {
 
   fs.writeFileSync(outputFile, `${blocks.join("\n\n")}\n`, "utf8")
   console.log(`Wrote ${mdFiles.length} Markdown files to: ${outputFile}`)
+
+  if (shouldGeneratePdf) {
+    const pdfFile = outputFile.replace(/\.md$/i, ".pdf")
+    try {
+      convertMarkdownToPdf(outputFile, pdfFile)
+    } catch (error) {
+      fail(error.message)
+    }
+    console.log(`Wrote PDF file to: ${pdfFile}`)
+  }
 }
 
 function collectMarkdownFiles(dir) {
@@ -171,4 +185,35 @@ function minPositive(a, b) {
 function fail(message) {
   console.error(message)
   process.exit(1)
+}
+
+function parseArgs(argv) {
+  let inputArg = null
+  let outputArg = null
+  let generatePdf = false
+
+  for (const arg of argv) {
+    if (arg === "--pdf") {
+      generatePdf = true
+      continue
+    }
+    if (arg.startsWith("--")) {
+      fail(`Unknown option: ${arg}`)
+    }
+    if (!inputArg) {
+      inputArg = arg
+      continue
+    }
+    if (!outputArg) {
+      outputArg = arg
+      continue
+    }
+    fail(`Unexpected argument: ${arg}`)
+  }
+
+  return {
+    inputDir: inputArg,
+    outputFile: outputArg,
+    generatePdf
+  }
 }
