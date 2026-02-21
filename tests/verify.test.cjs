@@ -1,12 +1,12 @@
 /**
- * GSD Tools Tests - Verify
+ * GPD Tools Tests - Verify
  */
 
 const { test, describe, beforeEach, afterEach } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
-const { runGsdTools, createTempProject, cleanup } = require('./helpers.cjs');
+const { runGpdTools, createTempProject, cleanup } = require('./helpers.cjs');
 
 describe('validate consistency command', () => {
   let tmpDir;
@@ -28,7 +28,7 @@ describe('validate consistency command', () => {
     fs.mkdirSync(path.join(tmpDir, '.planning', 'phases', '02-b'), { recursive: true });
     fs.mkdirSync(path.join(tmpDir, '.planning', 'phases', '03-c'), { recursive: true });
 
-    const result = runGsdTools('validate consistency', tmpDir);
+    const result = runGpdTools('validate consistency', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -44,7 +44,7 @@ describe('validate consistency command', () => {
     fs.mkdirSync(path.join(tmpDir, '.planning', 'phases', '01-a'), { recursive: true });
     fs.mkdirSync(path.join(tmpDir, '.planning', 'phases', '02-orphan'), { recursive: true });
 
-    const result = runGsdTools('validate consistency', tmpDir);
+    const result = runGpdTools('validate consistency', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -63,7 +63,7 @@ describe('validate consistency command', () => {
     fs.mkdirSync(path.join(tmpDir, '.planning', 'phases', '01-a'), { recursive: true });
     fs.mkdirSync(path.join(tmpDir, '.planning', 'phases', '03-c'), { recursive: true });
 
-    const result = runGsdTools('validate consistency', tmpDir);
+    const result = runGpdTools('validate consistency', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);

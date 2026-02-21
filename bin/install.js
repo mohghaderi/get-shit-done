@@ -135,7 +135,7 @@ const banner = '\n' +
   '  ╚██████╔╝███████║██████╔╝\n' +
   '   ╚═════╝ ╚══════╝╚═════╝' + reset + '\n' +
   '\n' +
-  '  Get Shit Done ' + dim + 'v' + pkg.version + reset + '\n' +
+  '  Get Paper Done ' + dim + 'v' + pkg.version + reset + '\n' +
   '  A meta-prompting, context engineering and spec-driven\n' +
   '  development system for Claude Code, OpenCode, and Gemini by TÂCHES.\n';
 
@@ -171,7 +171,7 @@ console.log(banner);
 
 // Show help if requested
 if (hasHelp) {
-  console.log(`  ${yellow}Usage:${reset} npx get-shit-done-cc [options]\n\n  ${yellow}Options:${reset}\n    ${cyan}-g, --global${reset}              Install globally (to config directory)\n    ${cyan}-l, --local${reset}               Install locally (to current directory)\n    ${cyan}--claude${reset}                  Install for Claude Code only\n    ${cyan}--opencode${reset}                Install for OpenCode only\n    ${cyan}--gemini${reset}                  Install for Gemini only\n    ${cyan}--all${reset}                     Install for all runtimes\n    ${cyan}-u, --uninstall${reset}           Uninstall GSD (remove all GSD files)\n    ${cyan}-c, --config-dir <path>${reset}   Specify custom config directory\n    ${cyan}-h, --help${reset}                Show this help message\n    ${cyan}--force-statusline${reset}        Replace existing statusline config\n\n  ${yellow}Examples:${reset}\n    ${dim}# Interactive install (prompts for runtime and location)${reset}\n    npx get-shit-done-cc\n\n    ${dim}# Install for Claude Code globally${reset}\n    npx get-shit-done-cc --claude --global\n\n    ${dim}# Install for Gemini globally${reset}\n    npx get-shit-done-cc --gemini --global\n\n    ${dim}# Install for all runtimes globally${reset}\n    npx get-shit-done-cc --all --global\n\n    ${dim}# Install to custom config directory${reset}\n    npx get-shit-done-cc --claude --global --config-dir ~/.claude-bc\n\n    ${dim}# Install to current project only${reset}\n    npx get-shit-done-cc --claude --local\n\n    ${dim}# Uninstall GSD from Claude Code globally${reset}\n    npx get-shit-done-cc --claude --global --uninstall\n\n  ${yellow}Notes:${reset}\n    The --config-dir option is useful when you have multiple configurations.\n    It takes priority over CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR environment variables.\n`);
+  console.log(`  ${yellow}Usage:${reset} npx get-paper-done-cc [options]\n\n  ${yellow}Options:${reset}\n    ${cyan}-g, --global${reset}              Install globally (to config directory)\n    ${cyan}-l, --local${reset}               Install locally (to current directory)\n    ${cyan}--claude${reset}                  Install for Claude Code only\n    ${cyan}--opencode${reset}                Install for OpenCode only\n    ${cyan}--gemini${reset}                  Install for Gemini only\n    ${cyan}--all${reset}                     Install for all runtimes\n    ${cyan}-u, --uninstall${reset}           Uninstall GPD (remove all GPD files)\n    ${cyan}-c, --config-dir <path>${reset}   Specify custom config directory\n    ${cyan}-h, --help${reset}                Show this help message\n    ${cyan}--force-statusline${reset}        Replace existing statusline config\n\n  ${yellow}Examples:${reset}\n    ${dim}# Interactive install (prompts for runtime and location)${reset}\n    npx get-paper-done-cc\n\n    ${dim}# Install for Claude Code globally${reset}\n    npx get-paper-done-cc --claude --global\n\n    ${dim}# Install for Gemini globally${reset}\n    npx get-paper-done-cc --gemini --global\n\n    ${dim}# Install for all runtimes globally${reset}\n    npx get-paper-done-cc --all --global\n\n    ${dim}# Install to custom config directory${reset}\n    npx get-paper-done-cc --claude --global --config-dir ~/.claude-bc\n\n    ${dim}# Install to current project only${reset}\n    npx get-paper-done-cc --claude --local\n\n    ${dim}# Uninstall GPD from Claude Code globally${reset}\n    npx get-paper-done-cc --claude --global --uninstall\n\n  ${yellow}Notes:${reset}\n    The --config-dir option is useful when you have multiple configurations.\n    It takes priority over CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR environment variables.\n`);
   process.exit(0);
 }
 
@@ -460,7 +460,7 @@ function convertClaudeToGeminiAgent(content) {
   // Escape ${VAR} patterns in agent body for Gemini CLI compatibility.
   // Gemini's templateString() treats all ${word} patterns as template variables
   // and throws "Template validation failed: Missing required input parameters"
-  // when they can't be resolved. GSD agents use ${PHASE}, ${PLAN}, etc. as
+  // when they can't be resolved. GPD agents use ${PHASE}, ${PLAN}, etc. as
   // shell variables in bash code blocks — convert to $VAR (no braces) which
   // is equivalent bash and invisible to Gemini's /\$\{(\w+)\}/g regex.
   const escapedBody = body.replace(/\$\{(\w+)\}/g, '$$$1');
@@ -622,7 +622,7 @@ function convertClaudeToGeminiToml(content) {
  * 
  * @param {string} srcDir - Source directory (e.g., commands/papergen/)
  * @param {string} destDir - Destination directory (e.g., command/)
- * @param {string} prefix - Prefix for filenames (e.g., 'gsd')
+ * @param {string} prefix - Prefix for filenames (e.g., 'gpd')
  * @param {string} pathPrefix - Path prefix for file references
  * @param {string} runtime - Target runtime ('claude' or 'opencode')
  */
@@ -631,7 +631,7 @@ function copyFlattenedCommands(srcDir, destDir, prefix, pathPrefix, runtime) {
     return;
   }
   
-  // Remove old gsd-*.md files before copying new ones
+  // Remove old gpd-*.md files before copying new ones
   if (fs.existsSync(destDir)) {
     for (const file of fs.readdirSync(destDir)) {
       if (file.startsWith(`${prefix}-`) && file.endsWith('.md')) {
@@ -652,7 +652,7 @@ function copyFlattenedCommands(srcDir, destDir, prefix, pathPrefix, runtime) {
       // e.g., commands/papergen/debug/start.md -> command/papergen-debug-start.md
       copyFlattenedCommands(srcPath, destDir, `${prefix}-${entry.name}`, pathPrefix, runtime);
     } else if (entry.name.endsWith('.md')) {
-      // Flatten: help.md -> gsd-help.md
+      // Flatten: help.md -> gpd-help.md
       const baseName = entry.name.replace('.md', '');
       const destName = `${prefix}-${baseName}.md`;
       const destPath = path.join(destDir, destName);
@@ -732,12 +732,12 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, runtime, isCommand
 }
 
 /**
- * Clean up orphaned files from previous GSD versions
+ * Clean up orphaned files from previous GPD versions
  */
 function cleanupOrphanedFiles(configDir) {
   const orphanedFiles = [
     'hooks/papergen-notify.sh',  // Removed in v1.6.x
-    'hooks/statusline.js',  // Renamed to gsd-statusline.js in v1.9.0
+    'hooks/statusline.js',  // Renamed to gpd-statusline.js in v1.9.0
   ];
 
   for (const relPath of orphanedFiles) {
@@ -754,11 +754,11 @@ function cleanupOrphanedFiles(configDir) {
  */
 function cleanupOrphanedHooks(settings) {
   const orphanedHookPatterns = [
-    'gsd-notify.sh',  // Removed in v1.6.x
-    'hooks/statusline.js',  // Renamed to gsd-statusline.js in v1.9.0
-    'gsd-intel-index.js',  // Removed in v1.9.2
-    'gsd-intel-session.js',  // Removed in v1.9.2
-    'gsd-intel-prune.js',  // Removed in v1.9.2
+    'gpd-notify.sh',  // Removed in v1.6.x
+    'hooks/statusline.js',  // Renamed to gpd-statusline.js in v1.9.0
+    'gpd-intel-index.js',  // Removed in v1.9.2
+    'gpd-intel-session.js',  // Removed in v1.9.2
+    'gpd-intel-prune.js',  // Removed in v1.9.2
   ];
 
   let cleanedHooks = false;
@@ -794,21 +794,21 @@ function cleanupOrphanedHooks(settings) {
   // Fix #330: Update statusLine if it points to old statusline.js path
   if (settings.statusLine && settings.statusLine.command &&
       settings.statusLine.command.includes('statusline.js') &&
-      !settings.statusLine.command.includes('gsd-statusline.js')) {
+      !settings.statusLine.command.includes('gpd-statusline.js')) {
     // Replace old path with new path
     settings.statusLine.command = settings.statusLine.command.replace(
       /statusline\.js/,
-      'gsd-statusline.js'
+      'gpd-statusline.js'
     );
-    console.log(`  ${green}✓${reset} Updated statusline path (statusline.js → gsd-statusline.js)`);
+    console.log(`  ${green}✓${reset} Updated statusline path (statusline.js → gpd-statusline.js)`);
   }
 
   return settings;
 }
 
 /**
- * Uninstall GSD from the specified directory for a specific runtime
- * Removes only GSD-specific files/directories, preserves user content
+ * Uninstall GPD from the specified directory for a specific runtime
+ * Removes only GPD-specific files/directories, preserves user content
  * @param {boolean} isGlobal - Whether to uninstall from global or local
  * @param {string} runtime - Target runtime ('claude', 'opencode', 'gemini')
  */
@@ -829,7 +829,7 @@ function uninstall(isGlobal, runtime = 'claude') {
   if (runtime === 'opencode') runtimeLabel = 'OpenCode';
   if (runtime === 'gemini') runtimeLabel = 'Gemini';
 
-  console.log(`  Uninstalling GSD from ${cyan}${runtimeLabel}${reset} at ${cyan}${locationLabel}${reset}\n`);
+  console.log(`  Uninstalling GPD from ${cyan}${runtimeLabel}${reset} at ${cyan}${locationLabel}${reset}\n`);
 
   // Check if target directory exists
   if (!fs.existsSync(targetDir)) {
@@ -840,7 +840,7 @@ function uninstall(isGlobal, runtime = 'claude') {
 
   let removedCount = 0;
 
-  // 1. Remove GSD commands directory
+  // 1. Remove GPD commands directory
   if (isOpencode) {
     // OpenCode: remove command/papergen-*.md files
     const commandDir = path.join(targetDir, 'command');
@@ -852,49 +852,49 @@ function uninstall(isGlobal, runtime = 'claude') {
           removedCount++;
         }
       }
-      console.log(`  ${green}✓${reset} Removed GSD commands from command/`);
+      console.log(`  ${green}✓${reset} Removed GPD commands from command/`);
     }
   } else {
     // Claude Code & Gemini: remove commands/papergen/ directory
-    const gsdCommandsDir = path.join(targetDir, 'commands', 'papergen');
-    if (fs.existsSync(gsdCommandsDir)) {
-      fs.rmSync(gsdCommandsDir, { recursive: true });
+    const gpdCommandsDir = path.join(targetDir, 'commands', 'papergen');
+    if (fs.existsSync(gpdCommandsDir)) {
+      fs.rmSync(gpdCommandsDir, { recursive: true });
       removedCount++;
       console.log(`  ${green}✓${reset} Removed commands/papergen/`);
     }
   }
 
-  // 2. Remove get-shit-done directory
-  const gsdDir = path.join(targetDir, 'get-shit-done');
-  if (fs.existsSync(gsdDir)) {
-    fs.rmSync(gsdDir, { recursive: true });
+  // 2. Remove get-paper-done directory
+  const gpdDir = path.join(targetDir, 'get-paper-done');
+  if (fs.existsSync(gpdDir)) {
+    fs.rmSync(gpdDir, { recursive: true });
     removedCount++;
-    console.log(`  ${green}✓${reset} Removed get-shit-done/`);
+    console.log(`  ${green}✓${reset} Removed get-paper-done/`);
   }
 
-  // 3. Remove GSD/PaperGen agents
+  // 3. Remove GPD/PaperGen agents
   const agentsDir = path.join(targetDir, 'agents');
   if (fs.existsSync(agentsDir)) {
     const files = fs.readdirSync(agentsDir);
     let agentCount = 0;
     for (const file of files) {
-      if ((file.startsWith('gsd-') || file.startsWith('papergen-')) && file.endsWith('.md')) {
+      if ((file.startsWith('gpd-') || file.startsWith('papergen-')) && file.endsWith('.md')) {
         fs.unlinkSync(path.join(agentsDir, file));
         agentCount++;
       }
     }
     if (agentCount > 0) {
       removedCount++;
-      console.log(`  ${green}✓${reset} Removed ${agentCount} GSD agents`);
+      console.log(`  ${green}✓${reset} Removed ${agentCount} GPD agents`);
     }
   }
 
-  // 4. Remove GSD hooks
+  // 4. Remove GPD hooks
   const hooksDir = path.join(targetDir, 'hooks');
   if (fs.existsSync(hooksDir)) {
-    const gsdHooks = ['gsd-statusline.js', 'gsd-check-update.js', 'gsd-check-update.sh', 'gsd-context-monitor.js'];
+    const gpdHooks = ['gpd-statusline.js', 'gpd-check-update.js', 'gpd-check-update.sh', 'gpd-context-monitor.js'];
     let hookCount = 0;
-    for (const hook of gsdHooks) {
+    for (const hook of gpdHooks) {
       const hookPath = path.join(hooksDir, hook);
       if (fs.existsSync(hookPath)) {
         fs.unlinkSync(hookPath);
@@ -903,11 +903,11 @@ function uninstall(isGlobal, runtime = 'claude') {
     }
     if (hookCount > 0) {
       removedCount++;
-      console.log(`  ${green}✓${reset} Removed ${hookCount} GSD hooks`);
+      console.log(`  ${green}✓${reset} Removed ${hookCount} GPD hooks`);
     }
   }
 
-  // 5. Remove GSD package.json (CommonJS mode marker)
+  // 5. Remove GPD package.json (CommonJS mode marker)
   const pkgJsonPath = path.join(targetDir, 'package.json');
   if (fs.existsSync(pkgJsonPath)) {
     try {
@@ -916,43 +916,43 @@ function uninstall(isGlobal, runtime = 'claude') {
       if (content === '{"type":"commonjs"}') {
         fs.unlinkSync(pkgJsonPath);
         removedCount++;
-        console.log(`  ${green}✓${reset} Removed GSD package.json`);
+        console.log(`  ${green}✓${reset} Removed GPD package.json`);
       }
     } catch (e) {
       // Ignore read errors
     }
   }
 
-  // 6. Clean up settings.json (remove GSD hooks and statusline)
+  // 6. Clean up settings.json (remove GPD hooks and statusline)
   const settingsPath = path.join(targetDir, 'settings.json');
   if (fs.existsSync(settingsPath)) {
     let settings = readSettings(settingsPath);
     let settingsModified = false;
 
-    // Remove GSD statusline if it references our hook
+    // Remove GPD statusline if it references our hook
     if (settings.statusLine && settings.statusLine.command &&
-        settings.statusLine.command.includes('gsd-statusline')) {
+        settings.statusLine.command.includes('gpd-statusline')) {
       delete settings.statusLine;
       settingsModified = true;
-      console.log(`  ${green}✓${reset} Removed GSD statusline from settings`);
+      console.log(`  ${green}✓${reset} Removed GPD statusline from settings`);
     }
 
-    // Remove GSD hooks from SessionStart
+    // Remove GPD hooks from SessionStart
     if (settings.hooks && settings.hooks.SessionStart) {
       const before = settings.hooks.SessionStart.length;
       settings.hooks.SessionStart = settings.hooks.SessionStart.filter(entry => {
         if (entry.hooks && Array.isArray(entry.hooks)) {
-          // Filter out GSD hooks
-          const hasGsdHook = entry.hooks.some(h =>
-            h.command && (h.command.includes('gsd-check-update') || h.command.includes('gsd-statusline'))
+          // Filter out GPD hooks
+          const hasGpdHook = entry.hooks.some(h =>
+            h.command && (h.command.includes('gpd-check-update') || h.command.includes('gpd-statusline'))
           );
-          return !hasGsdHook;
+          return !hasGpdHook;
         }
         return true;
       });
       if (settings.hooks.SessionStart.length < before) {
         settingsModified = true;
-        console.log(`  ${green}✓${reset} Removed GSD hooks from settings`);
+        console.log(`  ${green}✓${reset} Removed GPD hooks from settings`);
       }
       // Clean up empty array
       if (settings.hooks.SessionStart.length === 0) {
@@ -960,15 +960,15 @@ function uninstall(isGlobal, runtime = 'claude') {
       }
     }
 
-    // Remove GSD hooks from PostToolUse
+    // Remove GPD hooks from PostToolUse
     if (settings.hooks && settings.hooks.PostToolUse) {
       const before = settings.hooks.PostToolUse.length;
       settings.hooks.PostToolUse = settings.hooks.PostToolUse.filter(entry => {
         if (entry.hooks && Array.isArray(entry.hooks)) {
-          const hasGsdHook = entry.hooks.some(h =>
-            h.command && h.command.includes('gsd-context-monitor')
+          const hasGpdHook = entry.hooks.some(h =>
+            h.command && h.command.includes('gpd-context-monitor')
           );
-          return !hasGsdHook;
+          return !hasGpdHook;
         }
         return true;
       });
@@ -1005,13 +1005,13 @@ function uninstall(isGlobal, runtime = 'claude') {
         const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
         let modified = false;
 
-        // Remove GSD permission entries
+        // Remove GPD permission entries
         if (config.permission) {
           for (const permType of ['read', 'external_directory']) {
             if (config.permission[permType]) {
               const keys = Object.keys(config.permission[permType]);
               for (const key of keys) {
-                if (key.includes('get-shit-done')) {
+                if (key.includes('get-paper-done')) {
                   delete config.permission[permType][key];
                   modified = true;
                 }
@@ -1030,7 +1030,7 @@ function uninstall(isGlobal, runtime = 'claude') {
         if (modified) {
           fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
           removedCount++;
-          console.log(`  ${green}✓${reset} Removed GSD permissions from opencode.json`);
+          console.log(`  ${green}✓${reset} Removed GPD permissions from opencode.json`);
         }
       } catch (e) {
         // Ignore JSON parse errors
@@ -1039,11 +1039,11 @@ function uninstall(isGlobal, runtime = 'claude') {
   }
 
   if (removedCount === 0) {
-    console.log(`  ${yellow}⚠${reset} No GSD files found to remove.`);
+    console.log(`  ${yellow}⚠${reset} No GPD files found to remove.`);
   }
 
   console.log(`
-  ${green}Done!${reset} GSD has been uninstalled from ${runtimeLabel}.
+  ${green}Done!${reset} GPD has been uninstalled from ${runtimeLabel}.
   Your other files and settings have been preserved.
 `);
 }
@@ -1110,8 +1110,8 @@ function parseJsonc(content) {
 }
 
 /**
- * Configure OpenCode permissions to allow reading GSD reference docs
- * This prevents permission prompts when GSD accesses the get-shit-done directory
+ * Configure OpenCode permissions to allow reading GPD reference docs
+ * This prevents permission prompts when GPD accesses the get-paper-done directory
  * @param {boolean} isGlobal - Whether this is a global or local install
  */
 function configureOpencodePermissions(isGlobal = true) {
@@ -1145,12 +1145,12 @@ function configureOpencodePermissions(isGlobal = true) {
     config.permission = {};
   }
 
-  // Build the GSD path using the actual config directory
+  // Build the GPD path using the actual config directory
   // Use ~ shorthand if it's in the default location, otherwise use full path
   const defaultConfigDir = path.join(os.homedir(), '.config', 'opencode');
-  const gsdPath = opencodeConfigDir === defaultConfigDir
-    ? '~/.config/opencode/get-shit-done/*'
-    : `${opencodeConfigDir.replace(/\\/g, '/')}/get-shit-done/*`;
+  const gpdPath = opencodeConfigDir === defaultConfigDir
+    ? '~/.config/opencode/get-paper-done/*'
+    : `${opencodeConfigDir.replace(/\\/g, '/')}/get-paper-done/*`;
   
   let modified = false;
 
@@ -1158,8 +1158,8 @@ function configureOpencodePermissions(isGlobal = true) {
   if (!config.permission.read || typeof config.permission.read !== 'object') {
     config.permission.read = {};
   }
-  if (config.permission.read[gsdPath] !== 'allow') {
-    config.permission.read[gsdPath] = 'allow';
+  if (config.permission.read[gpdPath] !== 'allow') {
+    config.permission.read[gpdPath] = 'allow';
     modified = true;
   }
 
@@ -1167,8 +1167,8 @@ function configureOpencodePermissions(isGlobal = true) {
   if (!config.permission.external_directory || typeof config.permission.external_directory !== 'object') {
     config.permission.external_directory = {};
   }
-  if (config.permission.external_directory[gsdPath] !== 'allow') {
-    config.permission.external_directory[gsdPath] = 'allow';
+  if (config.permission.external_directory[gpdPath] !== 'allow') {
+    config.permission.external_directory[gpdPath] = 'allow';
     modified = true;
   }
 
@@ -1178,7 +1178,7 @@ function configureOpencodePermissions(isGlobal = true) {
 
   // Write config back
   fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
-  console.log(`  ${green}✓${reset} Configured read permission for GSD docs`);
+  console.log(`  ${green}✓${reset} Configured read permission for GPD docs`);
 }
 
 /**
@@ -1223,8 +1223,8 @@ function verifyFileInstalled(filePath, description) {
 // Local Patch Persistence
 // ──────────────────────────────────────────────────────
 
-const PATCHES_DIR_NAME = 'gsd-local-patches';
-const MANIFEST_NAME = 'gsd-file-manifest.json';
+const PATCHES_DIR_NAME = 'gpd-local-patches';
+const MANIFEST_NAME = 'gpd-file-manifest.json';
 
 /**
  * Compute SHA256 hash of file contents
@@ -1258,14 +1258,14 @@ function generateManifest(dir, baseDir) {
  * Write file manifest after installation for future modification detection
  */
 function writeManifest(configDir) {
-  const gsdDir = path.join(configDir, 'get-shit-done');
+  const gpdDir = path.join(configDir, 'get-paper-done');
   const commandsDir = path.join(configDir, 'commands', 'papergen');
   const agentsDir = path.join(configDir, 'agents');
   const manifest = { version: pkg.version, timestamp: new Date().toISOString(), files: {} };
 
-  const gsdHashes = generateManifest(gsdDir);
-  for (const [rel, hash] of Object.entries(gsdHashes)) {
-    manifest.files['get-shit-done/' + rel] = hash;
+  const gpdHashes = generateManifest(gpdDir);
+  for (const [rel, hash] of Object.entries(gpdHashes)) {
+    manifest.files['get-paper-done/' + rel] = hash;
   }
   if (fs.existsSync(commandsDir)) {
     const cmdHashes = generateManifest(commandsDir);
@@ -1275,7 +1275,7 @@ function writeManifest(configDir) {
   }
   if (fs.existsSync(agentsDir)) {
     for (const file of fs.readdirSync(agentsDir)) {
-      if ((file.startsWith('gsd-') || file.startsWith('papergen-')) && file.endsWith('.md')) {
+      if ((file.startsWith('gpd-') || file.startsWith('papergen-')) && file.endsWith('.md')) {
         manifest.files['agents/' + file] = fileHash(path.join(agentsDir, file));
       }
     }
@@ -1286,8 +1286,8 @@ function writeManifest(configDir) {
 }
 
 /**
- * Detect user-modified GSD files by comparing against install manifest.
- * Backs up modified files to gsd-local-patches/ for reapply after update.
+ * Detect user-modified GPD files by comparing against install manifest.
+ * Backs up modified files to gpd-local-patches/ for reapply after update.
  */
 function saveLocalPatches(configDir) {
   const manifestPath = path.join(configDir, MANIFEST_NAME);
@@ -1318,7 +1318,7 @@ function saveLocalPatches(configDir) {
       files: modified
     };
     fs.writeFileSync(path.join(patchesDir, 'backup-meta.json'), JSON.stringify(meta, null, 2));
-    console.log('  ' + yellow + 'i' + reset + '  Found ' + modified.length + ' locally modified GSD file(s) — backed up to ' + PATCHES_DIR_NAME + '/');
+    console.log('  ' + yellow + 'i' + reset + '  Found ' + modified.length + ' locally modified GPD file(s) — backed up to ' + PATCHES_DIR_NAME + '/');
     for (const f of modified) {
       console.log('     ' + dim + f + reset);
     }
@@ -1383,7 +1383,7 @@ function install(isGlobal, runtime = 'claude') {
   // Track installation failures
   const failures = [];
 
-  // Save any locally modified GSD files before they get wiped
+  // Save any locally modified GPD files before they get wiped
   saveLocalPatches(targetDir);
 
   // Clean up orphaned files from previous versions
@@ -1397,8 +1397,8 @@ function install(isGlobal, runtime = 'claude') {
     fs.mkdirSync(commandDir, { recursive: true });
     
     // Copy commands/papergen/*.md as command/papergen-*.md (flatten structure)
-    const gsdSrc = path.join(src, 'commands', 'papergen');
-    copyFlattenedCommands(gsdSrc, commandDir, 'papergen', pathPrefix, runtime);
+    const gpdSrc = path.join(src, 'commands', 'papergen');
+    copyFlattenedCommands(gpdSrc, commandDir, 'papergen', pathPrefix, runtime);
     if (verifyInstalled(commandDir, 'command/papergen-*')) {
       const count = fs.readdirSync(commandDir).filter(f => f.startsWith('papergen-')).length;
       console.log(`  ${green}✓${reset} Installed ${count} commands to command/`);
@@ -1410,24 +1410,24 @@ function install(isGlobal, runtime = 'claude') {
     const commandsDir = path.join(targetDir, 'commands');
     fs.mkdirSync(commandsDir, { recursive: true });
     
-    const gsdSrc = path.join(src, 'commands', 'papergen');
-    const gsdDest = path.join(commandsDir, 'papergen');
-    copyWithPathReplacement(gsdSrc, gsdDest, pathPrefix, runtime, true);
-    if (verifyInstalled(gsdDest, 'commands/papergen')) {
+    const gpdSrc = path.join(src, 'commands', 'papergen');
+    const gpdDest = path.join(commandsDir, 'papergen');
+    copyWithPathReplacement(gpdSrc, gpdDest, pathPrefix, runtime, true);
+    if (verifyInstalled(gpdDest, 'commands/papergen')) {
       console.log(`  ${green}✓${reset} Installed commands/papergen`);
     } else {
       failures.push('commands/papergen');
     }
   }
 
-  // Copy get-shit-done skill with path replacement
-  const skillSrc = path.join(src, 'get-shit-done');
-  const skillDest = path.join(targetDir, 'get-shit-done');
+  // Copy get-paper-done skill with path replacement
+  const skillSrc = path.join(src, 'get-paper-done');
+  const skillDest = path.join(targetDir, 'get-paper-done');
   copyWithPathReplacement(skillSrc, skillDest, pathPrefix, runtime);
-  if (verifyInstalled(skillDest, 'get-shit-done')) {
-    console.log(`  ${green}✓${reset} Installed get-shit-done`);
+  if (verifyInstalled(skillDest, 'get-paper-done')) {
+    console.log(`  ${green}✓${reset} Installed get-paper-done`);
   } else {
-    failures.push('get-shit-done');
+    failures.push('get-paper-done');
   }
 
   // Copy agents to agents directory
@@ -1436,10 +1436,10 @@ function install(isGlobal, runtime = 'claude') {
     const agentsDest = path.join(targetDir, 'agents');
     fs.mkdirSync(agentsDest, { recursive: true });
 
-    // Remove old GSD/PaperGen agents before copying new ones
+    // Remove old GPD/PaperGen agents before copying new ones
     if (fs.existsSync(agentsDest)) {
       for (const file of fs.readdirSync(agentsDest)) {
-        if ((file.startsWith('gsd-') || file.startsWith('papergen-')) && file.endsWith('.md')) {
+        if ((file.startsWith('gpd-') || file.startsWith('papergen-')) && file.endsWith('.md')) {
           fs.unlinkSync(path.join(agentsDest, file));
         }
       }
@@ -1472,7 +1472,7 @@ function install(isGlobal, runtime = 'claude') {
 
   // Copy CHANGELOG.md
   const changelogSrc = path.join(src, 'CHANGELOG.md');
-  const changelogDest = path.join(targetDir, 'get-shit-done', 'CHANGELOG.md');
+  const changelogDest = path.join(targetDir, 'get-paper-done', 'CHANGELOG.md');
   if (fs.existsSync(changelogSrc)) {
     fs.copyFileSync(changelogSrc, changelogDest);
     if (verifyFileInstalled(changelogDest, 'CHANGELOG.md')) {
@@ -1483,7 +1483,7 @@ function install(isGlobal, runtime = 'claude') {
   }
 
   // Write VERSION file
-  const versionDest = path.join(targetDir, 'get-shit-done', 'VERSION');
+  const versionDest = path.join(targetDir, 'get-paper-done', 'VERSION');
   fs.writeFileSync(versionDest, pkg.version);
   if (verifyFileInstalled(versionDest, 'VERSION')) {
     console.log(`  ${green}✓${reset} Wrote VERSION (${pkg.version})`);
@@ -1491,7 +1491,7 @@ function install(isGlobal, runtime = 'claude') {
     failures.push('VERSION');
   }
 
-  // Write package.json to force CommonJS mode for GSD scripts
+  // Write package.json to force CommonJS mode for GPD scripts
   // Prevents "require is not defined" errors when project has "type": "module"
   // Node.js walks up looking for package.json - this stops inheritance from project
   const pkgJsonDest = path.join(targetDir, 'package.json');
@@ -1537,14 +1537,14 @@ function install(isGlobal, runtime = 'claude') {
   const settingsPath = path.join(targetDir, 'settings.json');
   const settings = cleanupOrphanedHooks(readSettings(settingsPath));
   const statuslineCommand = isGlobal
-    ? buildHookCommand(targetDir, 'gsd-statusline.js')
-    : 'node ' + dirName + '/hooks/gsd-statusline.js';
+    ? buildHookCommand(targetDir, 'gpd-statusline.js')
+    : 'node ' + dirName + '/hooks/gpd-statusline.js';
   const updateCheckCommand = isGlobal
-    ? buildHookCommand(targetDir, 'gsd-check-update.js')
-    : 'node ' + dirName + '/hooks/gsd-check-update.js';
+    ? buildHookCommand(targetDir, 'gpd-check-update.js')
+    : 'node ' + dirName + '/hooks/gpd-check-update.js';
   const contextMonitorCommand = isGlobal
-    ? buildHookCommand(targetDir, 'gsd-context-monitor.js')
-    : 'node ' + dirName + '/hooks/gsd-context-monitor.js';
+    ? buildHookCommand(targetDir, 'gpd-context-monitor.js')
+    : 'node ' + dirName + '/hooks/gpd-context-monitor.js';
 
   // Enable experimental agents for Gemini CLI (required for custom sub-agents)
   if (isGemini) {
@@ -1566,11 +1566,11 @@ function install(isGlobal, runtime = 'claude') {
       settings.hooks.SessionStart = [];
     }
 
-    const hasGsdUpdateHook = settings.hooks.SessionStart.some(entry =>
-      entry.hooks && entry.hooks.some(h => h.command && h.command.includes('gsd-check-update'))
+    const hasGpdUpdateHook = settings.hooks.SessionStart.some(entry =>
+      entry.hooks && entry.hooks.some(h => h.command && h.command.includes('gpd-check-update'))
     );
 
-    if (!hasGsdUpdateHook) {
+    if (!hasGpdUpdateHook) {
       settings.hooks.SessionStart.push({
         hooks: [
           {
@@ -1588,7 +1588,7 @@ function install(isGlobal, runtime = 'claude') {
     }
 
     const hasContextMonitorHook = settings.hooks.PostToolUse.some(entry =>
-      entry.hooks && entry.hooks.some(h => h.command && h.command.includes('gsd-context-monitor'))
+      entry.hooks && entry.hooks.some(h => h.command && h.command.includes('gpd-context-monitor'))
     );
 
     if (!hasContextMonitorHook) {
@@ -1683,13 +1683,13 @@ function handleStatusline(settings, isInteractive, callback) {
   Your current statusline:
     ${dim}command: ${existingCmd}${reset}
 
-  GSD includes a statusline showing:
+  GPD includes a statusline showing:
     • Model name
     • Current task (from todo list)
     • Context window usage (color-coded)
 
   ${cyan}1${reset}) Keep existing
-  ${cyan}2${reset}) Replace with GSD statusline
+  ${cyan}2${reset}) Replace with GPD statusline
 `);
 
   rl.question(`  Choice ${dim}[1]${reset}: `, (answer) => {
@@ -1786,7 +1786,7 @@ function promptLocation(runtimes) {
 }
 
 /**
- * Install GSD for all selected runtimes
+ * Install GPD for all selected runtimes
  */
 function installAllRuntimes(runtimes, isGlobal, isInteractive) {
   const results = [];

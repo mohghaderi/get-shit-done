@@ -1,6 +1,6 @@
 ---
 name: papergen:set-profile
-description: Switch model profile for GSD agents (quality/balanced/budget)
+description: Switch model profile for GPD agents (quality/balanced/budget)
 argument-hint: <profile>
 allowed-tools:
   - Read
@@ -9,7 +9,7 @@ allowed-tools:
 ---
 
 <objective>
-Switch the model profile used by GSD agents. Controls which Claude model each agent uses, balancing quality vs token spend.
+Switch the model profile used by GPD agents. Controls which Claude model each agent uses, balancing quality vs token spend.
 
 Routes to the set-profile workflow which handles:
 - Argument validation (quality/balanced/budget)
@@ -19,11 +19,11 @@ Routes to the set-profile workflow which handles:
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/set-profile.md
+@~/.claude/get-paper-done/workflows/set-profile.md
 </execution_context>
 
 <process>
-**Follow the set-profile workflow** from `@~/.claude/get-shit-done/workflows/set-profile.md`.
+**Follow the set-profile workflow** from `@~/.claude/get-paper-done/workflows/set-profile.md`.
 
 The workflow handles all logic including:
 1. Profile argument validation

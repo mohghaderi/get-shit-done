@@ -31,12 +31,12 @@ ls .planning/debug/*.md 2>/dev/null | grep -v resolved | head -5
 ## 0. Initialize Context
 
 ```bash
-INIT=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs state load)
+INIT=$(node ~/.claude/get-paper-done/bin/papergen-tools.cjs state load)
 ```
 
 Extract `commit_docs` from init JSON. Resolve debugger model:
 ```bash
-DEBUGGER_MODEL=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs resolve-model papergen-debugger --raw)
+DEBUGGER_MODEL=$(node ~/.claude/get-paper-done/bin/papergen-tools.cjs resolve-model papergen-debugger --raw)
 ```
 
 ## 1. Check Active Sessions

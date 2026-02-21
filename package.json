@@ -1,14 +1,14 @@
 {
-  "name": "get-shit-done-cc",
+  "name": "get-paper-done-cc",
   "version": "1.20.5",
   "description": "A meta-prompting, context engineering and spec-driven development system for Claude Code, OpenCode and Gemini by TÂCHES.",
   "bin": {
-    "get-shit-done-cc": "bin/install.js"
+    "get-paper-done-cc": "bin/install.js"
   },
   "files": [
     "bin",
     "commands",
-    "get-shit-done",
+    "get-paper-done",
     "agents",
     "hooks/dist",
     "scripts"
@@ -27,11 +27,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/glittercowboy/get-shit-done.git"
+    "url": "git+https://github.com/mohghaderi/get-paper-done.git"
   },
-  "homepage": "https://github.com/glittercowboy/get-shit-done",
+  "homepage": "https://github.com/mohghaderi/get-paper-done",
   "bugs": {
-    "url": "https://github.com/glittercowboy/get-shit-done/issues"
+    "url": "https://github.com/mohghaderi/get-paper-done/issues"
   },
   "engines": {
     "node": ">=16.7.0"

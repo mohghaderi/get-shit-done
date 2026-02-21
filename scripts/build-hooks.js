@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Copy GSD hooks to dist for installation.
+ * Copy GPD hooks to dist for installation.
  */
 
 const fs = require('fs');
@@ -11,9 +11,9 @@ const DIST_DIR = path.join(HOOKS_DIR, 'dist');
 
 // Hooks to copy (pure Node.js, no bundling needed)
 const HOOKS_TO_COPY = [
-  'gsd-check-update.js',
-  'gsd-context-monitor.js',
-  'gsd-statusline.js'
+  'gpd-check-update.js',
+  'gpd-context-monitor.js',
+  'gpd-statusline.js'
 ];
 
 function build() {

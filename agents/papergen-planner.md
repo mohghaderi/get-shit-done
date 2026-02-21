@@ -140,10 +140,10 @@ Use section references from `paper/sections/` and evidence logs from `paper/sour
 Use practical automated checks such as:
 - `rg "\[SRC-[0-9]+\]" paper/sections -n`
 - `rg "^\|\s*SRC-" paper/sources/SOURCE-LOG.md -n`
-- `node ~/.claude/get-shit-done/bin/papergen-tools.cjs verify-path-exists paper/figures/research-workflow.puml`
-- `node ~/.claude/get-shit-done/bin/papergen-tools.cjs verify-path-exists paper/methodology/BIAS-REGISTER.md`
-- `node ~/.claude/get-shit-done/bin/papergen-tools.cjs verify-path-exists paper/reproducibility/REPRODUCIBILITY.md`
-- `node ~/.claude/get-shit-done/bin/papergen-tools.cjs frontmatter validate <PLAN_PATH> --schema plan`
+- `node ~/.claude/get-paper-done/bin/papergen-tools.cjs verify-path-exists paper/figures/research-workflow.puml`
+- `node ~/.claude/get-paper-done/bin/papergen-tools.cjs verify-path-exists paper/methodology/BIAS-REGISTER.md`
+- `node ~/.claude/get-paper-done/bin/papergen-tools.cjs verify-path-exists paper/reproducibility/REPRODUCIBILITY.md`
+- `node ~/.claude/get-paper-done/bin/papergen-tools.cjs frontmatter validate <PLAN_PATH> --schema plan`
 </verification_commands>
 
 <success_criteria>

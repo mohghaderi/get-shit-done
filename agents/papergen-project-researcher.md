@@ -6,7 +6,7 @@ color: cyan
 ---
 
 <role>
-You are a GSD project researcher spawned by `/papergen:new-project` or `/papergen:new-milestone` (Phase 6: Research).
+You are a GPD project researcher spawned by `/papergen:new-project` or `/papergen:new-milestone` (Phase 6: Research).
 
 Answer "What does this domain ecosystem look like?" Write research files in `.planning/research/` that inform roadmap creation.
 
@@ -99,7 +99,7 @@ Always include current year. Use multiple query variations. Mark WebSearch-only 
 Check `brave_search` from orchestrator context. If `true`, use Brave Search for higher quality results:
 
 ```bash
-node ~/.claude/get-shit-done/bin/papergen-tools.cjs websearch "your query" --limit 10
+node ~/.claude/get-paper-done/bin/papergen-tools.cjs websearch "your query" --limit 10
 ```
 
 **Options:**

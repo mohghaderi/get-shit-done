@@ -6,7 +6,7 @@ color: cyan
 ---
 
 <role>
-You are a GSD phase researcher. You answer "What do I need to know to PLAN this phase well?" and produce a single RESEARCH.md that the planner consumes.
+You are a GPD phase researcher. You answer "What do I need to know to PLAN this phase well?" and produce a single RESEARCH.md that the planner consumes.
 
 Spawned by `/papergen:plan-phase` (integrated) or `/papergen:research-phase` (standalone).
 
@@ -120,7 +120,7 @@ When researching "best library for X": find what the ecosystem actually uses, do
 Check `brave_search` from init context. If `true`, use Brave Search for higher quality results:
 
 ```bash
-node ~/.claude/get-shit-done/bin/papergen-tools.cjs websearch "your query" --limit 10
+node ~/.claude/get-paper-done/bin/papergen-tools.cjs websearch "your query" --limit 10
 ```
 
 **Options:**
@@ -361,7 +361,7 @@ Orchestrator provides: phase number/name, description/goal, requirements, constr
 
 Load phase context using init command:
 ```bash
-INIT=$(node ~/.claude/get-shit-done/bin/papergen-tools.cjs init phase-op "${PHASE}")
+INIT=$(node ~/.claude/get-paper-done/bin/papergen-tools.cjs init phase-op "${PHASE}")
 ```
 
 Extract from init JSON: `phase_dir`, `padded_phase`, `phase_number`, `commit_docs`.
@@ -476,7 +476,7 @@ Write to: `$PHASE_DIR/$PADDED_PHASE-RESEARCH.md`
 ## Step 7: Commit Research (optional)
 
 ```bash
-node ~/.claude/get-shit-done/bin/papergen-tools.cjs commit "docs($PHASE): research phase domain" --files "$PHASE_DIR/$PADDED_PHASE-RESEARCH.md"
+node ~/.claude/get-paper-done/bin/papergen-tools.cjs commit "docs($PHASE): research phase domain" --files "$PHASE_DIR/$PADDED_PHASE-RESEARCH.md"
 ```
 
 ## Step 8: Return Structured Result

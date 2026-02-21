@@ -1,10 +1,10 @@
 ---
-description: Reapply local modifications after a GSD update
+description: Reapply local modifications after a GPD update
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 ---
 
 <purpose>
-After a GSD update wipes and reinstalls files, this command merges user's previously saved local modifications back into the new version. Uses intelligent comparison to handle cases where the upstream file also changed.
+After a GPD update wipes and reinstalls files, this command merges user's previously saved local modifications back into the new version. Uses intelligent comparison to handle cases where the upstream file also changed.
 </purpose>
 
 <process>
@@ -29,7 +29,7 @@ Read `backup-meta.json` from the patches directory.
 No local patches found. Nothing to reapply.
 
 Local patches are automatically saved when you run /papergen:update
-after modifying any GSD workflow, command, or agent files.
+after modifying any GPD workflow, command, or agent files.
 ```
 Exit.
 
@@ -52,7 +52,7 @@ Exit.
 
 For each file in `backup-meta.json`:
 
-1. **Read the backed-up version** (user's modified copy from `gsd-local-patches/`)
+1. **Read the backed-up version** (user's modified copy from `gpd-local-patches/`)
 2. **Read the newly installed version** (current file after update)
 3. **Compare and merge:**
 
@@ -83,8 +83,8 @@ After reapplying, regenerate the file manifest so future updates correctly detec
 ## Step 5: Cleanup option
 
 Ask user:
-- "Keep patch backups for reference?" → preserve `gsd-local-patches/`
-- "Clean up patch backups?" → remove `gsd-local-patches/` directory
+- "Keep patch backups for reference?" → preserve `gpd-local-patches/`
+- "Clean up patch backups?" → remove `gpd-local-patches/` directory
 
 ## Step 6: Report
 

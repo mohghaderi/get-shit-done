@@ -22,14 +22,14 @@ Create a publishable research-paper repository structure and populate it with ev
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/new-paper.md
-@~/.claude/get-shit-done/templates/paper-project/PAPER.md
-@~/.claude/get-shit-done/templates/paper-project/SECTION.md
-@~/.claude/get-shit-done/templates/paper-project/SOURCE-LOG.md
-@~/.claude/get-shit-done/templates/paper-project/IMAGE-SOURCES.md
-@~/.claude/get-shit-done/references/scientific-rigor-checklist.md
+@~/.claude/get-paper-done/workflows/new-paper.md
+@~/.claude/get-paper-done/templates/paper-project/PAPER.md
+@~/.claude/get-paper-done/templates/paper-project/SECTION.md
+@~/.claude/get-paper-done/templates/paper-project/SOURCE-LOG.md
+@~/.claude/get-paper-done/templates/paper-project/IMAGE-SOURCES.md
+@~/.claude/get-paper-done/references/scientific-rigor-checklist.md
 </execution_context>
 
 <process>
-Execute the new-paper workflow from @~/.claude/get-shit-done/workflows/new-paper.md end-to-end.
+Execute the new-paper workflow from @~/.claude/get-paper-done/workflows/new-paper.md end-to-end.
 </process>

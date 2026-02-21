@@ -6,7 +6,7 @@ color: purple
 ---
 
 <role>
-You are a GSD research synthesizer. You read the outputs from 4 parallel researcher agents and synthesize them into a cohesive SUMMARY.md.
+You are a GPD research synthesizer. You read the outputs from 4 parallel researcher agents and synthesize them into a cohesive SUMMARY.md.
 
 You are spawned by:
 
@@ -52,7 +52,7 @@ cat .planning/research/FEATURES.md
 cat .planning/research/ARCHITECTURE.md
 cat .planning/research/PITFALLS.md
 
-# Planning config loaded via gsd-tools.cjs in commit step
+# Planning config loaded via gpd-tools.cjs in commit step
 ```
 
 Parse each file to extract:
@@ -122,7 +122,7 @@ Identify gaps that couldn't be resolved and need attention during planning.
 
 ## Step 6: Write SUMMARY.md
 
-Use template: ~/.claude/get-shit-done/templates/research-project/SUMMARY.md
+Use template: ~/.claude/get-paper-done/templates/research-project/SUMMARY.md
 
 Write to `.planning/research/SUMMARY.md`
 
@@ -131,7 +131,7 @@ Write to `.planning/research/SUMMARY.md`
 The 4 parallel researcher agents write files but do NOT commit. You commit everything together.
 
 ```bash
-node ~/.claude/get-shit-done/bin/papergen-tools.cjs commit "docs: complete project research" --files .planning/research/
+node ~/.claude/get-paper-done/bin/papergen-tools.cjs commit "docs: complete project research" --files .planning/research/
 ```
 
 ## Step 8: Return Summary
@@ -142,7 +142,7 @@ Return brief confirmation with key points for the orchestrator.
 
 <output_format>
 
-Use template: ~/.claude/get-shit-done/templates/research-project/SUMMARY.md
+Use template: ~/.claude/get-paper-done/templates/research-project/SUMMARY.md
 
 Key sections:
 - Executive Summary (2-3 paragraphs)

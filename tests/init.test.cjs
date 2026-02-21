@@ -1,12 +1,12 @@
 /**
- * GSD Tools Tests - Init
+ * GPD Tools Tests - Init
  */
 
 const { test, describe, beforeEach, afterEach } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
-const { runGsdTools, createTempProject, cleanup } = require('./helpers.cjs');
+const { runGpdTools, createTempProject, cleanup } = require('./helpers.cjs');
 
 function toPosix(p) {
   return p ? p.replace(/\\/g, '/') : p;
@@ -28,7 +28,7 @@ describe('init commands', () => {
     fs.mkdirSync(phaseDir, { recursive: true });
     fs.writeFileSync(path.join(phaseDir, '03-01-PLAN.md'), '# Plan');
 
-    const result = runGsdTools('init execute-phase 03', tmpDir);
+    const result = runGpdTools('init execute-phase 03', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -45,7 +45,7 @@ describe('init commands', () => {
     fs.writeFileSync(path.join(phaseDir, '03-VERIFICATION.md'), '# Verification');
     fs.writeFileSync(path.join(phaseDir, '03-UAT.md'), '# UAT');
 
-    const result = runGsdTools('init plan-phase 03', tmpDir);
+    const result = runGpdTools('init plan-phase 03', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -59,7 +59,7 @@ describe('init commands', () => {
   });
 
   test('init progress returns file paths', () => {
-    const result = runGsdTools('init progress', tmpDir);
+    const result = runGpdTools('init progress', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -70,7 +70,7 @@ describe('init commands', () => {
   });
 
   test('init new-paper returns paper context', () => {
-    const result = runGsdTools('init new-paper', tmpDir);
+    const result = runGpdTools('init new-paper', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -91,7 +91,7 @@ describe('init commands', () => {
     fs.writeFileSync(path.join(phaseDir, '03-VERIFICATION.md'), '# Verification');
     fs.writeFileSync(path.join(phaseDir, '03-UAT.md'), '# UAT');
 
-    const result = runGsdTools('init phase-op 03', tmpDir);
+    const result = runGpdTools('init phase-op 03', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -108,7 +108,7 @@ describe('init commands', () => {
     const phaseDir = path.join(tmpDir, '.planning', 'phases', '03-api');
     fs.mkdirSync(phaseDir, { recursive: true });
 
-    const result = runGsdTools('init plan-phase 03', tmpDir);
+    const result = runGpdTools('init plan-phase 03', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);

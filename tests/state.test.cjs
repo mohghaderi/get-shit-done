@@ -1,12 +1,12 @@
 /**
- * GSD Tools Tests - State
+ * GPD Tools Tests - State
  */
 
 const { test, describe, beforeEach, afterEach } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
-const { runGsdTools, createTempProject, cleanup } = require('./helpers.cjs');
+const { runGpdTools, createTempProject, cleanup } = require('./helpers.cjs');
 
 describe('state-snapshot command', () => {
   let tmpDir;
@@ -20,7 +20,7 @@ describe('state-snapshot command', () => {
   });
 
   test('missing STATE.md returns error', () => {
-    const result = runGsdTools('state-snapshot', tmpDir);
+    const result = runGpdTools('state-snapshot', tmpDir);
     assert.ok(result.success, `Command should succeed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -44,7 +44,7 @@ describe('state-snapshot command', () => {
 `
     );
 
-    const result = runGsdTools('state-snapshot', tmpDir);
+    const result = runGpdTools('state-snapshot', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -74,7 +74,7 @@ describe('state-snapshot command', () => {
 `
     );
 
-    const result = runGsdTools('state-snapshot', tmpDir);
+    const result = runGpdTools('state-snapshot', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -98,7 +98,7 @@ describe('state-snapshot command', () => {
 `
     );
 
-    const result = runGsdTools('state-snapshot', tmpDir);
+    const result = runGpdTools('state-snapshot', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -123,7 +123,7 @@ describe('state-snapshot command', () => {
 `
     );
 
-    const result = runGsdTools('state-snapshot', tmpDir);
+    const result = runGpdTools('state-snapshot', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -142,7 +142,7 @@ describe('state-snapshot command', () => {
 `
     );
 
-    const result = runGsdTools('state-snapshot', tmpDir);
+    const result = runGpdTools('state-snapshot', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);

@@ -1,12 +1,12 @@
 /**
- * GSD Tools Tests - Milestone
+ * GPD Tools Tests - Milestone
  */
 
 const { test, describe, beforeEach, afterEach } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
-const { runGsdTools, createTempProject, cleanup } = require('./helpers.cjs');
+const { runGpdTools, createTempProject, cleanup } = require('./helpers.cjs');
 
 describe('milestone complete command', () => {
   let tmpDir;
@@ -40,7 +40,7 @@ describe('milestone complete command', () => {
       `---\none-liner: Set up project infrastructure\n---\n# Summary\n`
     );
 
-    const result = runGsdTools('milestone complete v1.0 --name MVP Foundation', tmpDir);
+    const result = runGpdTools('milestone complete v1.0 --name MVP Foundation', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -83,7 +83,7 @@ describe('milestone complete command', () => {
       `# State\n\n**Status:** In progress\n**Last Activity:** 2025-01-01\n**Last Activity Description:** Working\n`
     );
 
-    const result = runGsdTools('milestone complete v1.0 --name Beta', tmpDir);
+    const result = runGpdTools('milestone complete v1.0 --name Beta', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const milestones = fs.readFileSync(path.join(tmpDir, '.planning', 'MILESTONES.md'), 'utf-8');

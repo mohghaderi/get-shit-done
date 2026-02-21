@@ -1,12 +1,12 @@
 /**
- * GSD Tools Tests - Roadmap
+ * GPD Tools Tests - Roadmap
  */
 
 const { test, describe, beforeEach, afterEach } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
-const { runGsdTools, createTempProject, cleanup } = require('./helpers.cjs');
+const { runGpdTools, createTempProject, cleanup } = require('./helpers.cjs');
 
 describe('roadmap get-phase command', () => {
   let tmpDir;
@@ -38,7 +38,7 @@ Some description here.
 `
     );
 
-    const result = runGsdTools('roadmap get-phase 1', tmpDir);
+    const result = runGpdTools('roadmap get-phase 1', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -58,7 +58,7 @@ Some description here.
 `
     );
 
-    const result = runGsdTools('roadmap get-phase 5', tmpDir);
+    const result = runGpdTools('roadmap get-phase 5', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -78,7 +78,7 @@ Some description here.
 `
     );
 
-    const result = runGsdTools('roadmap get-phase 2.1', tmpDir);
+    const result = runGpdTools('roadmap get-phase 2.1', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -105,7 +105,7 @@ This phase covers:
 `
     );
 
-    const result = runGsdTools('roadmap get-phase 1', tmpDir);
+    const result = runGpdTools('roadmap get-phase 1', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -115,7 +115,7 @@ This phase covers:
   });
 
   test('handles missing ROADMAP.md gracefully', () => {
-    const result = runGsdTools('roadmap get-phase 1', tmpDir);
+    const result = runGpdTools('roadmap get-phase 1', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -137,7 +137,7 @@ This phase covers:
 `
     );
 
-    const result = runGsdTools('roadmap get-phase 1', tmpDir);
+    const result = runGpdTools('roadmap get-phase 1', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -158,7 +158,7 @@ This phase covers:
 `
     );
 
-    const result = runGsdTools('roadmap get-phase 1', tmpDir);
+    const result = runGpdTools('roadmap get-phase 1', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -185,7 +185,7 @@ describe('roadmap analyze command', () => {
   });
 
   test('missing ROADMAP.md returns error', () => {
-    const result = runGsdTools('roadmap analyze', tmpDir);
+    const result = runGpdTools('roadmap analyze', tmpDir);
     assert.ok(result.success, `Command should succeed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -218,7 +218,7 @@ describe('roadmap analyze command', () => {
     fs.mkdirSync(p2, { recursive: true });
     fs.writeFileSync(path.join(p2, '02-01-PLAN.md'), '# Plan');
 
-    const result = runGsdTools('roadmap analyze', tmpDir);
+    const result = runGpdTools('roadmap analyze', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);
@@ -248,7 +248,7 @@ describe('roadmap analyze command', () => {
 `
     );
 
-    const result = runGsdTools('roadmap analyze', tmpDir);
+    const result = runGpdTools('roadmap analyze', tmpDir);
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const output = JSON.parse(result.output);

@@ -15,7 +15,7 @@ Required:
   --dir, -d           Working directory to process
                       Mapping is read from scripts/rename-mapping.json by default
   --mapping, -m       JSON array of single-key objects or key/value tuples
-                      Example: '[{"gsd":"gpd"},{"get-shit-done":"get-paper-done"}]'
+                      Example: '[{"gpd":"gpd"},{"get-paper-done":"get-paper-done"}]'
   --mapping-file, -f  Path to JSON file with mapping array (overrides default file)
 
 Options:

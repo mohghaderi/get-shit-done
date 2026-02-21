@@ -1,4 +1,4 @@
-# GSD User Guide
+# GPD User Guide
 
 A detailed reference for workflows, troubleshooting, and configuration. For quick-start setup, see the [README](../README.md).
 
@@ -99,7 +99,7 @@ A detailed reference for workflows, troubleshooting, and configuration. For quic
 
 ### Validation Architecture (Nyquist Layer)
 
-During plan-phase research, GSD now maps automated test coverage to each phase
+During plan-phase research, GPD now maps automated test coverage to each phase
 requirement before any code is written. This ensures that when Claude's executor
 commits a task, a feedback mechanism already exists to verify it within seconds.
 
@@ -177,7 +177,7 @@ rapid prototyping phases where test infrastructure isn't the focus.
 | `/papergen:resume-work` | Restore full context from last session | Starting a new session |
 | `/papergen:pause-work` | Save context handoff | Stopping mid-phase |
 | `/papergen:help` | Show all commands | Quick reference |
-| `/papergen:update` | Update GSD with changelog preview | Check for new versions |
+| `/papergen:update` | Update GPD with changelog preview | Check for new versions |
 | `/papergen:join-discord` | Open Discord community invite | Questions or community |
 
 ### Phase Management
@@ -196,7 +196,7 @@ rapid prototyping phases where test infrastructure isn't the focus.
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
 | `/papergen:map-codebase` | Analyze existing codebase | Before `/papergen:new-project` on existing code |
-| `/papergen:quick` | Ad-hoc task with GSD guarantees | Bug fixes, small features, config changes |
+| `/papergen:quick` | Ad-hoc task with GPD guarantees | Bug fixes, small features, config changes |
 | `/papergen:debug [desc]` | Systematic debugging with persistent state | When something breaks |
 | `/papergen:add-todo [desc]` | Capture an idea for later | Think of something during a session |
 | `/papergen:check-todos` | List pending todos | Review captured ideas |
@@ -208,7 +208,7 @@ rapid prototyping phases where test infrastructure isn't the focus.
 
 ## Configuration Reference
 
-GSD stores project settings in `.planning/config.json`. Configure during `/papergen:new-project` or update later with `/papergen:settings`.
+GPD stores project settings in `.planning/config.json`. Configure during `/papergen:new-project` or update later with `/papergen:settings`.
 
 ### Full config.json paper structure
 
@@ -229,8 +229,8 @@ GSD stores project settings in `.planning/config.json`. Configure during `/paper
   },
   "git": {
     "branching_strategy": "none",
-    "phase_branch_template": "gsd/phase-{phase}-{slug}",
-    "milestone_branch_template": "gsd/{milestone}-{slug}"
+    "phase_branch_template": "gpd/phase-{phase}-{slug}",
+    "milestone_branch_template": "gpd/{milestone}-{slug}"
   }
 }
 ```
@@ -268,8 +268,8 @@ Disable these to speed up phases in familiar domains or when conserving tokens.
 | Setting | Options | Default | What it Controls |
 |---------|---------|---------|------------------|
 | `git.branching_strategy` | `none`, `phase`, `milestone` | `none` | When and how branches are created |
-| `git.phase_branch_template` | Template string | `gsd/phase-{phase}-{slug}` | Branch name for phase strategy |
-| `git.milestone_branch_template` | Template string | `gsd/{milestone}-{slug}` | Branch name for milestone strategy |
+| `git.phase_branch_template` | Template string | `gpd/phase-{phase}-{slug}` | Branch name for phase strategy |
+| `git.milestone_branch_template` | Template string | `gpd/{milestone}-{slug}` | Branch name for milestone strategy |
 
 **Branching strategies explained:**
 
@@ -390,7 +390,7 @@ You ran `/papergen:new-project` but `.planning/PROJECT.md` already exists. This 
 
 ### Context Degradation During Long Sessions
 
-Clear your context window between major commands: `/clear` in Claude Code. GSD is designed around fresh contexts -- every subagent gets a clean 200K window. If quality is dropping in the main session, clear and use `/papergen:resume-work` or `/papergen:progress` to restore state.
+Clear your context window between major commands: `/clear` in Claude Code. GPD is designed around fresh contexts -- every subagent gets a clean 200K window. If quality is dropping in the main session, clear and use `/papergen:resume-work` or `/papergen:progress` to restore state.
 
 ### Plans Seem Wrong or Misaligned
 
@@ -416,13 +416,13 @@ Switch to budget profile: `/papergen:set-profile budget`. Disable research and p
 
 Set `commit_docs: false` during `/papergen:new-project` or via `/papergen:settings`. Add `.planning/` to your `.gitignore`. Planning artifacts stay local and never touch git.
 
-### GSD Update Overwrote My Local Changes
+### GPD Update Overwrote My Local Changes
 
-Since v1.17, the installer backs up locally modified files to `gsd-local-patches/`. Run `/papergen:reapply-patches` to merge your changes back.
+Since v1.17, the installer backs up locally modified files to `gpd-local-patches/`. Run `/papergen:reapply-patches` to merge your changes back.
 
 ### Subagent Appears to Fail but Work Was Done
 
-A known workaround exists for a Claude Code classification bug. GSD's orchestrators (execute-phase, quick) spot-check actual output before reporting failure. If you see a failure message but commits were made, check `git log` -- the work may have succeeded.
+A known workaround exists for a Claude Code classification bug. GPD's orchestrators (execute-phase, quick) spot-check actual output before reporting failure. If you see a failure message but commits were made, check `git log` -- the work may have succeeded.
 
 ---
 
@@ -444,7 +444,7 @@ A known workaround exists for a Claude Code classification bug. GSD's orchestrat
 
 ## Project File Structure
 
-For reference, here is what GSD creates in your project:
+For reference, here is what GPD creates in your project:
 
 ```
 .planning/
