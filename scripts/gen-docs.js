@@ -47,12 +47,15 @@ function main() {
   const blocks = []
   for (const filePath of mdFiles) {
     const relFromRoot = path.relative(inputDir, filePath)
+    const relPathPosix = normalizeToPosix(relFromRoot)
     const sectionTitle = titleFromPath(relFromRoot)
     const folderDepth = folderDepthFromRoot(relFromRoot)
     const sectionHeading = formatHeading(sectionTitle, folderDepth)
     const content = fs.readFileSync(filePath, "utf8")
     const normalized = normalizeMarkdownLinks(content, filePath, outputFile)
-    blocks.push(`${sectionHeading}\n\n${normalized.trimEnd()}`)
+    blocks.push(
+      `${sectionHeading}\n\n<!------ Begin ${relPathPosix} ------!>\n${normalized.trimEnd()}\n<!------ End ${relPathPosix} ------!>`
+    )
   }
 
   fs.writeFileSync(outputFile, `${blocks.join("\n\n")}\n`, "utf8")
