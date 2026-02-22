@@ -23,7 +23,7 @@ Create a publishable research-paper repository structure and populate it with ev
 **Outcome requirements:**
 - Manuscript sections must be narrative prose, not checklist-style markdown.
 - Source IDs used in text must resolve in `paper/sources/SOURCE-LOG.md`.
-- Final publishable artifact must be built with `node scripts/gen-docs.js paper .tmp/paper.md` (optionally `--pdf`).
+- Final publishable artifact must be built with `node ~/.claude/scripts/gen-docs.js paper .tmp/paper.md` (optionally `--pdf`).
 </objective>
 
 <execution_context>

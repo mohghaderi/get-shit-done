@@ -1430,6 +1430,18 @@ function install(isGlobal, runtime = 'claude') {
     failures.push('get-paper-done');
   }
 
+  // Copy runtime scripts used by paper workflows (gen-docs/gen-pdf)
+  const scriptsSrc = path.join(src, 'scripts');
+  if (fs.existsSync(scriptsSrc)) {
+    const scriptsDest = path.join(targetDir, 'scripts');
+    copyWithPathReplacement(scriptsSrc, scriptsDest, pathPrefix, runtime);
+    if (verifyInstalled(scriptsDest, 'scripts')) {
+      console.log(`  ${green}✓${reset} Installed scripts`);
+    } else {
+      failures.push('scripts');
+    }
+  }
+
   // Copy agents to agents directory
   const agentsSrc = path.join(src, 'agents');
   if (fs.existsSync(agentsSrc)) {

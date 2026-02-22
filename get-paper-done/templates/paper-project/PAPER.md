@@ -42,5 +42,5 @@ Title: [Paper Title]
 - Final manuscript must be a single Markdown or PDF file.
 - Keep tables and image embeds inline in section drafts so they appear in final assembly.
 - Every in-text source ID must resolve to `paper/sources/SOURCE-LOG.md`.
-- Use `node scripts/gen-docs.js paper .tmp/paper.md` to build a single Markdown manuscript.
-- Use `node scripts/gen-docs.js paper .tmp/paper.md --pdf` to build a PDF from that manuscript.
+- Use `node ~/.claude/scripts/gen-docs.js paper .tmp/paper.md` to build a single Markdown manuscript.
+- Use `node ~/.claude/scripts/gen-docs.js paper .tmp/paper.md --pdf` to build a PDF from that manuscript.

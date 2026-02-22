@@ -115,13 +115,13 @@ Before build, run publication checks:
 Generate the single-file manuscript:
 
 ```bash
-node scripts/gen-docs.js paper .tmp/paper.md
+node ~/.claude/scripts/gen-docs.js paper .tmp/paper.md
 ```
 
 Optional PDF output:
 
 ```bash
-node scripts/gen-docs.js paper .tmp/paper.md --pdf
+node ~/.claude/scripts/gen-docs.js paper .tmp/paper.md --pdf
 ```
 
 Treat `.tmp/paper.md` (and optional `.tmp/paper.pdf`) as the publishable compiled artifact for handoff/review.
@@ -159,6 +159,6 @@ Report:
 - [ ] Image sources recorded with licensing/provenance notes
 - [ ] `paper/PAPER.md` assembled and linked
 - [ ] Section claims reconciled with source log IDs
-- [ ] Single-file manuscript generated with `scripts/gen-docs.js`
+- [ ] Single-file manuscript generated with `~/.claude/scripts/gen-docs.js`
 
 </success_criteria>
