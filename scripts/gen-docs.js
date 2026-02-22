@@ -54,7 +54,7 @@ function main() {
     const content = fs.readFileSync(filePath, "utf8")
     const normalized = normalizeMarkdownLinks(content, filePath, outputFile)
     blocks.push(
-      `${sectionHeading}\n\n<!------ Begin ${relPathPosix} ------!>\n${normalized.trimEnd()}\n<!------ End ${relPathPosix} ------!>`
+      `${sectionHeading}\n\n<!------ Begin ${relPathPosix} ------>\n${normalized.trimEnd()}\n<!------ End ${relPathPosix} ------>`
     )
   }
 
