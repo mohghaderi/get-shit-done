@@ -58,10 +58,12 @@ Define section-specific search queries. For each section file in `paper/sections
 2. Prefer primary sources (official docs, peer-reviewed publications, standards bodies, reputable institutions).
 3. Record each source in `paper/sources/SOURCE-LOG.md` with a stable source ID.
 4. Write section draft text as publication-ready narrative prose (not checklist bullets) with explicit in-text source IDs like `[SRC-03]`.
-5. Keep claim-to-source traceability in `Citation Coverage` tables and in `paper/data/EXTRACTION-SHEET.md` rather than dumping note blocks in the main narrative.
-6. For each major finding, record at least one counterevidence source (or explicitly note none found) in `Citation Coverage` and extraction artifacts.
-7. Assign source quality scores using `paper/methodology/QUALITY-APPRAISAL.md`.
-8. Include tables and image embeds directly in section draft content where evidence is discussed.
+5. For standard sections, target 4-8 coherent paragraphs with clear transitions and argument flow.
+6. Keep bullets minimal in manuscript sections (0-2 short bullets total per section unless structure requires a list).
+7. Keep claim-to-source traceability in `Citation Coverage` tables and in `paper/data/EXTRACTION-SHEET.md` rather than dumping note blocks in the main narrative.
+8. For each major finding, record at least one counterevidence source (or explicitly note none found) in `Citation Coverage` and extraction artifacts.
+9. Assign source quality scores using `paper/methodology/QUALITY-APPRAISAL.md`.
+10. Include tables and image embeds directly in section draft content where evidence is discussed.
 
 If evidence quality is weak, run another search pass before writing assertions.
 
@@ -97,9 +99,20 @@ For each chosen image:
 
 ## 7. Assemble Draft Manuscript
 
-Update `paper/PAPER.md` with links to each section and a draft publication order.
+Update `paper/PAPER.md` with:
+- final publication order
+- section-level links
+- figure references
+- explicit references location (`paper/sources/SOURCE-LOG.md`)
 
-Generate a clean single-file manuscript:
+Before build, run publication checks:
+- Each section contains narrative prose with paragraph structure (not sparse bullet-only output).
+- Every table and image needed to understand claims appears inline in section content.
+- Every `[SRC-##]` used in sections exists in `SOURCE-LOG.md`.
+- Every research question has at least one evidence entry in `EXTRACTION-SHEET.md`.
+- Claims flagged as uncertain are explicitly labeled in text.
+
+Generate the single-file manuscript:
 
 ```bash
 node scripts/gen-docs.js paper .tmp/paper.md
@@ -111,15 +124,7 @@ Optional PDF output:
 node scripts/gen-docs.js paper .tmp/paper.md --pdf
 ```
 
-Ensure each section file has:
-- Objective
-- Manuscript Draft prose with inline citations
-- Citation Coverage with source IDs
-
-Add cross-checks:
-- Every `[SRC-##]` used in sections exists in `SOURCE-LOG.md`.
-- Every research question has at least one evidence entry in `EXTRACTION-SHEET.md`.
-- Claims flagged as uncertain are explicitly labeled in text.
+Treat `.tmp/paper.md` (and optional `.tmp/paper.pdf`) as the publishable compiled artifact for handoff/review.
 
 ## 8. Commit Artifacts
 
@@ -154,5 +159,6 @@ Report:
 - [ ] Image sources recorded with licensing/provenance notes
 - [ ] `paper/PAPER.md` assembled and linked
 - [ ] Section claims reconciled with source log IDs
+- [ ] Single-file manuscript generated with `scripts/gen-docs.js`
 
 </success_criteria>

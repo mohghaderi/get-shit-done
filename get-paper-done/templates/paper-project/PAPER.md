@@ -19,6 +19,14 @@ Title: [Paper Title]
 5. Conclusion
 6. References
 
+## Writing Rules
+
+- Main sections should read as narrative prose, not sparse bullets.
+- Keep lists only where format requires them (for example limitations or contributions), and keep them short.
+- Integrate figures and tables in the body where they are discussed.
+- Every factual claim with external evidence must carry inline source IDs such as `[SRC-04]`.
+- Every source ID used in text must exist in `paper/sources/SOURCE-LOG.md`.
+
 ## Scientific Rigor Artifacts
 
 - Protocol: `paper/methodology/PROTOCOL.md`
@@ -34,3 +42,5 @@ Title: [Paper Title]
 - Final manuscript must be a single Markdown or PDF file.
 - Keep tables and image embeds inline in section drafts so they appear in final assembly.
 - Every in-text source ID must resolve to `paper/sources/SOURCE-LOG.md`.
+- Use `node scripts/gen-docs.js paper .tmp/paper.md` to build a single Markdown manuscript.
+- Use `node scripts/gen-docs.js paper .tmp/paper.md --pdf` to build a PDF from that manuscript.

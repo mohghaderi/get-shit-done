@@ -6,9 +6,15 @@
 
 ## Manuscript Draft
 
-[Write publication-ready prose, not notes. Aim for 3+ paragraphs with clear transitions and inline source IDs, e.g. [SRC-01].]
+[Write publication-ready prose, not notes. Target 4-8 paragraphs unless the section is intentionally brief (for example abstract or concise conclusion).]
 
-[Include tables and image embeds directly where they support the argument.]
+[Use clear transitions between paragraphs so the section reads like a paper narrative, not a checklist.]
+
+[Keep bullets minimal (0-2 short bullets total in this section). Put evidence discussion in prose.]
+
+[Include tables and image embeds directly where they support the argument. Do not defer core tables/figures to "later".]
+
+[Use inline source IDs for factual claims, for example [SRC-01].]
 
 ## Citation Coverage
 
@@ -17,6 +23,8 @@
 | [summary] | [SRC-##, SRC-##] | [SRC-## or none] | [high/medium/low] |
 
 ## Reviewer Notes (Not for Publication)
+
+Use only for author-side caveats that should not appear in the final manuscript.
 
 - Main uncertainty:
 - Methodological caveat:

@@ -1,6 +1,6 @@
 ---
 name: papergen:new-paper
-description: Initialize a research-paper workspace with nested markdown sections, citations, diagrams, and image sourcing
+description: Initialize a prose-first research-paper workspace and produce a publishable single-file manuscript with citations, tables, diagrams, and images
 argument-hint: "<topic>"
 allowed-tools:
   - Read
@@ -19,6 +19,11 @@ Create a publishable research-paper repository structure and populate it with ev
 - `paper/sources/SOURCE-LOG.md` — claim-to-source ledger
 - `paper/figures/*.puml` — PlantUML diagrams
 - `paper/images/IMAGE-SOURCES.md` — image provenance and licensing notes
+
+**Outcome requirements:**
+- Manuscript sections must be narrative prose, not checklist-style markdown.
+- Source IDs used in text must resolve in `paper/sources/SOURCE-LOG.md`.
+- Final publishable artifact must be built with `node scripts/gen-docs.js paper .tmp/paper.md` (optionally `--pdf`).
 </objective>
 
 <execution_context>
