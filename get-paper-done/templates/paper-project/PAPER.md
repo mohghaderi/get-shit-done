@@ -29,13 +29,13 @@ Title: [Paper Title]
 
 ## Scientific Rigor Artifacts
 
-- Protocol: `paper/methodology/PROTOCOL.md`
-- Inclusion/Exclusion: `paper/methodology/INCLUSION-EXCLUSION.md`
-- Quality Appraisal: `paper/methodology/QUALITY-APPRAISAL.md`
-- Bias Register: `paper/methodology/BIAS-REGISTER.md`
-- Extraction Sheet: `paper/data/EXTRACTION-SHEET.md`
-- Reproducibility: `paper/reproducibility/REPRODUCIBILITY.md`
-- Ethics: `paper/ethics/ETHICS-STATEMENT.md`
+- Protocol: [paper/methodology/PROTOCOL.md](methodology/PROTOCOL.md)
+- Inclusion/Exclusion: [paper/methodology/INCLUSION-EXCLUSION.md](methodology/INCLUSION-EXCLUSION.md)
+- Quality Appraisal: [paper/methodology/QUALITY-APPRAISAL.md](methodology/QUALITY-APPRAISAL.md)
+- Bias Register: [paper/methodology/BIAS-REGISTER.md](methodology/BIAS-REGISTER.md)
+- Extraction Sheet: [paper/data/EXTRACTION-SHEET.md](data/EXTRACTION-SHEET.md)
+- Reproducibility: [paper/reproducibility/REPRODUCIBILITY.md](reproducibility/REPRODUCIBILITY.md)
+- Ethics: [paper/ethics/ETHICS-STATEMENT.md](ethics/ETHICS-STATEMENT.md)
 
 ## Publication Assembly Notes
 
